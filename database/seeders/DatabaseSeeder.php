@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         // Seed with test data if the environment is local or dev.
         if (App::environment('local') || App::environment('development')) {
-            $this->call([DummyDataSeeder::class]);
+            $this->call([InitialUserSeeder::class]);
         }
     }
 }

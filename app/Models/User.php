@@ -16,8 +16,18 @@ class User extends Authenticatable
     protected $hidden = ['password', 'remember_token'];
     protected $casts = ['email_verified_at' => 'datetime'];
 
-    public function stores()
+    public function teams()
     {
-        return $this->hasMany(Store::class);
+        return $this->belongsToMany(Team::class, 'team_members', 'team_id', 'user_id');
+    }
+
+    public function ownedTeams()
+    {
+        return $this->hasMany(Team::class, 'owner_id');
+    }
+
+    public function repositories()
+    {
+        return $this->hasMany(TargetedRepository::class);
     }
 }
