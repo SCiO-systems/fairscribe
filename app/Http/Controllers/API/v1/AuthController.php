@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API\v1;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\LogoutRequest;
 use App\Http\Controllers\Controller;
-
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -32,7 +32,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return response()->json([], 204);
+        return new UserResource($request->user());
     }
 
     /**
