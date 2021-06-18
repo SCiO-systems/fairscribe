@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\UserTeamInvites;
+namespace App\Http\Requests\TeamInvites;
 
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserTeamInviteCreateRequest extends FormRequest
+class CreateTeamInviteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,9 +15,8 @@ class UserTeamInviteCreateRequest extends FormRequest
     public function authorize()
     {
         // Check if the user who sends the invite is a team owner.
-        $isSameUser = Auth::user()->id === $this->user->id;
-        $isTeamOwner = $this->team->owner_id === $this->user->id;
-        return $isSameUser && $isTeamOwner;
+        $isTeamOwner = Auth::user()->id === $this->team->owner_id;
+        return $isTeamOwner;
     }
 
     /**
@@ -28,7 +27,7 @@ class UserTeamInviteCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email'
+            'emails.*' => 'required|email'
         ];
     }
 }

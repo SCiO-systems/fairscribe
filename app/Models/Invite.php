@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Mail\TeamInviteSent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Log;
+use Mail;
 
 /**
  * App\Models\Invitation
@@ -43,13 +46,17 @@ class Invite extends Model
     protected $guarded = [];
     protected $table = 'invites';
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($invite) {
+            Mail::to($invite->email)->queue(new TeamInviteSent($invite));
+        });
+    }
+
     public function team()
     {
         return $this->belongsTo(Team::class);
-    }
-
-    public function inviter()
-    {
-        return $this->belongsTo(User::class, 'from_user_id');
     }
 }

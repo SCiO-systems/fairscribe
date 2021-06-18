@@ -1,13 +1,13 @@
 <?php
 
 use App\Http\Controllers\API\v1\AuthController;
+use App\Http\Controllers\API\v1\TeamInvitesController;
 use App\Http\Controllers\API\v1\UserController;
 use App\Http\Controllers\API\v1\TeamsController;
 use App\Http\Controllers\API\v1\UserAvatarController;
 use App\Http\Controllers\API\v1\UserPasswordController;
 use App\Http\Controllers\API\v1\UserTeamsController;
 use App\Http\Controllers\API\v1\UserInvitesController;
-use App\Http\Controllers\API\v1\UserTeamInvitesController;
 use Illuminate\Support\Facades\Route;
 
 // API v1
@@ -46,14 +46,12 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::post('/users/{user}/password', [UserPasswordController::class, 'update']);
 
         // User owned teams.
-        Route::post('users/{user}/teams/{team}/invite', [
-            UserTeamInvitesController::class, 'store'
-        ]);
         Route::apiResource('users.teams', UserTeamsController::class);
 
         // --- TEAM ROUTES ---
 
         // All team routes.
+        Route::post('/teams/{team}/invite', [TeamInvitesController::class, 'store']);
         Route::apiResource('teams', TeamsController::class);
 
         // Logout.

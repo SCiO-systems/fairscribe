@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Invite;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
@@ -13,7 +14,7 @@ class TeamInviteSent extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    // The user.
+    // The inviter.
     protected $user;
 
     // The team.
@@ -24,10 +25,10 @@ class TeamInviteSent extends Mailable implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(User $user, Team $team)
+    public function __construct(Invite $invite)
     {
-        $this->user = $user;
-        $this->team = $team;
+        $this->team = Team::find($invite->team_id);
+        $this->user = User::find($this->team->owner_id);
     }
 
     /**
