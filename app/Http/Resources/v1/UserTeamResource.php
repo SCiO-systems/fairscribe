@@ -20,19 +20,19 @@ class UserTeamResource extends JsonResource
         $collectionIds = Collection::where('team_id', $this->id)
             ->pluck('id');
 
-        $resources = DB::table('resources')
+        $resources = DB::table('collection_resources')
             ->whereIn('collection_id', $collectionIds)
-            ->pluck('resource_id');
+            ->pluck('id');
 
         $activeTasks = Resource::where('status', 'under_preparation')
             ->whereIn('id', $resources)
             ->count();
 
-        $pendingReview = Resource::where('status', 'under_review')
+        $pendingReviewTasks = Resource::where('status', 'under_review')
             ->whereIn('id', $resources)
             ->count();
 
-        $pendingUpload = Resource::where('status', 'approved')
+        $pendingUploadTasks = Resource::where('status', 'approved')
             ->whereIn('id', $resources)
             ->count();
 
@@ -40,8 +40,8 @@ class UserTeamResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'activeTasks' => $activeTasks,
-            'pendingReviewTasks' => $pendingReview,
-            'pendingUploadTasks' => $pendingUpload,
+            'pendingReviewTasks' => $pendingReviewTasks,
+            'pendingUploadTasks' => $pendingUploadTasks,
             'description' => $this->description,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
