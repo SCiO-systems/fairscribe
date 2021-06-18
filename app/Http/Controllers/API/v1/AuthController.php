@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API\v1;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\LogoutRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\v1\UserResource;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -26,7 +26,11 @@ class AuthController extends Controller
 
         if (!$attempt) {
             return response()->json([
-                'error' => 'The provided credentials do not match our records.',
+                'message' => 'The provided credentials do not match our records.',
+                'errors' => [
+                    'email' => 'The provided credentials do not match our records.',
+                    'password' => 'The provided credentials do not match our records.',
+                ]
             ], 401);
         }
 

@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
@@ -36,7 +37,6 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->renderable(function (NotFoundHttpException $e, $request) {
-
             if ($e->getPrevious() instanceof ModelNotFoundException && $request->isJson()) {
                 $model = $e->getPrevious()->getModel();
                 return response()->json([
@@ -45,6 +45,14 @@ class Handler extends ExceptionHandler
                     ]
                 ], 404);
             }
+        });
+
+        $this->renderable(function (AccessDeniedHttpException $e, $request) {
+            return response()->json([
+                'errors' => [
+                    'error' => "Access is denied."
+                ]
+            ], 403);
         });
     }
 }

@@ -21,7 +21,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string|null $firstname
  * @property string|null $lastname
  * @property string $role
- * @property string|null $profile_picture_url
+ * @property string|null $avatar_url
  * @property string $ui_language
  * @property string $ui_language_display_format
  * @property string $ui_date_display_format

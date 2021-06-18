@@ -19,16 +19,10 @@ class InitialSchema extends Migration
             $table->string('firstname')->nullable();
             $table->string('lastname')->nullable();
             $table->enum('role', ['repo_manager', 'team_member'])->default('repo_manager');
-            $table->string('profile_picture_url')->nullable();
+            $table->string('avatar_url')->nullable();
             $table->string('ui_language')->default('en');
             $table->string('ui_language_display_format')->default('endonym');
             $table->string('ui_date_display_format')->default('YY-MM-DD');
-        });
-
-        Schema::create('repository_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->timestamps();
         });
 
         Schema::create('user_repositories', function (Blueprint $table) {
@@ -36,9 +30,14 @@ class InitialSchema extends Migration
             $table->foreignId('user_id')
                 ->constrained('users')
                 ->onDelete('cascade');
-            $table->foreignId('type_id')
-                ->constrained('repository_types')
-                ->onDelete('cascade');
+            $table->enum('type', [
+                'CKAN',
+                'DKAN',
+                'DSpace',
+                'Dataverse',
+                'GeoNetwork',
+                'GeoNode'
+            ])->nullable();
             $table->string('name');
             $table->string('api_endpoint');
             $table->string('client_secret')->nullable();
@@ -56,7 +55,7 @@ class InitialSchema extends Migration
             $table->timestamps();
         });
 
-        Schema::create('team_members', function (Blueprint $table) {
+        Schema::create('team_users', function (Blueprint $table) {
             $table->id();
             $table->foreignId('team_id')
                 ->constrained('teams')
@@ -76,13 +75,12 @@ class InitialSchema extends Migration
                 ->constrained('teams')
                 ->onDelete('cascade');
             $table->string('email');
-            $table->uuid('invitation_code')->default(UuidV4::uuid4());
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->timestamps();
 
             // Indexes
             $table->index('email');
-            $table->index('invitation_code');
+            $table->unique(['team_id', 'email']);
         });
 
         Schema::create('collections', function (Blueprint $table) {
@@ -141,13 +139,15 @@ class InitialSchema extends Migration
         // TODO: Finish the table structure.
         Schema::create('resources', function (Blueprint $table) {
             $table->id();
+            $table->string('version');
+            $table->string('external_metadata_record_id')->nullable();
+            $table->string('title');
+            $table->string('description');
+            $table->string('type');
             $table->enum('status', [
-                'draft',
-                'under_preparation',
-                'under_review',
-                'approved',
-                'published'
+                'draft', 'under_preparation', 'under_review', 'approved', 'published'
             ])->default('draft');
+            $table->enum('pii_status', ['pending', 'passed', 'failed'])->default('pending');
             $table->float('findable_score')->default(0);
             $table->float('accessible_score')->default(0);
             $table->float('interoperable_score')->default(0);
@@ -155,7 +155,16 @@ class InitialSchema extends Migration
             $table->float('fair_scoring')->default(0);
             // TODO: Maybe include information regarding who published the resource?
             $table->timestamp('published_at')->nullable()->default(null);
+            $table->timestamp('issued_at')->nullable()->default(null);
+            $table->foreignId('author_id')
+                ->constrained('users');
+            $table->foreignId('publisher_id')
+                ->nullable()
+                ->constrained('users')
+                ->default(null);
             $table->timestamps();
+
+            $table->unique(['id', 'version']);
         });
 
         Schema::create('collection_resources', function (Blueprint $table) {
@@ -166,6 +175,30 @@ class InitialSchema extends Migration
             $table->foreignId('resource_id')
                 ->constrained('resources')
                 ->onDelete('cascade');
+            $table->timestamps();
+        });
+
+        Schema::create('resource_authors', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('resource_id')
+                ->constrained('resources')
+                ->onDelete('cascade');
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->onDelete('cascade');
+            $table->unique(['resource_id', 'user_id']);
+            $table->timestamps();
+        });
+
+        Schema::create('resource_reviewers', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('resource_id')
+                ->constrained('resources')
+                ->onDelete('cascade');
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->onDelete('cascade');
+            $table->unique(['resource_id', 'user_id']);
             $table->timestamps();
         });
     }
@@ -183,7 +216,7 @@ class InitialSchema extends Migration
                 'firstname',
                 'lastname',
                 'role',
-                'profile_picture_url',
+                'avatar_url',
                 'ui_language',
                 'ui_language_display_format',
                 'ui_date_display_format',
@@ -194,11 +227,12 @@ class InitialSchema extends Migration
         Schema::drop('collection_geospatial_coverages');
         Schema::drop('collection_temporal_coverages');
         Schema::drop('invitations');
-        Schema::drop('team_members');
+        Schema::drop('team_users');
         Schema::drop('collection_resources');
+        Schema::drop('resource_authors');
+        Schema::drop('resource_reviewers');
         Schema::drop('collections');
         Schema::drop('teams');
         Schema::drop('resources');
-        Schema::drop('repository_types');
     }
 }
