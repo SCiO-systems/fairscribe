@@ -66,11 +66,8 @@ class InitialSchema extends Migration
             $table->timestamps();
         });
 
-        Schema::create('invitations', function (Blueprint $table) {
+        Schema::create('invites', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('from_user_id')
-                ->constrained('users')
-                ->onDelete('cascade');
             $table->foreignId('team_id')
                 ->constrained('teams')
                 ->onDelete('cascade');
@@ -226,7 +223,7 @@ class InitialSchema extends Migration
         Schema::drop('collection_keywords');
         Schema::drop('collection_geospatial_coverages');
         Schema::drop('collection_temporal_coverages');
-        Schema::drop('invitations');
+        Schema::drop('invites');
         Schema::drop('team_users');
         Schema::drop('collection_resources');
         Schema::drop('resource_authors');

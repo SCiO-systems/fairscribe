@@ -6,6 +6,8 @@ use App\Http\Controllers\API\v1\TeamsController;
 use App\Http\Controllers\API\v1\UserAvatarController;
 use App\Http\Controllers\API\v1\UserPasswordController;
 use App\Http\Controllers\API\v1\UserTeamsController;
+use App\Http\Controllers\API\v1\UserInvitesController;
+use App\Http\Controllers\API\v1\UserTeamInvitesController;
 use Illuminate\Support\Facades\Route;
 
 // API v1
@@ -20,7 +22,16 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         // --- USER ROUTES ---
 
         // User management.
-        Route::apiResource('users', UserController::class)->only(['show', 'update']);
+        Route::apiResource('users', UserController::class)->only(['index', 'show', 'update']);
+
+        // User invites.
+        Route::post('users/{user}/invites/{invite}/accept', [
+            UserInvitesController::class, 'accept'
+        ]);
+        Route::post('users/{user}/invites/{invite}/reject', [
+            UserInvitesController::class, 'reject'
+        ]);
+        Route::apiResource('users.invites', UserInvitesController::class)->only(['index']);
 
         // User avatar management. Issue with file upload using PUT, must use POST.
         Route::get('/users/{user}/avatar', [UserAvatarController::class, 'show']);
@@ -31,7 +42,10 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         // TODO: Implement this.
         Route::post('/users/{user}/password', [UserPasswordController::class, 'update']);
 
-        // Manage user owned teams.
+        // User owned teams.
+        Route::post('users/{user}/teams/{team}/invite', [
+            UserTeamInvitesController::class, 'store'
+        ]);
         Route::apiResource('users.teams', UserTeamsController::class);
 
         // --- TEAM ROUTES ---
@@ -39,7 +53,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         // All team routes.
         Route::apiResource('teams', TeamsController::class);
 
-        // Logout
+        // Logout.
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     });
 });

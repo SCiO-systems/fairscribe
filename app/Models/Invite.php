@@ -31,12 +31,17 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Invitation whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Invitation extends Model
+class Invite extends Model
 {
     use HasFactory;
 
+    // Invite statuses.
+    public const StatusPending = 'pending';
+    public const StatusAccepted = 'accepted';
+    public const StatusRejected = 'rejected';
+
     protected $guarded = [];
-    protected $table = 'invitations';
+    protected $table = 'invites';
 
     public function team()
     {
