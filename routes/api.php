@@ -16,6 +16,9 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     // Authenticate a user.
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 
+    // Register a new user.
+    Route::post('/register', [UserController::class, 'store']);
+
     // Authenticated and authorized (store) routes.
     Route::middleware(['auth:sanctum'])->group(function () {
 
