@@ -10,6 +10,8 @@ use App\Http\Resources\v1\UserTeamResource;
 use App\Models\Team;
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserTeams\ListAllUserOwnedTeamsRequest;
+use App\Http\Resources\v1\UserTeamIdNameResource;
 
 class UserTeamsController extends Controller
 {
@@ -81,5 +83,17 @@ class UserTeamsController extends Controller
     public function destroy($id)
     {
         // TODO: Implement this in the future maybe.
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function all(ListAllUserOwnedTeamsRequest $request, User $user)
+    {
+        $teams = Team::where('owner_id', $user->id)->get();
+
+        return UserTeamIdNameResource::collection($teams);
     }
 }

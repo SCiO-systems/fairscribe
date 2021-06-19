@@ -17,6 +17,7 @@ class UserTeamResource extends JsonResource
      */
     public function toArray($request)
     {
+
         $collectionIds = Collection::where('team_id', $this->id)
             ->pluck('id');
 

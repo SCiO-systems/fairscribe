@@ -46,6 +46,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::post('/users/{user}/password', [UserPasswordController::class, 'update']);
 
         // User owned teams.
+        Route::get('/users/{user}/teams/all', [UserTeamsController::class, 'all']);
         Route::apiResource('users.teams', UserTeamsController::class);
 
         // --- TEAM ROUTES ---
