@@ -59,7 +59,6 @@ class UserController extends Controller
         // TODO: Maybe send verification email.
         // Send the email.
         // Mail::to($request->email)->queue(new TeamInviteSent($request->user(), $team));
-        $user->update(['email_verified_at' => Carbon::now()]);
 
         return new UserResource($user);
     }

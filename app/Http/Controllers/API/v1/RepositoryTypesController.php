@@ -16,9 +16,9 @@ class RepositoryTypesController extends Controller
      */
     public function index(ListRepositoryTypesRequest $request)
     {
-        $types = collect(RepositoryType::asArray())->map(function ($value) {
-            return ['name' => $value, 'value' => $value];
-        })->values()->all();
+        $types = collect(RepositoryType::asArray())->map(function ($value, $key) {
+            return ["name" => $key, "value" => $value];
+        })->values();
 
         return response()->json(['data' => $types], 200);
     }

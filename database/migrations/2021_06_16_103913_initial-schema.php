@@ -1,5 +1,8 @@
 <?php
 
+use App\Enums\IdentityProvider;
+use App\Enums\RepositoryType;
+use App\Enums\ResourceStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,8 +17,21 @@ class InitialSchema extends Migration
      */
     public function up()
     {
+        Schema::dropColumns('users', [
+            'name',
+            'email',
+            'password',
+            'email_verified_at',
+            'created_at',
+            'updated_at'
+        ]);
+
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('name');
+            $table->string('email')->nullable()->unique()->after('id');
+            $table->string('password')->nullable()->after('email');
+            $table->enum('identity_provider', IdentityProvider::getValues())
+                ->default(IdentityProvider::SCRIBE);
+            $table->string('identity_provider_external_id')->nullable()->default(null);
             $table->string('firstname')->nullable();
             $table->string('lastname')->nullable();
             $table->enum('role', ['repo_manager', 'team_member'])->default('repo_manager');
@@ -23,6 +39,7 @@ class InitialSchema extends Migration
             $table->string('ui_language')->default('en');
             $table->string('ui_language_display_format')->default('endonym');
             $table->string('ui_date_display_format')->default('YY-MM-DD');
+            $table->timestamps();
         });
 
         Schema::create('user_repositories', function (Blueprint $table) {
@@ -30,14 +47,7 @@ class InitialSchema extends Migration
             $table->foreignId('user_id')
                 ->constrained('users')
                 ->onDelete('cascade');
-            $table->enum('type', [
-                'CKAN',
-                'DKAN',
-                'DSpace',
-                'Dataverse',
-                'GeoNetwork',
-                'GeoNode'
-            ])->nullable();
+            $table->enum('type', RepositoryType::getValues())->nullable();
             $table->string('name');
             $table->string('api_endpoint');
             $table->string('client_secret')->nullable();
@@ -141,9 +151,7 @@ class InitialSchema extends Migration
             $table->string('title');
             $table->string('description');
             $table->string('type');
-            $table->enum('status', [
-                'draft', 'under_preparation', 'under_review', 'approved', 'published'
-            ])->default('draft');
+            $table->enum('status', ResourceStatus::getValues())->default(ResourceStatus::DRAFT);
             $table->enum('pii_status', ['pending', 'passed', 'failed'])->default('pending');
             $table->float('findable_score')->default(0);
             $table->float('accessible_score')->default(0);
@@ -207,17 +215,22 @@ class InitialSchema extends Migration
      */
     public function down()
     {
+        Schema::dropColumns('users', [
+            'email',
+            'identity_provider',
+            'identity_provider_external_id',
+            'firstname',
+            'lastname',
+            'role',
+            'avatar_url',
+            'ui_language',
+            'ui_language_display_format',
+            'ui_date_display_format',
+        ]);
         Schema::table('users', function (Blueprint $table) {
             $table->string('name');
-            $table->dropColumn([
-                'firstname',
-                'lastname',
-                'role',
-                'avatar_url',
-                'ui_language',
-                'ui_language_display_format',
-                'ui_date_display_format',
-            ]);
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
         });
         Schema::drop('user_repositories');
         Schema::drop('collection_keywords');

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\v1\AuthController;
+use App\Http\Controllers\API\v1\OAuth\ORCIDController;
 use App\Http\Controllers\API\v1\TeamInvitesController;
 use App\Http\Controllers\API\v1\UserController;
 use App\Http\Controllers\API\v1\TeamsController;
@@ -14,6 +15,23 @@ use Illuminate\Support\Facades\Route;
 
 // API v1
 Route::prefix('v1')->name('api.v1.')->group(function () {
+
+    // --- OAUTH ROUTES ---
+    Route::prefix('oauth')->group(function () {
+
+        // ORCID.
+        Route::prefix('orcid')->group(function () {
+            Route::get('/', [ORCIDController::class, 'redirect']);
+            Route::get('/callback', [ORCIDController::class, 'callback']);
+        });
+
+        Route::prefix('globus')->group(function () {
+            Route::get('/', function () {
+                return response()->json("Not Implemented", 501);
+            });
+        });
+    });
+
 
     // Authenticate a user.
     Route::post('/login', [AuthController::class, 'login'])->name('login');

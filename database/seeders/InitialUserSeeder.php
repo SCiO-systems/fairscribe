@@ -63,7 +63,6 @@ class InitialUserSeeder extends Seeder
             'lastname' => 'Systems',
             'email' => 'datascribe@scio.systems',
             'password' => bcrypt('scio'),
-            'email_verified_at' => now(),
         ]);
 
         $users = User::factory()->count(10)->create();

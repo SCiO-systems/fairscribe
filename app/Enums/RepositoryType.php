@@ -9,10 +9,10 @@ use BenSampo\Enum\Enum;
  */
 final class RepositoryType extends Enum
 {
-    const CKAN = 'CKAN';
-    const DKAN = 'DKAN';
-    const DSpace = 'DSpace';
-    const Dataverse = 'Dataverse';
-    const GeoNetwork = 'GeoNetwork';
-    const GeoNode = 'GeoNode';
+    // const CKAN = 'ckan';
+    // const DKAN = 'dkan';
+    // const DSpace = 'dspace';
+    const Dataverse = 'dataverse';
+    // const GeoNetwork = 'geonetwork';
+    // const GeoNode = 'geonode';
 }
