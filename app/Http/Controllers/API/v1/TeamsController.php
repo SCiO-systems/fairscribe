@@ -3,7 +3,12 @@
 namespace App\Http\Controllers\API\v1;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\ListAllTeamsRequest;
+use App\Http\Requests\Teams\ListTeamsRequest;
+use App\Http\Requests\Teams\ShowSingleTeamRequest;
+use App\Http\Resources\v1\TeamResource;
+use App\Http\Resources\v1\TeamResourceWithUsers;
+use App\Models\Team;
 
 class TeamsController extends Controller
 {
@@ -12,20 +17,11 @@ class TeamsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(ListTeamsRequest $request)
     {
-        //
-    }
+        $sharedTeams = $request->user()->teams()->paginate();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        return TeamResource::collection($sharedTeams);
     }
 
     /**
@@ -34,31 +30,20 @@ class TeamsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(ShowSingleTeamRequest $request, Team $team)
     {
-        //
+        return new TeamResourceWithUsers($team);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function all(ListAllTeamsRequest $request)
     {
-        //
-    }
+        $sharedTeams = $request->user()->teams()->get();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return TeamResource::collection($sharedTeams);
     }
 }

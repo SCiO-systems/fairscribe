@@ -51,10 +51,10 @@ class InitialUserSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
         DB::table('users')->truncate();
         DB::table('teams')->truncate();
-        DB::table('team_users')->truncate();
+        DB::table('team_user')->truncate();
         DB::table('collections')->truncate();
         DB::table('resources')->truncate();
-        DB::table('collection_resources')->truncate();
+        DB::table('collection_resource')->truncate();
         DB::disableQueryLog();
 
         // Create the main user.
@@ -65,6 +65,8 @@ class InitialUserSeeder extends Seeder
             'password' => bcrypt('scio'),
             'email_verified_at' => now(),
         ]);
+
+        $users = User::factory()->count(10)->create();
 
         // Resources.
         $resources = Resource::factory(['author_id' => $user->id])

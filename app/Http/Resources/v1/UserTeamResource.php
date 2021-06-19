@@ -21,7 +21,7 @@ class UserTeamResource extends JsonResource
         $collectionIds = Collection::where('team_id', $this->id)
             ->pluck('id');
 
-        $resources = DB::table('collection_resources')
+        $resources = DB::table('collection_resource')
             ->whereIn('collection_id', $collectionIds)
             ->pluck('id');
 

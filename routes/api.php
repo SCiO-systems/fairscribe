@@ -9,6 +9,7 @@ use App\Http\Controllers\API\v1\UserPasswordController;
 use App\Http\Controllers\API\v1\UserTeamsController;
 use App\Http\Controllers\API\v1\UserInvitesController;
 use App\Http\Controllers\API\v1\UserRepositoryController;
+use App\Http\Controllers\API\v1\RepositoryTypesController;
 use Illuminate\Support\Facades\Route;
 
 // API v1
@@ -50,15 +51,21 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::get('/users/{user}/teams/all', [UserTeamsController::class, 'all']);
         Route::apiResource('users.teams', UserTeamsController::class);
 
+        // --- USER REPOSITORY ROUTES ---
+
         // User repositories.
         Route::get('/users/{user}/repositories/all', [UserRepositoryController::class, 'all']);
         Route::apiResource('users.repositories', UserRepositoryController::class);
 
+        // --- REPOSITORY TYPE ROUTES ---
+        Route::apiResource('repository_types', RepositoryTypesController::class)->only('index');
+
         // --- TEAM ROUTES ---
 
         // All team routes.
+        Route::get('/teams/all', [TeamsController::class, 'all']);
         Route::post('/teams/{team}/invite', [TeamInvitesController::class, 'store']);
-        Route::apiResource('teams', TeamsController::class);
+        Route::apiResource('teams', TeamsController::class)->only(['index', 'show']);
 
         // Logout.
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

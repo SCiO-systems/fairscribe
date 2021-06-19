@@ -57,7 +57,7 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class User extends Authenticatable
 {
-    use HasFactory,  Notifiable, HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens;
 
     protected $guarded = [];
     protected $hidden = ['password', 'remember_token'];
@@ -65,7 +65,7 @@ class User extends Authenticatable
 
     public function teams()
     {
-        return $this->belongsToMany(Team::class, 'team_members');
+        return $this->belongsToMany(Team::class, 'team_user', 'user_id', 'team_id');
     }
 
     public function ownedTeams()
@@ -75,6 +75,6 @@ class User extends Authenticatable
 
     public function repositories()
     {
-        return $this->hasMany(TargetedRepository::class);
+        return $this->hasMany(UserRepository::class);
     }
 }

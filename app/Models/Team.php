@@ -40,8 +40,8 @@ class Team extends Model
         return $this->belongsTo(User::class, 'owner_id');
     }
 
-    public function members()
+    public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(User::class);
     }
 }

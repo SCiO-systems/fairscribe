@@ -55,7 +55,7 @@ class InitialSchema extends Migration
             $table->timestamps();
         });
 
-        Schema::create('team_users', function (Blueprint $table) {
+        Schema::create('team_user', function (Blueprint $table) {
             $table->id();
             $table->foreignId('team_id')
                 ->constrained('teams')
@@ -164,7 +164,7 @@ class InitialSchema extends Migration
             $table->unique(['id', 'version']);
         });
 
-        Schema::create('collection_resources', function (Blueprint $table) {
+        Schema::create('collection_resource', function (Blueprint $table) {
             $table->id();
             $table->foreignId('collection_id')
                 ->constrained('collections')
@@ -224,8 +224,8 @@ class InitialSchema extends Migration
         Schema::drop('collection_geospatial_coverages');
         Schema::drop('collection_temporal_coverages');
         Schema::drop('invites');
-        Schema::drop('team_users');
-        Schema::drop('collection_resources');
+        Schema::drop('team_user');
+        Schema::drop('collection_resource');
         Schema::drop('resource_authors');
         Schema::drop('resource_reviewers');
         Schema::drop('collections');

@@ -70,7 +70,7 @@ class Collection extends Model
     {
         return $this->belongsToMany(
             Resource::class,
-            'collection_resources',
+            'collection_resource',
             'resource_id',
             'collection_id'
         );
