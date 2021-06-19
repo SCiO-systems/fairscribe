@@ -92,8 +92,8 @@ class UserTeamsController extends Controller
      */
     public function all(ListAllUserOwnedTeamsRequest $request, User $user)
     {
-        $teams = Team::where('owner_id', $user->id)->get();
+        $all = Team::where('owner_id', $user->id)->get();
 
-        return UserTeamIdNameResource::collection($teams);
+        return UserTeamIdNameResource::collection($all);
     }
 }

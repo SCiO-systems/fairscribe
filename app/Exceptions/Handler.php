@@ -37,11 +37,13 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->renderable(function (NotFoundHttpException $e, $request) {
-            if ($e->getPrevious() instanceof ModelNotFoundException && $request->isJson()) {
-                $model = $e->getPrevious()->getModel();
+            $isJson = $request->isJson() || $request->wantsJson();
+            if ($e->getPrevious() instanceof ModelNotFoundException && $isJson) {
+                $modelWithNamespace = explode('\\', $e->getPrevious()->getModel());
+                $resource = array_pop($modelWithNamespace);
                 return response()->json([
                     'errors' => [
-                        'error' => "The resource ${model} was not found."
+                        'error' => "The requested ${resource} resource was not found."
                     ]
                 ], 404);
             }

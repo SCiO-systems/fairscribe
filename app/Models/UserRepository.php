@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Enums\RepositoryType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use ReflectionClass;
 
 /**
  * App\Models\TargetedRepository
@@ -34,12 +33,21 @@ use ReflectionClass;
  * @method static \Illuminate\Database\Eloquent\Builder|TargetedRepository whereUserId($value)
  * @mixin \Eloquent
  */
-class TargetedRepository extends Model
+class UserRepository extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
     protected $table = 'user_repositories';
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($repository) {
+            // TODO: Verify the repository connection.
+        });
+    }
 
     public function user()
     {
