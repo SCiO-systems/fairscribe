@@ -46,7 +46,8 @@ class AuthController extends Controller
      */
     public function logout(LogoutRequest $request)
     {
-        Auth::logout();
+        // https://github.com/laravel/sanctum/issues/87#issuecomment-595952005
+        Auth::guard('web')->logout();
 
         return response()->json([], 204);
     }
