@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\RepositoryType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use ReflectionClass;
 
 /**
  * App\Models\TargetedRepository
@@ -42,5 +44,10 @@ class TargetedRepository extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public static function types()
+    {
+        return RepositoryType::getValues();
     }
 }

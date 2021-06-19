@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\v1;
 
+use App\Enums\InviteStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserInvites\UserInviteAcceptRequest;
 use App\Http\Requests\UserInvites\UserInviteListRequest;
@@ -21,7 +22,7 @@ class UserInvitesController extends Controller
     public function index(UserInviteListRequest $request, User $user)
     {
         $pending = Invite::where('email', $request->user()->email)
-            ->where('status', Invite::StatusPending)
+            ->where('status', InviteStatus::Pending)
             ->get();
 
         return InviteResource::collection($pending);
@@ -34,7 +35,7 @@ class UserInvitesController extends Controller
      */
     public function accept(UserInviteAcceptRequest $request, User $user, Invite $invite)
     {
-        $found = $invite->where('status', Invite::StatusPending)->first();
+        $found = $invite->where('status', InviteStatus::Pending)->first();
 
         if (!$found) {
             return response()->json(['errors' => [
@@ -42,7 +43,7 @@ class UserInvitesController extends Controller
             ]], 404);
         }
 
-        $invite->update(['status' => Invite::StatusAccepted]);
+        $invite->update(['status' => InviteStatus::Accepted]);
 
         // Check if the team exists.
         $team = Team::find($invite->team_id)->first();
@@ -67,13 +68,13 @@ class UserInvitesController extends Controller
      */
     public function reject(UserInviteRejectRequest $request, User $user, Invite $invite)
     {
-        $found = $invite->where('status', Invite::StatusPending)->first();
+        $found = $invite->where('status', InviteStatus::Pending)->first();
 
         if (!$found) {
             return response()->json(['errors' => ['error' => 'The invite was not found.']], 404);
         }
 
-        $invite->update(['status' => Invite::StatusRejected]);
+        $invite->update(['status' => InviteStatus::Rejected]);
 
         return new InviteResource($invite);
     }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\InviteStatus;
 use App\Mail\TeamInviteSent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -38,11 +39,6 @@ class Invite extends Model
 {
     use HasFactory;
 
-    // Invite statuses.
-    public const StatusPending = 'pending';
-    public const StatusAccepted = 'accepted';
-    public const StatusRejected = 'rejected';
-
     protected $guarded = [];
     protected $table = 'invites';
 
@@ -58,5 +54,10 @@ class Invite extends Model
     public function team()
     {
         return $this->belongsTo(Team::class);
+    }
+
+    public static function statuses()
+    {
+        return InviteStatus::getValues();
     }
 }
