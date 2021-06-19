@@ -51,6 +51,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::apiResource('users.teams', UserTeamsController::class);
 
         // User repositories.
+        Route::get('/users/{user}/repositories/all', [UserRepositoryController::class, 'all']);
         Route::apiResource('users.repositories', UserRepositoryController::class);
 
         // --- TEAM ROUTES ---
