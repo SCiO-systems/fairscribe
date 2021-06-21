@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\v1;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TeamCollections\CreateTeamCollectionRequest;
 use App\Http\Requests\TeamCollections\ListSingleTeamCollectionRequest;
 use App\Http\Requests\TeamCollections\ListTeamCollectionsRequest;
 use App\Http\Resources\v1\TeamCollectionResource;
@@ -30,9 +31,9 @@ class TeamCollectionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateTeamCollectionRequest $request, Team $team)
     {
-        //
+        return response()->json("Not Implemented", 501);
     }
 
     /**
@@ -58,7 +59,7 @@ class TeamCollectionsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return response()->json("Not Implemented", 501);
     }
 
     /**
@@ -69,6 +70,6 @@ class TeamCollectionsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return response()->json("Not Implemented", 501);
     }
 }

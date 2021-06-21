@@ -9,7 +9,6 @@ use App\Http\Requests\Teams\ShowSingleTeamRequest;
 use App\Http\Resources\v1\TeamResource;
 use App\Http\Resources\v1\TeamResourceWithUsers;
 use App\Models\Team;
-use DB;
 
 class TeamsController extends Controller
 {
