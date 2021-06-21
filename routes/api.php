@@ -36,6 +36,9 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     // Authenticate a user.
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 
+    // Logout a user.
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
     // Register a new user.
     Route::post('/register', [UserController::class, 'store']);
 
@@ -89,8 +92,5 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         // --- TEAM COLLECTION ROUTES ---
 
         Route::apiResource('teams.collections', TeamCollectionsController::class);
-
-        // Logout.
-        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     });
 });
