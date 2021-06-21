@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\TeamCollections;
+namespace App\Http\Requests\TeamCollectionResources;
 
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ListSingleTeamCollectionRequest extends FormRequest
+class ListTeamCollectionResourcesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

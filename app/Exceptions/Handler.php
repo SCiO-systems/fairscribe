@@ -43,7 +43,7 @@ class Handler extends ExceptionHandler
                 $resource = array_pop($modelWithNamespace);
                 return response()->json([
                     'errors' => [
-                        'error' => "The requested ${resource} resource was not found."
+                        'error' => "The requested resource: '${resource}' was not found."
                     ]
                 ], 404);
             }

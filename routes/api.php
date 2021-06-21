@@ -11,6 +11,7 @@ use App\Http\Controllers\API\v1\UserTeamsController;
 use App\Http\Controllers\API\v1\UserInvitesController;
 use App\Http\Controllers\API\v1\UserRepositoryController;
 use App\Http\Controllers\API\v1\RepositoryTypesController;
+use App\Http\Controllers\API\v1\TeamCollectionResourcesController;
 use App\Http\Controllers\API\v1\TeamCollectionsController;
 use Illuminate\Support\Facades\Route;
 
@@ -92,5 +93,9 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         // --- TEAM COLLECTION ROUTES ---
 
         Route::apiResource('teams.collections', TeamCollectionsController::class);
+
+        // --- TEAM COLLECTION RESOURCE ROUTES ---
+
+        Route::apiResource('teams.collections.resources', TeamCollectionResourcesController::class);
     });
 });

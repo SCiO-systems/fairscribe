@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\TeamCollections;
+namespace App\Http\Requests\TeamCollectionResources;
 
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ListSingleTeamCollectionRequest extends FormRequest
+class ListSingleTeamCollectionResourceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,10 +16,15 @@ class ListSingleTeamCollectionRequest extends FormRequest
     {
         // Authorization parameters.
         $isLoggedIn = Auth::check();
-        $isTeamMember = !empty(Auth::user()->teams()->find($this->team->id));
+        $isTeamMember = Auth::user()->teams->contains($this->team->id);
         $isTeamOwner = $this->team->owner_id === Auth::user()->id;
         $collectionBelongsToTeam = $this->collection->team_id === $this->team->id;
-        return $isLoggedIn && ($isTeamMember || $isTeamOwner) && $collectionBelongsToTeam;
+        $resourceBelongsToCollection = $this->collection->resources->contains($this->resource->id);
+
+        return $isLoggedIn
+            && ($isTeamMember || $isTeamOwner)
+            && $collectionBelongsToTeam
+            && $resourceBelongsToCollection;
     }
 
     /**
@@ -29,6 +34,8 @@ class ListSingleTeamCollectionRequest extends FormRequest
      */
     public function rules()
     {
-        return [];
+        return [
+            //
+        ];
     }
 }

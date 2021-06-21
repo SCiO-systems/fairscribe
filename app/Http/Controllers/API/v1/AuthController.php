@@ -7,8 +7,8 @@ use App\Http\Requests\LogoutRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthCheckRequest;
 use App\Http\Resources\v1\UserResource;
-use Exception;
 use Illuminate\Support\Facades\Auth;
+use Exception;
 
 class AuthController extends Controller
 {
