@@ -20,11 +20,6 @@ class TeamsController extends Controller
      */
     public function index(ListTeamsRequest $request)
     {
-        $books = DB::connection('mongodb')->table('books')->get();
-
-        dd($books);
-
-
         $sharedTeams = $request->user()->teams()->paginate();
 
         return TeamResource::collection($sharedTeams);
