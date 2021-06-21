@@ -6,13 +6,14 @@ use App\Models\Collection;
 use App\Models\Resource;
 use App\Models\Team;
 use App\Models\User;
+use Database\Factories\TeamFactory;
 use DB;
 use Faker\Generator;
 use Illuminate\Database\Seeder;
 use Illuminate\Container\Container;
 use Schema;
 
-class InitialUserSeeder extends Seeder
+class InitialSeeder extends Seeder
 {
     /**
      * The current Faker instance.
@@ -84,6 +85,12 @@ class InitialUserSeeder extends Seeder
                         $collection->resources()->attach($resources);
                     });
             });
+
+        $sharedTeams = Team::factory(['owner_id' => 2])->count(10)->create()->each(
+            function ($team) use ($user) {
+                $team->users()->attach($user);
+            }
+        );
 
         Schema::enableForeignKeyConstraints();
     }
