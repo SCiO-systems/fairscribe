@@ -7,6 +7,7 @@ use App\Http\Requests\LogoutRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthCheckRequest;
 use App\Http\Resources\v1\UserResource;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -48,7 +49,11 @@ class AuthController extends Controller
     public function logout(LogoutRequest $request)
     {
         // https://github.com/laravel/sanctum/issues/87#issuecomment-595952005
-        Auth::guard('web')->logout();
+        try {
+            Auth::guard('web')->logout();
+        } catch (Exception $ex) {
+            // Logout failed.
+        }
 
         return response()->json([], 204);
     }
