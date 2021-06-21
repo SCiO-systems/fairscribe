@@ -11,6 +11,7 @@ use App\Http\Controllers\API\v1\UserTeamsController;
 use App\Http\Controllers\API\v1\UserInvitesController;
 use App\Http\Controllers\API\v1\UserRepositoryController;
 use App\Http\Controllers\API\v1\RepositoryTypesController;
+use App\Http\Controllers\API\v1\TeamCollectionsController;
 use Illuminate\Support\Facades\Route;
 
 // API v1
@@ -50,12 +51,10 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::apiResource('users', UserController::class)->only(['index', 'show', 'update']);
 
         // User invites.
-        Route::post('users/{user}/invites/{invite}/accept', [
-            UserInvitesController::class, 'accept'
-        ]);
-        Route::post('users/{user}/invites/{invite}/reject', [
-            UserInvitesController::class, 'reject'
-        ]);
+        Route::prefix('users/{user}/invites/{invite}')->group(function () {
+            Route::post('/accept', [UserInvitesController::class, 'accept']);
+            Route::post('/reject', [UserInvitesController::class, 'reject']);
+        });
         Route::apiResource('users.invites', UserInvitesController::class)->only(['index']);
 
         // User avatar management. Issue with file upload using PUT, must use POST.
@@ -80,12 +79,16 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         // --- REPOSITORY TYPE ROUTES ---
         Route::apiResource('repository_types', RepositoryTypesController::class)->only('index');
 
-        // --- TEAM ROUTES ---
+        // --- SHARED TEAMS ROUTES ---
 
-        // All team routes.
+        // All shared team routes.
         Route::get('/teams/all', [TeamsController::class, 'all']);
         Route::post('/teams/{team}/invite', [TeamInvitesController::class, 'store']);
         Route::apiResource('teams', TeamsController::class)->only(['index', 'show']);
+
+        // --- TEAM COLLECTION ROUTES ---
+
+        Route::apiResource('teams.collections', TeamCollectionsController::class);
 
         // Logout.
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
