@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Teams;
 
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;

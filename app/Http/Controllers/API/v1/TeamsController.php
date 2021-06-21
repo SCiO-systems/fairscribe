@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ListAllTeamsRequest;
+use App\Http\Requests\Teams\ListAllTeamsRequest;
 use App\Http\Requests\Teams\ListTeamsRequest;
 use App\Http\Requests\Teams\ShowSingleTeamRequest;
 use App\Http\Resources\v1\TeamResource;
