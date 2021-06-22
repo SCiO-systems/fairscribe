@@ -48,6 +48,15 @@ class GlobusController extends Controller
      */
     protected $state;
 
+    /**
+     * The scope that we are requesting access for.
+     */
+    protected $scope;
+
+    /**
+     * The scope of the requested access.
+     */
+
     public function __construct()
     {
         $this->baseURI = env('GLOBUS_BASE_URI');
@@ -57,11 +66,13 @@ class GlobusController extends Controller
         $this->grantType = 'authorization_code';
         $this->redirectTo = env('SCRIBE_LOGIN_URL');
         $this->state = (string) UuidV4::uuid4();
+        $this->scope = env('GLOBUS_SCOPE');
     }
 
     public function redirect()
     {
-        $to = "$this->baseURI/authorize?client_id=$this->clientID&response_type=code&scope=/authenticate&redirect_uri=$this->redirectURI&response_type=code";
+        $this->scope = urlencode($this->scope);
+        $to = "$this->baseURI/authorize?client_id=$this->clientID&response_type=code&scope=/authenticate&redirect_uri=$this->redirectURI&response_type=code&scope=$this->scope";
 
         return redirect($to);
     }
@@ -77,8 +88,6 @@ class GlobusController extends Controller
             ->post(
                 "$this->baseURI/token",
                 [
-                    'client_id' => $this->clientID,
-                    'client_secret' => $this->clientSecret,
                     'grant_type' => $this->grantType,
                     'code' => $authorizationCode,
                     'redirect_uri' => $this->redirectURI,
