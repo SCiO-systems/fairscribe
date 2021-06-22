@@ -6,7 +6,6 @@ use App\Enums\ResourceStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Ramsey\Uuid\Rfc4122\UuidV4;
 
 class InitialSchema extends Migration
 {

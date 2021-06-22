@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\v1;
 
-use App\Http\Resources\TeamResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class InviteResource extends JsonResource
