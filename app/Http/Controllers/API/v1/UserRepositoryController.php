@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\API\v1;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRepositories\CreateUserRepositoryRequest;
 use App\Http\Requests\UserRepositories\DeleteUserRepositoryRequest;
 use App\Http\Requests\UserRepositories\ListAllUserRepositoriesRequest;
 use App\Http\Requests\UserRepositories\ListUserRepositoryRequest;
@@ -33,7 +33,7 @@ class UserRepositoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, User $user)
+    public function store(CreateUserRepositoryRequest $request, User $user)
     {
         $repository = UserRepository::create([
             'name' => $request->name,
