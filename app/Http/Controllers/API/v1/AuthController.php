@@ -7,8 +7,11 @@ use App\Http\Requests\LogoutRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthCheckRequest;
 use App\Http\Resources\v1\UserResource;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Exception;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
@@ -24,9 +27,9 @@ class AuthController extends Controller
             'password' => $request->password,
         ];
 
-        $attempt = Auth::attempt($credentials);
+        $token = auth('api')->attempt($credentials);
 
-        if (!$attempt) {
+        if (!$token) {
             return response()->json([
                 'message' => 'The provided credentials do not match our records.',
                 'errors' => [
@@ -36,9 +39,14 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $request->session()->regenerate();
+        $user = User::where('email', $request->email)->first();
 
-        return new UserResource($request->user());
+        return response()->json([
+            'data' => [
+                'access_token' => $token,
+                'user' => new UserResource($user),
+            ]
+        ]);
     }
 
     /**
@@ -48,13 +56,11 @@ class AuthController extends Controller
      */
     public function logout(LogoutRequest $request)
     {
-        // https://github.com/laravel/sanctum/issues/87#issuecomment-595952005
         try {
-            Auth::guard('web')->logout();
+            auth('api')->logout();
         } catch (Exception $ex) {
-            // Logout failed.
+            // TODO: Maybe do something here in the future.
         }
-
         return response()->json([], 204);
     }
 
@@ -64,13 +70,17 @@ class AuthController extends Controller
      * @param AuthCheckRequest $request
      * @return user
      */
-    public function user(AuthCheckRequest $request)
+    public function check(AuthCheckRequest $request)
     {
-        if (!$request->user()) {
-            return response()->json(['errors' => [
-                'error' => 'The user is not logged in.'
-            ]], 401);
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+        } catch (JWTException $e) {
+            return response()->json([
+                'errors' => [
+                    'error' => $e->getMessage()
+                ]
+            ]);
         }
-        return new UserResource($request->user());
+        return new UserResource($user);
     }
 }

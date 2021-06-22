@@ -48,6 +48,7 @@ class UserController extends Controller
      */
     public function store(UsersCreateUserRequest $request)
     {
+        // Used by the /register route.
         $user = User::create($request->all());
 
         if (!$user) {

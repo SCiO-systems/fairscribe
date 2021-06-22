@@ -4,7 +4,7 @@ The dataSCRIBE project.
 
 ## REQUIREMENTS
 
-The project requires **[PHP 7.4/8.0](https://www.php.net/manual/en/install.php)** as well as **[Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos)** to be installed. **[Laravel Sanctum](https://laravel.com/docs/8.x/sanctum#spa-authentication)** is also used for authentication.
+The project requires **[PHP 7.4/8.0](https://www.php.net/manual/en/install.php)** as well as **[Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos)** to be installed.
 
 ## CLONE THE REPOSITORY
 

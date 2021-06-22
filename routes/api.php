@@ -44,10 +44,10 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     Route::post('/register', [UserController::class, 'store']);
 
     // Return the authenticated user or 401.
-    Route::get('/auth/user', [AuthController::class, 'user']);
+    Route::get('/auth/token/check', [AuthController::class, 'check']);
 
     // Authenticated and authorized (store) routes.
-    Route::middleware(['auth:sanctum'])->group(function () {
+    Route::middleware(['auth.jwt'])->group(function () {
 
         // --- USER ROUTES ---
 
