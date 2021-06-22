@@ -2,43 +2,13 @@
 
 namespace App\Http\Controllers\API\v1;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserPassword\UpdateUserPasswordRequest;
+use App\Models\User;
+use Hash;
 
 class UserPasswordController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      *
@@ -46,19 +16,20 @@ class UserPasswordController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserPasswordRequest $request, User $user)
     {
-        //
-    }
+        $currentPassword = $request->password;
+        $newPassword = $request->new;
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        if (!Hash::check($currentPassword, $user->password)) {
+            return response()->json(['errors' => [
+                'error' => 'The old password was incorrect.'
+            ]], 422);
+        }
+
+        $user->password = bcrypt($newPassword);
+        $user->save();
+
+        return response()->json([], 204);
     }
 }
