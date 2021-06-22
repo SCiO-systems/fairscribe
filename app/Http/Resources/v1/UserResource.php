@@ -20,7 +20,9 @@ class UserResource extends JsonResource
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
             'role' => $this->role,
-            'avatar_url' => $this->avatar_url,
+            'avatar_url' => empty($this->avatar_url)
+                ? null
+                : secure_asset("storage/" . $this->avatar_url),
             'ui_language' => $this->ui_language,
             'ui_language_display_format' => $this->ui_language_display_format,
             'ui_date_display_format' => $this->ui_date_display_format,

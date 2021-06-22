@@ -17,7 +17,7 @@ class UserAvatarResource extends JsonResource
         return [
             'avatar_url' => empty($this->avatar_url)
                 ? null
-                : asset("storage/" . $this->avatar_url),
+                : secure_asset("storage/" . $this->avatar_url),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
