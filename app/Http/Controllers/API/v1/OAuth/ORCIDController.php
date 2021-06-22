@@ -105,8 +105,12 @@ class ORCIDController extends Controller
             ]);
         }
 
-        Auth::login($user);
+        // Get a valid access token for the user.
+        $token = auth('api')->login($user);
 
-        return redirect($this->redirectTo);
+        // The redirect address that contains the url query string param "access_token".
+        $to = $this->redirectTo . '?' . http_build_query(['access_token' => $token]);
+
+        return redirect($to);
     }
 }
