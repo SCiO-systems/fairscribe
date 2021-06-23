@@ -95,8 +95,6 @@ class InitialSeeder extends Seeder
         $sharedTeams = Team::factory(['owner_id' => $ownerId])
             ->count(10)->create()->each(
                 function ($team) use ($user, $email) {
-                    $team->users()->attach($user);
-
                     // Create the invites as well.
                     $invites = Invite::factory(['team_id' => $team->id, 'email' => $email])
                         ->create();

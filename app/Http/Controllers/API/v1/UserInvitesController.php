@@ -44,9 +44,9 @@ class UserInvitesController extends Controller
         }
 
         // Check if the team exists.
-        $team = Team::find($invite->team_id)->first();
+        $team = Team::find($invite->team_id);
 
-        if (!$team) {
+        if (empty($team)) {
             return response()->json(['errors' => [
                 'error' => 'The team for this invite was not found.'
             ]], 404);
@@ -66,7 +66,7 @@ class UserInvitesController extends Controller
 
         if ($isTeamLeader) {
             return response()->json(['errors' => [
-                'error' => 'You are already the leader of this team.'
+                'error' => 'The user is already the leader of this team.'
             ]], 409);
         }
 
