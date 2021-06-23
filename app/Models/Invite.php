@@ -2,11 +2,9 @@
 
 namespace App\Models;
 
-use App\Enums\InviteStatus;
 use App\Mail\TeamInviteSent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Log;
 use Mail;
 
 /**
@@ -54,10 +52,5 @@ class Invite extends Model
     public function team()
     {
         return $this->belongsTo(Team::class);
-    }
-
-    public static function statuses()
-    {
-        return InviteStatus::getValues();
     }
 }

@@ -43,8 +43,6 @@ class UserInvitesController extends Controller
             ]], 404);
         }
 
-        $invite->update(['status' => InviteStatus::Accepted]);
-
         // Check if the team exists.
         $team = Team::find($invite->team_id)->first();
 
@@ -54,8 +52,29 @@ class UserInvitesController extends Controller
             ]], 404);
         }
 
+        // Check if the user is already part of the team.
+        $isMemberAlready = $team->users()->exists($user->id);
+
+        if ($isMemberAlready) {
+            return response()->json(['errors' => [
+                'error' => 'The user is already a part of this team.'
+            ]], 409);
+        }
+
+        // Check if the user is a team leader.
+        $isTeamLeader = $team->owner_id === $user->id;
+
+        if ($isTeamLeader) {
+            return response()->json(['errors' => [
+                'error' => 'You are already the leader of this team.'
+            ]], 409);
+        }
+
         // Add the user to the team.
         $team->users()->attach($user);
+
+        // Set the invite as accepted.
+        $invite->update(['status' => InviteStatus::Accepted]);
 
         return new InviteResource($invite);
     }
@@ -68,7 +87,7 @@ class UserInvitesController extends Controller
      */
     public function reject(UserInviteRejectRequest $request, User $user, Invite $invite)
     {
-        $found = $invite->where('status', InviteStatus::Pending)->first();
+        $found = Invite::where('id', $invite->id)->where('status', InviteStatus::Pending)->first();
 
         if (!$found) {
             return response()->json(['errors' => ['error' => 'The invite was not found.']], 404);

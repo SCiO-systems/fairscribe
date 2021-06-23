@@ -73,6 +73,7 @@ class InitialSchema extends Migration
                 ->constrained('users')
                 ->onDelete('cascade');
             $table->timestamps();
+            $table->unique(['team_id', 'user_id']);
         });
 
         Schema::create('invites', function (Blueprint $table) {
