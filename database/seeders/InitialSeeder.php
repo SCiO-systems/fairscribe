@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Collection;
+use App\Models\Invite;
 use App\Models\Resource;
 use App\Models\Team;
 use App\Models\User;
@@ -58,12 +59,15 @@ class InitialSeeder extends Seeder
         DB::table('collection_resource')->truncate();
         DB::disableQueryLog();
 
+        $email = 'datascribe@scio.systems';
+        $password = 'scio';
+
         // Create the main user.
         $user = User::create([
             'firstname' => 'Scio',
             'lastname' => 'Systems',
-            'email' => 'datascribe@scio.systems',
-            'password' => bcrypt('scio'),
+            'email' => $email,
+            'password' => bcrypt($password),
         ]);
 
         $users = User::factory()->count(10)->create();
@@ -86,11 +90,18 @@ class InitialSeeder extends Seeder
                     });
             });
 
-        $sharedTeams = Team::factory(['owner_id' => 2])->count(10)->create()->each(
-            function ($team) use ($user) {
-                $team->users()->attach($user);
-            }
-        );
+        $ownerId = 2;
+        $sharedTeams = Team::factory(['owner_id' => $ownerId])
+            ->count(10)->create()->each(
+                function ($team) use ($user) {
+                    $team->users()->attach($user);
+                }
+            );
+
+        $teamId = 2;
+        $invites = Invite::factory(['team_id' => $teamId, 'email' => $email])
+            ->count(5)
+            ->create();
 
         Schema::enableForeignKeyConstraints();
     }
