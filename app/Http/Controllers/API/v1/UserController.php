@@ -48,8 +48,14 @@ class UserController extends Controller
      */
     public function store(UsersCreateUserRequest $request)
     {
-        // Used by the /register route.
-        $user = User::create($request->all());
+        // Filter for empty and null values.
+        $data = collect($request->except(['password']))->filter()->all();
+
+        // Hash the password.
+        $data['password'] = bcrypt($request->password);
+
+        // Create the user.
+        $user = User::create($data);
 
         if (!$user) {
             return response()->json(['errors' => [
