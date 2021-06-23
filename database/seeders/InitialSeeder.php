@@ -57,6 +57,7 @@ class InitialSeeder extends Seeder
         DB::table('collections')->truncate();
         DB::table('resources')->truncate();
         DB::table('collection_resource')->truncate();
+        DB::table('invites')->truncate();
         DB::disableQueryLog();
 
         $email = 'datascribe@scio.systems';
@@ -93,15 +94,14 @@ class InitialSeeder extends Seeder
         $ownerId = 2;
         $sharedTeams = Team::factory(['owner_id' => $ownerId])
             ->count(10)->create()->each(
-                function ($team) use ($user) {
+                function ($team) use ($user, $email) {
                     $team->users()->attach($user);
+
+                    // Create the invites as well.
+                    $invites = Invite::factory(['team_id' => $team->id, 'email' => $email])
+                        ->create();
                 }
             );
-
-        $teamId = 2;
-        $invites = Invite::factory(['team_id' => $teamId, 'email' => $email])
-            ->count(5)
-            ->create();
 
         Schema::enableForeignKeyConstraints();
     }
