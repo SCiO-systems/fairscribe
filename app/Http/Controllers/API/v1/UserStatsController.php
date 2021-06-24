@@ -65,9 +65,11 @@ class UserStatsController extends Controller
         }, 0);
 
         return response()->json([
-            'active_tasks' => $activeTasks,
-            'pending_review_tasks' => $pendingReviewTasks,
-            'pending_upload_tasks' => $pendingUploadTasks,
+            'data' => [
+                'active_tasks' => $activeTasks,
+                'pending_review_tasks' => $pendingReviewTasks,
+                'pending_upload_tasks' => $pendingUploadTasks,
+            ]
         ]);
     }
 }
