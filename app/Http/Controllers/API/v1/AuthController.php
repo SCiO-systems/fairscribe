@@ -79,7 +79,7 @@ class AuthController extends Controller
                 'errors' => [
                     'error' => $e->getMessage()
                 ]
-            ]);
+            ], 401);
         }
         return new UserResource($user);
     }
