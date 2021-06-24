@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\v1;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class InviteOwnerResource extends JsonResource
+class TeamOwnerResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,6 +15,8 @@ class InviteOwnerResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
+            'email' => $this->email,
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
         ];

@@ -3,6 +3,7 @@
 namespace App\Http\Resources\v1;
 
 use App\Enums\ResourceStatus;
+use App\Http\Resources\v1\TeamOwnerResource;
 use App\Models\Collection;
 use App\Models\Resource;
 use DB;

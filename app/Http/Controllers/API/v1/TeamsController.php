@@ -7,7 +7,7 @@ use App\Http\Requests\Teams\ListAllTeamsRequest;
 use App\Http\Requests\Teams\ListTeamsRequest;
 use App\Http\Requests\Teams\ShowSingleTeamRequest;
 use App\Http\Resources\v1\TeamResource;
-use App\Http\Resources\v1\TeamResourceWithUsers;
+use App\Http\Resources\v1\TeamResourceWithUsersAndOwner;
 use App\Models\Team;
 
 class TeamsController extends Controller
@@ -32,7 +32,7 @@ class TeamsController extends Controller
      */
     public function show(ShowSingleTeamRequest $request, Team $team)
     {
-        return new TeamResourceWithUsers($team);
+        return new TeamResourceWithUsersAndOwner($team);
     }
 
     /**

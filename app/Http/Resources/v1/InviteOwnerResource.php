@@ -4,7 +4,7 @@ namespace App\Http\Resources\v1;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TeamResourceWithUsers extends JsonResource
+class InviteOwnerResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,10 +15,8 @@ class TeamResourceWithUsers extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'users' => TeamUserResource::collection($this->users()->get()),
-            'description' => $this->description,
+            'firstname' => $this->firstname,
+            'lastname' => $this->lastname,
         ];
     }
 }
