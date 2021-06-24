@@ -8,6 +8,8 @@ use App\Http\Requests\TeamCollections\CreateTeamCollectionRequest;
 use App\Http\Requests\TeamCollections\ListSingleTeamCollectionRequest;
 use App\Http\Requests\TeamCollections\ListTeamCollectionsRequest;
 use App\Http\Resources\v1\TeamCollectionResource;
+use App\Http\Resources\v1\TeamCollectionResourceResource;
+use App\Http\Resources\v1\TeamResource;
 use App\Models\Collection;
 use App\Models\Team;
 
@@ -33,7 +35,11 @@ class TeamCollectionsController extends Controller
      */
     public function store(CreateTeamCollectionRequest $request, Team $team)
     {
-        return response()->json("Not Implemented", 501);
+        $data = collect($request->all())->filter()->all();
+        $data['team_id'] = $team->id;
+        $collection = Collection::create($data);
+
+        return new TeamCollectionResource($collection);
     }
 
     /**
