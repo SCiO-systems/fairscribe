@@ -19,9 +19,15 @@ class Resource extends Model
         return $this->belongsToMany(
             Collection::class,
             'collection_resource',
-            'collection_id',
-            'resource_id'
+            'resource_id',
+            'collection_id'
         );
+    }
+
+    public function teams()
+    {
+        $teamIds = $this->collections()->pluck('collections.team_id');
+        return Team::whereIn('id', $teamIds);
     }
 
     public function approve()

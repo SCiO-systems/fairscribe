@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -48,5 +49,15 @@ class Team extends Model
     public function collections()
     {
         return $this->hasMany(Collection::class);
+    }
+
+    public function resources()
+    {
+        $collectionIds = $this->collections()->pluck('id');
+        $resourceIds = DB::table('collection_resource')
+            ->whereIn('collection_id', $collectionIds)
+            ->pluck('resource_id');
+
+        return Resource::whereIn('id', $resourceIds);
     }
 }
