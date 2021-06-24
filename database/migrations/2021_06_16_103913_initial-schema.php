@@ -170,6 +170,7 @@ class InitialSchema extends Migration
             $table->timestamps();
 
             $table->unique(['id', 'version']);
+            $table->index(['status']);
         });
 
         Schema::create('collection_resource', function (Blueprint $table) {

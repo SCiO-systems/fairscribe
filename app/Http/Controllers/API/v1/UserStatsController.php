@@ -1,29 +1,41 @@
 <?php
 
-namespace App\Http\Resources\v1;
+namespace App\Http\Controllers\API\v1;
 
 use App\Enums\ResourceStatus;
-use App\Models\Collection;
+use App\Http\Requests\UserStats\ListUserStatsRequest;
 use App\Models\Resource;
+use App\Http\Controllers\Controller;
+use App\Models\User;
 use DB;
-use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserTeamResource extends JsonResource
+class UserStatsController extends Controller
 {
     /**
-     * Transform the resource into an array.
+     * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @return \Illuminate\Http\Response
      */
-    public function toArray($request)
+    public function index(ListUserStatsRequest $request, User $user)
     {
-        $collectionIds = Collection::where('team_id', $this->id)
-            ->pluck('id');
+        $sharedTeamCollectionIds = $user->sharedTeams()
+            ->join('collections', 'collections.team_id', 'teams.id')
+            ->select('collections.id')
+            ->pluck('id')
+            ->toArray();
 
+        $ownedTeamCollectionIds = $user->ownedTeams()
+            ->join('collections', 'collections.team_id', 'teams.id')
+            ->select('collections.id')
+            ->pluck('id')
+            ->toArray();
+
+        // TODO: Refactor.
         $resourceIds = DB::table('collection_resource')
-            ->whereIn('collection_id', $collectionIds)
-            ->pluck('resource_id');
+            ->whereIn('collection_id', array_merge(
+                $sharedTeamCollectionIds,
+                $ownedTeamCollectionIds
+            ))->pluck('resource_id');
 
         $resources = Resource::whereIn('status', [
             ResourceStatus::UNDER_PREPARATION,
@@ -52,15 +64,10 @@ class UserTeamResource extends JsonResource
             return $sum;
         }, 0);
 
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
+        return response()->json([
             'active_tasks' => $activeTasks,
             'pending_review_tasks' => $pendingReviewTasks,
             'pending_upload_tasks' => $pendingUploadTasks,
-            'description' => $this->description,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-        ];
+        ]);
     }
 }

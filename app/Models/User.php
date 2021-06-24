@@ -14,7 +14,7 @@ class User extends Authenticatable implements JWTSubject
     protected $guarded = [];
     protected $hidden = ['password', 'remember_token'];
 
-    public function teams()
+    public function sharedTeams()
     {
         return $this->belongsToMany(Team::class, 'team_user', 'user_id', 'team_id');
     }

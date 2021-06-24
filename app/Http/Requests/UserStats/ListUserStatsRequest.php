@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\TeamCollections;
+namespace App\Http\Requests\UserStats;
 
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ListTeamCollectionsRequest extends FormRequest
+class ListUserStatsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,11 +14,9 @@ class ListTeamCollectionsRequest extends FormRequest
      */
     public function authorize()
     {
-        // Authorization parameters.
         $isLoggedIn = Auth::check();
-        $isTeamMember = !empty(Auth::user()->sharedTeams()->find($this->team->id));
-        $isTeamOwner = $this->team->owner_id === Auth::user()->id;
-        return $isLoggedIn && ($isTeamMember || $isTeamOwner);
+        $isSameUser = Auth::user()->id == $this->user->id;
+        return $isLoggedIn && $isSameUser;
     }
 
     /**

@@ -13,6 +13,7 @@ use App\Http\Controllers\API\v1\UserRepositoryController;
 use App\Http\Controllers\API\v1\RepositoryTypesController;
 use App\Http\Controllers\API\v1\TeamCollectionResourcesController;
 use App\Http\Controllers\API\v1\TeamCollectionsController;
+use App\Http\Controllers\API\v1\UserStatsController;
 use Illuminate\Support\Facades\Route;
 
 // API v1
@@ -60,6 +61,9 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
             Route::post('/reject', [UserInvitesController::class, 'reject']);
         });
         Route::apiResource('users.invites', UserInvitesController::class)->only(['index']);
+
+        // User statistics.
+        Route::apiResource('users.stats', UserStatsController::class)->only(['index']);
 
         // User avatar management. Issue with file upload using PUT, must use POST.
         Route::get('/users/{user}/avatar', [UserAvatarController::class, 'show']);

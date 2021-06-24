@@ -16,7 +16,7 @@ class ListSingleTeamCollectionRequest extends FormRequest
     {
         // Authorization parameters.
         $isLoggedIn = Auth::check();
-        $isTeamMember = !empty(Auth::user()->teams()->find($this->team->id));
+        $isTeamMember = !empty(Auth::user()->sharedTeams()->find($this->team->id));
         $isTeamOwner = $this->team->owner_id === Auth::user()->id;
         $collectionBelongsToTeam = $this->collection->team_id === $this->team->id;
         return $isLoggedIn && ($isTeamMember || $isTeamOwner) && $collectionBelongsToTeam;

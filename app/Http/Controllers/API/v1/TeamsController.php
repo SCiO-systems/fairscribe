@@ -19,7 +19,7 @@ class TeamsController extends Controller
      */
     public function index(ListTeamsRequest $request)
     {
-        $sharedTeams = $request->user()->teams()->paginate();
+        $sharedTeams = $request->user()->sharedTeams()->paginate();
 
         return TeamResource::collection($sharedTeams);
     }
@@ -42,7 +42,7 @@ class TeamsController extends Controller
      */
     public function all(ListAllTeamsRequest $request)
     {
-        $sharedTeams = $request->user()->teams()->get();
+        $sharedTeams = $request->user()->sharedTeams()->get();
 
         return TeamResource::collection($sharedTeams);
     }

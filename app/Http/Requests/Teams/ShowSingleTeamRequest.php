@@ -15,7 +15,7 @@ class ShowSingleTeamRequest extends FormRequest
     public function authorize()
     {
         $isLoggedIn = Auth::check();
-        $isTeamMember = !empty(Auth::user()->teams()->find($this->team->id));
+        $isTeamMember = !empty(Auth::user()->sharedTeams()->find($this->team->id));
         $isTeamOwner = $this->team->owner_id === Auth::user()->id;
         return $isLoggedIn && ($isTeamMember || $isTeamOwner);
     }
