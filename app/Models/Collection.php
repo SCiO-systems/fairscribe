@@ -71,8 +71,8 @@ class Collection extends Model
         return $this->belongsToMany(
             Resource::class,
             'collection_resource',
-            'resource_id',
-            'collection_id'
+            'collection_id',
+            'resource_id'
         );
     }
 }

@@ -31,6 +31,7 @@ class TeamCollectionResource extends JsonResource
             'interoperable_score' => $this->interoperable_score,
             'reusable_score' => $this->reusable_score,
             'fair_scoring' => $this->fair_scoring,
+            'resources_count' => $this->resources->count(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TeamCollections\CreateTeamCollectionRequest;
 use App\Http\Requests\TeamCollections\ListSingleTeamCollectionRequest;
 use App\Http\Requests\TeamCollections\ListTeamCollectionsRequest;
+use App\Http\Requests\TeamCollections\UpdateTeamCollectionRequest;
 use App\Http\Resources\v1\TeamCollectionResource;
 use App\Http\Resources\v1\TeamCollectionResourceResource;
 use App\Http\Resources\v1\TeamResource;
@@ -63,9 +64,16 @@ class TeamCollectionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateTeamCollectionRequest $request, Team $team, Collection $collection)
     {
-        return response()->json("Not Implemented", 501);
+        // Filter null and falsy values.
+        // TODO: Check for SQLi.
+        $data = collect($request->only(['title', 'description']))->filter()->all();
+
+        // Update the team details with the new ones.
+        $collection->update($data);
+
+        return new TeamCollectionResource($collection);
     }
 
     /**
