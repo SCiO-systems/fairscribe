@@ -71,21 +71,21 @@ class InitialSeeder extends Seeder
             'password' => bcrypt($password),
         ]);
 
-        $users = User::factory()->count(10)->create();
+        $users = User::factory()->count(5)->create();
 
         // Resources.
         $resources = Resource::factory(['author_id' => $user->id])
-            ->count(10)
+            ->count(5)
             ->create();
 
         // Create teams.
         $teams = Team::factory(['owner_id' => $user->id])
-            ->count(20)
+            ->count(5)
             ->create()
             ->each(function ($team) use ($resources) {
                 // Create collections and associate with resources.
                 Collection::factory(['team_id' => $team->id])
-                    ->count(10)
+                    ->count(5)
                     ->create()->each(function ($collection) use ($resources) {
                         $collection->resources()->attach($resources);
                     });
@@ -99,16 +99,15 @@ class InitialSeeder extends Seeder
             ->create();
 
         $sharedTeams = Team::factory(['owner_id' => $ownerId])
-            ->count(10)->create()->each(
-                function ($team) use ($user, $email, $resources) {
+            ->count(5)->create()->each(
+                function ($team) use ($email, $resources) {
 
                     // Create the invites as well.
-                    $invites = Invite::factory(['team_id' => $team->id, 'email' => $email])
-                        ->create();
+                    Invite::factory(['team_id' => $team->id, 'email' => $email])->create();
 
                     // Create collections with resources for team.
                     Collection::factory(['team_id' => $team->id])
-                        ->count(10)
+                        ->count(5)
                         ->create()->each(function ($collection) use ($resources) {
                             $collection->resources()->attach($resources);
                         });
