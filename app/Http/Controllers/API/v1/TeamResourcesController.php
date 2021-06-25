@@ -20,7 +20,13 @@ class TeamResourcesController extends Controller
      */
     public function index(ListTeamResourcesRequest $request, Team $team)
     {
-        $resources = $team->resources()->paginate();
+        $resources = $team->resources();
+
+        if (!empty($request->status)) {
+            $resources = $resources->where('status', $request->status);
+        }
+
+        $resources = $resources->paginate();
 
         return TeamResourceResource::collection($resources);
     }
