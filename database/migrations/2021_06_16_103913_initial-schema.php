@@ -151,7 +151,7 @@ class InitialSchema extends Migration
             $table->string('external_metadata_record_id')->nullable();
             $table->string('title');
             $table->string('description');
-            $table->enum('type', [ResourceType::getValues()])->default(ResourceType::DATASET);
+            $table->enum('type', ResourceType::getValues())->default(ResourceType::DATASET);
             $table->enum('status', ResourceStatus::getValues())->default(ResourceStatus::DRAFT);
             $table->enum('pii_status', ['pending', 'passed', 'failed'])->default('pending');
             $table->float('findable_score')->default(0);

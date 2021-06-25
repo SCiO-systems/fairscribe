@@ -11,6 +11,7 @@ use App\Http\Controllers\API\v1\UserTeamsController;
 use App\Http\Controllers\API\v1\UserInvitesController;
 use App\Http\Controllers\API\v1\UserRepositoryController;
 use App\Http\Controllers\API\v1\RepositoryTypesController;
+use App\Http\Controllers\API\v1\ResourceTypesController;
 use App\Http\Controllers\API\v1\TeamCollectionResourcesController;
 use App\Http\Controllers\API\v1\TeamCollectionsController;
 use App\Http\Controllers\API\v1\UserStatsController;
@@ -88,6 +89,9 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         // --- REPOSITORY TYPE ROUTES ---
         Route::apiResource('repository_types', RepositoryTypesController::class)->only('index');
 
+        // --- RESOURCE TYPE ROUTES ---
+        Route::apiResource('resource_types', ResourceTypesController::class)->only('index');
+
         // --- SHARED TEAMS ROUTES ---
 
         // All shared team routes.
@@ -96,14 +100,12 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::apiResource('teams', TeamsController::class)->only(['index', 'show']);
 
         // --- TEAM COLLECTION ROUTES ---
-
         Route::apiResource('teams.collections', TeamCollectionsController::class);
 
         // --- TEAM RESOURCES ROUTES ---
         Route::apiResource('teams.resources', TeamResourcesController::class);
 
         // --- TEAM COLLECTION RESOURCE ROUTES ---
-
         Route::apiResource('teams.collections.resources', TeamCollectionResourcesController::class);
     });
 });
