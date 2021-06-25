@@ -3,6 +3,7 @@
 use App\Enums\IdentityProvider;
 use App\Enums\RepositoryType;
 use App\Enums\ResourceStatus;
+use App\Enums\ResourceType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -150,7 +151,7 @@ class InitialSchema extends Migration
             $table->string('external_metadata_record_id')->nullable();
             $table->string('title');
             $table->string('description');
-            $table->string('type');
+            $table->enum('type', [ResourceType::getValues()])->default(ResourceType::DATASET);
             $table->enum('status', ResourceStatus::getValues())->default(ResourceStatus::DRAFT);
             $table->enum('pii_status', ['pending', 'passed', 'failed'])->default('pending');
             $table->float('findable_score')->default(0);
