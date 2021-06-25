@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\TeamCollectionResources;
 
+use App\Models\Resource;
+use App\Rules\ResourceStatusValidationRule;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -35,7 +37,7 @@ class ListSingleTeamCollectionResourceRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'status' => ['nullable', new ResourceStatusValidationRule]
         ];
     }
 }

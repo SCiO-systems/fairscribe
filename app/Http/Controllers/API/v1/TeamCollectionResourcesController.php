@@ -24,7 +24,13 @@ class TeamCollectionResourcesController extends Controller
         Team $team,
         Collection $collection
     ) {
-        $resources = $collection->resources()->paginate();
+        $resources = $team->resources();
+
+        if (!empty($request->status)) {
+            $resources = $resources->where('status', $request->status);
+        }
+
+        $resources = $resources->paginate();
 
         return TeamCollectionResourceResource::collection($resources);
     }
