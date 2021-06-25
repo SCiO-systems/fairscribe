@@ -8,6 +8,7 @@ use App\Models\Resource;
 use App\Models\Team;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\v1\SingleResourceResource;
 use App\Http\Resources\v1\TeamResourceResource;
 
 class TeamResourcesController extends Controller
@@ -43,7 +44,7 @@ class TeamResourcesController extends Controller
      */
     public function show(GetSingleTeamResourceRequest $request, Team $team, Resource $resource)
     {
-        return new TeamResourceResource($resource);
+        return new SingleResourceResource($resource);
     }
 
     /**

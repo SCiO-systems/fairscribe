@@ -15,15 +15,10 @@ class TeamResourceResource extends JsonResource
      */
     public function toArray($request)
     {
-        $metadata_record = DB::connection('mongodb')->table('metadata_records')
-            ->where('_id', $this->external_metadata_record_id)
-            ->first();
-
         return [
             'id' => $this->id,
             'version' => $this->version,
             'external_metadata_record_id' => $this->external_metadata_record_id,
-            'metadata_record' => $metadata_record,
             'title' => $this->title,
             'description' => $this->description,
             'type' => $this->type,

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TeamCollectionResources\ListSingleTeamCollectionResourceRequest;
 use App\Http\Requests\TeamCollectionResources\ListTeamCollectionResourcesRequest;
+use App\Http\Resources\v1\SingleResourceResource;
 use App\Http\Resources\v1\TeamCollectionResourceResource;
 use App\Models\Collection;
 use App\Models\Resource;
@@ -51,7 +52,7 @@ class TeamCollectionResourcesController extends Controller
         Collection $collection,
         Resource $resource
     ) {
-        return new TeamCollectionResourceResource($resource);
+        return new SingleResourceResource($resource);
     }
 
     /**
