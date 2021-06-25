@@ -7,12 +7,12 @@ use App\Models\Invite;
 use App\Models\Resource;
 use App\Models\Team;
 use App\Models\User;
-use Database\Factories\TeamFactory;
 use DB;
 use Faker\Generator;
 use Illuminate\Database\Seeder;
 use Illuminate\Container\Container;
 use Schema;
+use Storage;
 
 class InitialSeeder extends Seeder
 {
@@ -58,6 +58,7 @@ class InitialSeeder extends Seeder
         DB::table('resources')->truncate();
         DB::table('collection_resource')->truncate();
         DB::table('invites')->truncate();
+        DB::connection('mongodb')->table('metadata_records')->truncate();
         DB::disableQueryLog();
 
         $email = 'datascribe@scio.systems';
@@ -73,10 +74,19 @@ class InitialSeeder extends Seeder
 
         $users = User::factory()->count(5)->create();
 
+        $record = Storage::disk('local')->get('record.json');
+
         // Resources.
         $resources = Resource::factory(['author_id' => $user->id])
             ->count(5)
-            ->create();
+            ->create()
+            ->each(function ($resource) use ($record) {
+                $json = json_decode($record, true);
+                $objectId = DB::connection('mongodb')
+                    ->table('metadata_records')
+                    ->insertGetId($json);
+                $resource->update(['external_metadata_record_id' => $objectId]);
+            });
 
         // Create teams.
         $teams = Team::factory(['owner_id' => $user->id])
