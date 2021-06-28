@@ -33,6 +33,7 @@ class TeamResourceResource extends JsonResource
             'issued_at' => $this->issued_at,
             'author_id' => $this->author_id,
             'publisher_id' => $this->publisher_id,
+            'collections_count' => $this->collections->count(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
