@@ -12,8 +12,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TeamResources\CreateTeamResourceRequest;
 use App\Http\Resources\v1\SingleResourceResource;
 use App\Http\Resources\v1\TeamResourceResource;
-use App\Models\Collection;
 use Auth;
+use DB;
 
 class TeamResourcesController extends Controller
 {
@@ -24,10 +24,26 @@ class TeamResourcesController extends Controller
      */
     public function index(ListTeamResourcesRequest $request, Team $team)
     {
+        $userId = Auth::user()->id;
         $resources = $team->resources();
 
+        // TODO: Refactor this.
         if (!empty($request->status)) {
+            $resourceIds = [];
+            if ($request->status === ResourceStatus::UNDER_PREPARATION) {
+                $resourceIds = DB::table('resource_authors')
+                    ->where('user_id', $userId)
+                    ->pluck('resource_id');
+            }
+            if ($request->status === ResourceStatus::UNDER_REVIEW) {
+                $resourceIds = DB::table('resource_reviewers')
+                    ->where('user_id', $userId)
+                    ->pluck('resource_id');
+            }
             $resources = $resources->where('status', $request->status);
+            if (!empty($resourceIds)) {
+                $resources = $resources->whereIn('id', $resourceIds);
+            }
         }
 
         $resources = $resources->paginate();
@@ -52,8 +68,7 @@ class TeamResourcesController extends Controller
             ->pluck('user_id');
 
         // Add the team leader and author in the authoring team.
-        $authoringTeam->push($team->owner_id);
-        $authoringTeam->push($authorId);
+        $authoringTeam->push($team->owner_id, $authorId);
 
         // The team leader should be in the review team as well.
         $reviewTeam = $team->users()->whereIn('user_id', $request->review_team)

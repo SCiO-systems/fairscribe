@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ResourceStatus;
 use Auth;
 use Carbon\Carbon;
 use DB;

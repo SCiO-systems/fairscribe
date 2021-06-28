@@ -5,7 +5,6 @@ namespace App\Http\Requests\TeamResources;
 use App\Rules\ResourceStatusValidationRule;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class ListTeamResourcesRequest extends FormRequest
 {
