@@ -100,6 +100,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::apiResource('teams', TeamsController::class)->only(['index', 'show']);
 
         // --- TEAM COLLECTION ROUTES ---
+        Route::get('teams/{team}/collections/all', [TeamCollectionsController::class, 'all']);
         Route::apiResource('teams.collections', TeamCollectionsController::class);
 
         // --- TEAM RESOURCES ROUTES ---

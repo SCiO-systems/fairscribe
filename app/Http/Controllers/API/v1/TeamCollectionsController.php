@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers\API\v1;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TeamCollections\CreateTeamCollectionRequest;
 use App\Http\Requests\TeamCollections\ListSingleTeamCollectionRequest;
 use App\Http\Requests\TeamCollections\ListTeamCollectionsRequest;
 use App\Http\Requests\TeamCollections\UpdateTeamCollectionRequest;
 use App\Http\Resources\v1\TeamCollectionResource;
-use App\Http\Resources\v1\TeamCollectionResourceResource;
-use App\Http\Resources\v1\TeamResource;
 use App\Models\Collection;
 use App\Models\Team;
 
@@ -85,5 +82,17 @@ class TeamCollectionsController extends Controller
     public function destroy($id)
     {
         return response()->json("Not Implemented", 501);
+    }
+
+    /**
+     * Display a listing of all the resources.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function all(ListTeamCollectionsRequest $request, Team $team)
+    {
+        $collections = Collection::where('team_id', $team->id)->get();
+
+        return TeamCollectionResource::collection($collections);
     }
 }
