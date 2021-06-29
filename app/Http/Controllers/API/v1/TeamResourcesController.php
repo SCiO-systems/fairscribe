@@ -77,7 +77,10 @@ class TeamResourcesController extends Controller
 
         // The collections that this resource will belong to.
         // The collections are filtered using the team collections.
-        $collections = $team->collections()->whereIn('id', $request->collections)->pluck('id');
+        $collections = [];
+        if (!empty($request->collections)) {
+            $collections = $team->collections()->whereIn('id', $request->collections)->pluck('id');
+        }
 
         // Create the resource with proper status.
         $resource = Resource::create([
