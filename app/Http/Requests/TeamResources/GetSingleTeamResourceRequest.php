@@ -18,7 +18,7 @@ class GetSingleTeamResourceRequest extends FormRequest
         $isLoggedIn = Auth::check();
         $isTeamMember = !empty(Auth::user()->sharedTeams()->find($this->team->id));
         $isTeamOwner = $this->team->owner_id === Auth::user()->id;
-        $resourceBelongsToTeam = $this->resource->teams()->exists($this->team->id);
+        $resourceBelongsToTeam = $this->resource->team_id === $this->team->id;
         return $isLoggedIn && ($isTeamMember || $isTeamOwner) && $resourceBelongsToTeam;
     }
 

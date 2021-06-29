@@ -26,10 +26,9 @@ class Resource extends Model
         );
     }
 
-    public function teams()
+    public function team()
     {
-        $teamIds = $this->collections()->pluck('collections.team_id');
-        return Team::whereIn('id', $teamIds);
+        return $this->belongsTo(Team::class);
     }
 
     public function approve()

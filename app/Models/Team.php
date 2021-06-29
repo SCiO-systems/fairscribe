@@ -53,11 +53,6 @@ class Team extends Model
 
     public function resources()
     {
-        $collectionIds = $this->collections()->pluck('id');
-        $resourceIds = DB::table('collection_resource')
-            ->whereIn('collection_id', $collectionIds)
-            ->pluck('resource_id');
-
-        return Resource::whereIn('id', $resourceIds);
+        return $this->hasMany(Resource::class);
     }
 }

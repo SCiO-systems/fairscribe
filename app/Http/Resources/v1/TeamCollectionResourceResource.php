@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\v1;
 
-use DB;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class TeamCollectionResourceResource extends JsonResource
@@ -18,6 +17,7 @@ class TeamCollectionResourceResource extends JsonResource
         return [
             'id' => $this->id,
             'version' => $this->version,
+            'team_id' => $this->team_id,
             'external_metadata_record_id' => $this->external_metadata_record_id,
             'title' => $this->title,
             'description' => $this->description,

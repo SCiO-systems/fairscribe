@@ -37,7 +37,7 @@ class CreateTeamResourceRequest extends FormRequest
             'type' => ['required', 'string', new ResourceTypeValidationRule],
             'authoring_team' => 'array|required',
             'review_team' => 'array|required',
-            'collections' => 'array|required',
+            'collections' => 'nullable|array',
         ];
     }
 }

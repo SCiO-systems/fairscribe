@@ -147,6 +147,9 @@ class InitialSchema extends Migration
         // TODO: Finish the table structure.
         Schema::create('resources', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('team_id')
+                ->constrained('teams')
+                ->onDelete('cascade');
             $table->string('version');
             $table->string('external_metadata_record_id')->nullable();
             $table->string('title');

@@ -76,9 +76,15 @@ class InitialSeeder extends Seeder
 
         $record = Storage::disk('local')->get('record.json');
 
+        $team = Team::factory(['owner_id' => $user->id])
+            ->count(1)
+            ->create();
+
         // Resources.
-        $resources = Resource::factory(['author_id' => $user->id])
-            ->count(5)
+        $resources = Resource::factory([
+            'author_id' => $user->id,
+            'team_id' => $team->first()->id,
+        ])->count(5)
             ->create()
             ->each(function ($resource) use ($record) {
                 $json = json_decode($record, true);
@@ -104,13 +110,14 @@ class InitialSeeder extends Seeder
         // Resources.
         $ownerId = 2;
 
-        $resources = Resource::factory(['author_id' => $ownerId])
-            ->count(10)
-            ->create();
-
         $sharedTeams = Team::factory(['owner_id' => $ownerId])
             ->count(5)->create()->each(
-                function ($team) use ($email, $resources) {
+                function ($team) use ($email, $resources, $ownerId) {
+
+                    $resources = Resource::factory([
+                        'author_id' => $ownerId,
+                        'team_id' => $team->id
+                    ])->count(5)->create();
 
                     // Create the invites as well.
                     Invite::factory(['team_id' => $team->id, 'email' => $email])->create();

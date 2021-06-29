@@ -82,6 +82,7 @@ class TeamResourcesController extends Controller
         // Create the resource with proper status.
         $resource = Resource::create([
             'title' => $request->title,
+            'team_id' => $team->id,
             'description' => $request->description,
             'type' => $request->type,
             'status' => ResourceStatus::UNDER_PREPARATION,
@@ -90,7 +91,9 @@ class TeamResourcesController extends Controller
         ]);
 
         // Set the collections for a resource.
-        $resource->setCollections($collections);
+        if (!empty($request->collections)) {
+            $resource->setCollections($collections);
+        }
 
         // Set review team with team owner.
         $resource->setReviewTeam($reviewTeam);
