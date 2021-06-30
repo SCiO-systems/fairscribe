@@ -16,6 +16,8 @@ use App\Http\Controllers\API\v1\TeamCollectionResourcesController;
 use App\Http\Controllers\API\v1\TeamCollectionsController;
 use App\Http\Controllers\API\v1\UserStatsController;
 use App\Http\Controllers\API\v1\TeamResourcesController;
+use App\Http\Controllers\API\v1\TeamResourcesFilesController;
+use App\Http\Controllers\API\v1\TeamResourcesThumbnailsController;
 use Illuminate\Support\Facades\Route;
 
 // API v1
@@ -105,6 +107,10 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
 
         // --- TEAM RESOURCES ROUTES ---
         Route::apiResource('teams.resources', TeamResourcesController::class);
+        Route::apiResource('teams.resources.files', TeamResourcesFilesController::class)
+            ->only(['index', 'store', 'destroy']);
+        Route::apiResource('teams.resources.thumbnails', TeamResourcesThumbnailsController::class)
+            ->only(['index', 'store', 'destroy']);
 
         // --- TEAM COLLECTION RESOURCE ROUTES ---
         Route::apiResource('teams.collections.resources', TeamCollectionResourcesController::class);

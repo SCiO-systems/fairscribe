@@ -79,4 +79,14 @@ class Resource extends Model
             ]);
         }
     }
+
+    public function files()
+    {
+        return $this->hasMany(ResourceFile::class);
+    }
+
+    public function thumbnails()
+    {
+        return $this->hasMany(ResourceThumbnail::class);
+    }
 }

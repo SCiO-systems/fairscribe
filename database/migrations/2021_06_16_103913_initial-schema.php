@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\IdentityProvider;
+use App\Enums\PIIStatus;
 use App\Enums\RepositoryType;
 use App\Enums\ResourceStatus;
 use App\Enums\ResourceType;
@@ -211,6 +212,34 @@ class InitialSchema extends Migration
             $table->unique(['resource_id', 'user_id']);
             $table->timestamps();
         });
+
+        Schema::create('resource_files', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('resource_id')
+                ->constrained('resources')
+                ->onDelete('cascade');
+            $table->string('original_filename');
+            $table->string('path');
+            $table->string('extension');
+            $table->string('mimetype');
+            $table->enum('pii_status', PIIStatus::getValues())->default(PIIStatus::PENDING);
+            $table->string('pii_status_identifier')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('resource_thumbnails', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('resource_id')
+                ->constrained('resources')
+                ->onDelete('cascade');
+            $table->string('original_filename');
+            $table->string('path');
+            $table->string('extension');
+            $table->string('mimetype');
+            $table->enum('pii_status', PIIStatus::getValues())->default(PIIStatus::PENDING);
+            $table->string('pii_status_identifier')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -246,6 +275,8 @@ class InitialSchema extends Migration
         Schema::drop('collection_resource');
         Schema::drop('resource_authors');
         Schema::drop('resource_reviewers');
+        Schema::drop('resource_files');
+        Schema::drop('resource_thumbnails');
         Schema::drop('collections');
         Schema::drop('teams');
         Schema::drop('resources');

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -13,6 +14,16 @@ class User extends Authenticatable implements JWTSubject
 
     protected $guarded = [];
     protected $hidden = ['password', 'remember_token'];
+
+    public function isPartOfAuthoringTeam($resourceId)
+    {
+        $entry = DB::table('resource_authors')
+            ->where('resource_id', $resourceId)
+            ->where('user_id', $this->id)
+            ->first();
+
+        return !empty($entry);
+    }
 
     public function sharedTeams()
     {

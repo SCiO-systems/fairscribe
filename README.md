@@ -44,6 +44,14 @@ To seed the database with test data:
 
 **NOTE**: In order to be able to seed the data, you need to modify your **.env** file and set your application environment to the following `APP_ENV=local` or `APP_ENV=development`.
 
+### LINK THE STORAGE FOR FILES
+
+To link the storage for files:
+
+    ./vendor/bin/sail artisan storage:link
+
+**NOTE**: The storage for files should be linked in order for the backend to be able to serve files publicly.
+
 ## RUN TESTS
 
 To execute the test suites run:
