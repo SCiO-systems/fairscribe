@@ -31,7 +31,7 @@ class CreateTeamResourceRequest extends FormRequest
     {
         return [
             'title' => 'required|string',
-            'description' => 'nullable|string',
+            'description' => 'required|string',
             'type' => ['required', 'string', new ResourceTypeValidationRule],
             'authoring_team' => 'array|required',
             'review_team' => 'array|required',
