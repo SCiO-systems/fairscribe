@@ -137,7 +137,7 @@ class TeamResourcesController extends Controller
         $resource->setCollections($collections);
 
         if (!empty($request->metadata_record)) {
-            $resource->setMetadataRecord($request->metadata_record);
+            $resource->setOrCreateMetadataRecord($request->metadata_record);
         }
 
         return new SingleResourceResource($resource);

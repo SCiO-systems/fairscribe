@@ -88,10 +88,7 @@ class InitialSeeder extends Seeder
             ->create()
             ->each(function ($resource) use ($record) {
                 $json = json_decode($record, true);
-                $objectId = DB::connection('mongodb')
-                    ->table('metadata_records')
-                    ->insertGetId($json);
-                $resource->update(['external_metadata_record_id' => $objectId]);
+                $resource->setOrCreateMetadataRecord($json);
             });
 
         // Create teams.

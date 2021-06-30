@@ -96,15 +96,27 @@ class Resource extends Model
         return $this->hasMany(ResourceThumbnail::class);
     }
 
-    public function setMetadataRecord($record)
+    public function setOrCreateMetadataRecord($record)
     {
-        DB::connection('mongodb')->table('metadata_records')
-            ->where('_id', $this->external_metadata_record_id)
-            ->update($record);
+        if (empty($this->external_metadata_record_id)) {
+            $external_metadata_record_id = DB::connection('mongodb')
+                ->table('metadata_records')
+                ->insertGetId($record);
+            $this->external_metadata_record_id = $external_metadata_record_id;
+            $this->save();
+        } else {
+            DB::connection('mongodb')->table('metadata_records')
+                ->where('_id', $this->external_metadata_record_id)
+                ->update($record);
+        }
     }
 
     public function getMetadataRecord()
     {
+        if (empty($this->external_metadata_record_id)) {
+            return null;
+        }
+
         return DB::connection('mongodb')->table('metadata_records')
             ->where('_id', $this->external_metadata_record_id)
             ->first();
