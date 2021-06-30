@@ -15,15 +15,11 @@ class SingleResourceResource extends JsonResource
      */
     public function toArray($request)
     {
-        $metadata_record = DB::connection('mongodb')->table('metadata_records')
-            ->where('_id', $this->external_metadata_record_id)
-            ->first();
-
         return [
             'id' => $this->id,
             'version' => $this->version,
             'external_metadata_record_id' => $this->external_metadata_record_id,
-            'metadata_record' => $metadata_record,
+            'metadata_record' => $this->getMetadataRecord(),
             'title' => $this->title,
             'description' => $this->description,
             'type' => $this->type,
@@ -38,6 +34,8 @@ class SingleResourceResource extends JsonResource
             'issued_at' => $this->issued_at,
             'author_id' => $this->author_id,
             'publisher_id' => $this->publisher_id,
+            'collections' => TeamResourceCollectionsResource::collection($this->collections()->get()),
+            'collections_count' => $this->collections->count(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

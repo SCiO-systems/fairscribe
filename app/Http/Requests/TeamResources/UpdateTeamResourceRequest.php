@@ -2,11 +2,10 @@
 
 namespace App\Http\Requests\TeamResources;
 
-use App\Rules\ResourceTypeValidationRule;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateTeamResourceRequest extends FormRequest
+class UpdateTeamResourceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,9 +16,9 @@ class CreateTeamResourceRequest extends FormRequest
     {
         // Authorization parameters.
         $isLoggedIn = Auth::check();
-        $isTeamMember = !empty(Auth::user()->sharedTeams()->find($this->team->id));
+        $belongsToAuthoringTeam = Auth::user()->isPartOfAuthoringTeam($this->resource->id);
         $isTeamOwner = $this->team->owner_id === Auth::user()->id;
-        return $isLoggedIn && ($isTeamMember || $isTeamOwner);
+        return $isLoggedIn && ($belongsToAuthoringTeam || $isTeamOwner);
     }
 
     /**
@@ -30,12 +29,9 @@ class CreateTeamResourceRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string',
-            'description' => 'nullable|string',
-            'type' => ['required', 'string', new ResourceTypeValidationRule],
-            'authoring_team' => 'array|required',
-            'review_team' => 'array|required',
+            'metadata_record' => 'nullable',
             'collections' => 'nullable|array',
+            'collections.*' => 'numeric'
         ];
     }
 }

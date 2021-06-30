@@ -14,6 +14,7 @@ use App\Http\Controllers\API\v1\RepositoryTypesController;
 use App\Http\Controllers\API\v1\ResourceTypesController;
 use App\Http\Controllers\API\v1\TeamCollectionResourcesController;
 use App\Http\Controllers\API\v1\TeamCollectionsController;
+use App\Http\Controllers\API\v1\TeamResourcesCollectionsController;
 use App\Http\Controllers\API\v1\UserStatsController;
 use App\Http\Controllers\API\v1\TeamResourcesController;
 use App\Http\Controllers\API\v1\TeamResourcesFilesController;

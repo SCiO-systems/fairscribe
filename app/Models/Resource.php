@@ -47,11 +47,17 @@ class Resource extends Model
 
     public function setCollections($collectionIds)
     {
+        $this->removeCollections();
         // TODO: Optimize.
         $collectionIds = collect($collectionIds)->unique()->all();
         foreach ($collectionIds as $id) {
             Collection::find($id)->resources()->attach($this->id);
         }
+    }
+
+    public function removeCollections()
+    {
+        return $this->collections()->detach();
     }
 
     public function setReviewTeam($userIds)
@@ -88,5 +94,19 @@ class Resource extends Model
     public function thumbnails()
     {
         return $this->hasMany(ResourceThumbnail::class);
+    }
+
+    public function setMetadataRecord($record)
+    {
+        DB::connection('mongodb')->table('metadata_records')
+            ->where('_id', $this->external_metadata_record_id)
+            ->update($record);
+    }
+
+    public function getMetadataRecord()
+    {
+        return DB::connection('mongodb')->table('metadata_records')
+            ->where('_id', $this->external_metadata_record_id)
+            ->first();
     }
 }

@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\API\v1;
 
 use App\Enums\ResourceStatus;
+use App\Http\Requests\TeamResources\CreateTeamResourceRequest;
+use App\Http\Requests\TeamResources\UpdateTeamResourceRequest;
 use App\Http\Requests\TeamResources\GetSingleTeamResourceRequest;
 use App\Http\Requests\TeamResources\ListTeamResourcesRequest;
 use App\Models\Resource;
 use App\Models\Team;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\TeamResources\CreateTeamResourceRequest;
 use App\Http\Resources\v1\SingleResourceResource;
 use App\Http\Resources\v1\TeamResourceResource;
 use Auth;
@@ -125,9 +125,22 @@ class TeamResourcesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateTeamResourceRequest $request, Team $team, Resource $resource)
     {
-        //
+        // The collections that this resource will belong to.
+        // The collections are filtered using the team collections.
+        $collections = [];
+        if (!empty($request->collections)) {
+            $collections = $team->collections()->whereIn('id', $request->collections)->pluck('id');
+        }
+
+        $resource->setCollections($collections);
+
+        if (!empty($request->metadata_record)) {
+            $resource->setMetadataRecord($request->metadata_record);
+        }
+
+        return new SingleResourceResource($resource);
     }
 
     /**
