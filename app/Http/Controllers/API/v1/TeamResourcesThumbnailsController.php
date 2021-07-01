@@ -42,6 +42,14 @@ class TeamResourcesThumbnailsController extends Controller
         Team $team,
         Resource $resource
     ) {
+        // Remove any previous thumbnails.
+        $thumbnails = $resource->thumbnails()->get();
+        foreach ($thumbnails as $thumb) {
+            Storage::disk('public')->delete($thumb->path);
+            $thumb->delete();
+        }
+
+        // Store the new thumbnail.
         $file = $request->file('file');
         $hash = $file->hashName();
         $directory = 'resource_thumbnails';
