@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\v1;
 
+use App\Enums\PIIStatus;
 use App\Http\Requests\TeamResourceFiles\CreateTeamResourceFileRequest;
 use App\Http\Requests\TeamResourceFiles\ListTeamResourceFilesRequest;
 use App\Http\Requests\TeamResourceFiles\DeleteTeamResourceFileRequest;
@@ -47,6 +48,7 @@ class TeamResourcesFilesController extends Controller
                 'resource_id' => $resource->id,
                 'filename' => $file->getClientOriginalName(),
                 'path' => $path,
+                'pii_check' => PIIStatus::PENDING,
                 'extension' => $file->extension(),
                 'mimetype' => $file->getMimeType()
             ]);

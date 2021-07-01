@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\v1;
 
+use App\Enums\PIIStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TeamResourceThumbnails\CreateTeamResourceThumbnailRequest;
 use App\Http\Requests\TeamResourceThumbnails\DeleteTeamResourceThumbnailRequest;
@@ -45,7 +46,7 @@ class TeamResourcesThumbnailsController extends Controller
         $hash = $file->hashName();
         $directory = 'resource_thumbnails';
         $path = "$directory/$hash";
-        $saved = $file->storeAs($directory, $hash);
+        $saved = $file->store('resource_thumbnails', 'public');
 
         $resourceThumbnail = null;
         if ($saved) {
@@ -53,6 +54,7 @@ class TeamResourcesThumbnailsController extends Controller
                 'resource_id' => $resource->id,
                 'filename' => $file->getClientOriginalName(),
                 'path' => $path,
+                'pii_check' => PIIStatus::PENDING,
                 'extension' => $file->extension(),
                 'mimetype' => $file->getMimeType()
             ]);
@@ -88,7 +90,7 @@ class TeamResourcesThumbnailsController extends Controller
         Resource $resource,
         ResourceThumbnail $thumbnail
     ) {
-        $fileDeleted = Storage::disk('local')->delete($thumbnail->path);
+        $fileDeleted = Storage::disk('public')->delete($thumbnail->path);
 
         if ($fileDeleted) {
             $dbEntryDeleted = $thumbnail->delete();
