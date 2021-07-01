@@ -17,7 +17,7 @@ class TeamResourceFileResource extends JsonResource
         return [
             'id' => $this->id,
             'path' => $this->path,
-            'original_filename' => $this->original_filename,
+            'filename' => $this->filename,
             'extension' => $this->extension,
             'mime_type' => $this->mimetype,
             'pii_status' => $this->pii_status,

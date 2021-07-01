@@ -218,7 +218,7 @@ class InitialSchema extends Migration
             $table->foreignId('resource_id')
                 ->constrained('resources')
                 ->onDelete('cascade');
-            $table->string('original_filename');
+            $table->string('filename');
             $table->string('path');
             $table->string('extension');
             $table->string('mimetype');
@@ -232,7 +232,7 @@ class InitialSchema extends Migration
             $table->foreignId('resource_id')
                 ->constrained('resources')
                 ->onDelete('cascade');
-            $table->string('original_filename');
+            $table->string('filename');
             $table->string('path');
             $table->string('extension');
             $table->string('mimetype');

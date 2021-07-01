@@ -45,7 +45,7 @@ class TeamResourcesFilesController extends Controller
         if ($saved) {
             $resourceFile = ResourceFile::create([
                 'resource_id' => $resource->id,
-                'original_filename' => $file->getClientOriginalName(),
+                'filename' => $file->getClientOriginalName(),
                 'path' => $path,
                 'extension' => $file->extension(),
                 'mimetype' => $file->getMimeType()

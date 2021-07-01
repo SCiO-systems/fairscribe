@@ -51,7 +51,7 @@ class TeamResourcesThumbnailsController extends Controller
         if ($saved) {
             $resourceThumbnail = ResourceThumbnail::create([
                 'resource_id' => $resource->id,
-                'original_filename' => $file->getClientOriginalName(),
+                'filename' => $file->getClientOriginalName(),
                 'path' => $path,
                 'extension' => $file->extension(),
                 'mimetype' => $file->getMimeType()
