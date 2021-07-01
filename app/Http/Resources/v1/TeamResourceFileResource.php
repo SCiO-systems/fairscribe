@@ -20,7 +20,7 @@ class TeamResourceFileResource extends JsonResource
             'filename' => $this->filename,
             'extension' => $this->extension,
             'mime_type' => $this->mimetype,
-            'pii_status' => $this->pii_status,
+            'pii_check' => $this->pii_check,
         ];
     }
 }

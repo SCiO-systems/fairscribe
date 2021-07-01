@@ -157,7 +157,7 @@ class InitialSchema extends Migration
             $table->string('description');
             $table->enum('type', ResourceType::getValues())->default(ResourceType::DATASET);
             $table->enum('status', ResourceStatus::getValues())->default(ResourceStatus::DRAFT);
-            $table->enum('pii_status', ['pending', 'passed', 'failed'])->default('pending');
+            $table->enum('pii_check', PIIStatus::getValues())->default(PIIStatus::PENDING);
             $table->float('findable_score')->default(0);
             $table->float('accessible_score')->default(0);
             $table->float('interoperable_score')->default(0);
@@ -222,8 +222,8 @@ class InitialSchema extends Migration
             $table->string('path');
             $table->string('extension');
             $table->string('mimetype');
-            $table->enum('pii_status', PIIStatus::getValues())->default(PIIStatus::PENDING);
-            $table->string('pii_status_identifier')->nullable();
+            $table->enum('pii_check', PIIStatus::getValues())->default(PIIStatus::PENDING);
+            $table->string('pii_check_identifier')->nullable();
             $table->timestamps();
         });
 
@@ -236,8 +236,8 @@ class InitialSchema extends Migration
             $table->string('path');
             $table->string('extension');
             $table->string('mimetype');
-            $table->enum('pii_status', PIIStatus::getValues())->default(PIIStatus::PENDING);
-            $table->string('pii_status_identifier')->nullable();
+            $table->enum('pii_check', PIIStatus::getValues())->default(PIIStatus::PENDING);
+            $table->string('pii_check_identifier')->nullable();
             $table->timestamps();
         });
     }

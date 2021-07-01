@@ -19,7 +19,7 @@ class TeamResourceThumbnailResource extends JsonResource
             'path' => $this->path,
             'extension' => $this->extension,
             'mime_type' => $this->mimetype,
-            'pii_status' => $this->pii_status,
+            'pii_check' => $this->pii_check,
         ];
     }
 }

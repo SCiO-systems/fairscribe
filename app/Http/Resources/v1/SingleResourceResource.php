@@ -24,7 +24,7 @@ class SingleResourceResource extends JsonResource
             'description' => $this->description,
             'type' => $this->type,
             'status' => $this->status,
-            'pii_status' => $this->pii_status,
+            'pii_check' => $this->pii_check,
             'findable_score' => $this->findable_score,
             'accessible_score' => $this->accessible_score,
             'interoperable_score' => $this->interoperable_score,
