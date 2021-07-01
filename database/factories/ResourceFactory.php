@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\PIIStatus;
 use App\Enums\ResourceType;
 use App\Models\Resource;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -31,7 +32,7 @@ class ResourceFactory extends Factory
             'status' => $this->faker->randomElement([
                 'draft', 'under_preparation', 'under_review', 'approved', 'published'
             ]),
-            'pii_check' => $this->faker->randomElement(['pending', 'passed', 'failed']),
+            'pii_check' => $this->faker->randomElement(PIIStatus::getValues()),
             'findable_score' => $this->faker->randomFloat(2, 0, 10),
             'accessible_score' => $this->faker->randomFloat(2, 0, 10),
             'interoperable_score' => $this->faker->randomFloat(2, 0, 10),

@@ -57,6 +57,8 @@ class InitialSeeder extends Seeder
         DB::table('collections')->truncate();
         DB::table('resources')->truncate();
         DB::table('collection_resource')->truncate();
+        DB::table('resource_files')->truncate();
+        DB::table('resource_thumbnails')->truncate();
         DB::table('invites')->truncate();
         DB::connection('mongodb')->table('metadata_records')->truncate();
         DB::disableQueryLog();
