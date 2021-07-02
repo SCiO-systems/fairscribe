@@ -25,6 +25,16 @@ class User extends Authenticatable implements JWTSubject
         return !empty($entry);
     }
 
+    public function isPartOfReviewTeam($resourceId)
+    {
+        $entry = DB::table('resource_reviewers')
+            ->where('resource_id', $resourceId)
+            ->where('user_id', $this->id)
+            ->first();
+
+        return !empty($entry);
+    }
+
     public function sharedTeams()
     {
         return $this->belongsToMany(Team::class, 'team_user', 'user_id', 'team_id');

@@ -15,6 +15,7 @@ use App\Http\Controllers\API\v1\ResourceTypesController;
 use App\Http\Controllers\API\v1\TeamCollectionResourcesController;
 use App\Http\Controllers\API\v1\TeamCollectionsController;
 use App\Http\Controllers\API\v1\TeamResourcesCollectionsController;
+use App\Http\Controllers\API\v1\TeamResourcesCommentsController;
 use App\Http\Controllers\API\v1\UserStatsController;
 use App\Http\Controllers\API\v1\TeamResourcesController;
 use App\Http\Controllers\API\v1\TeamResourcesFilesController;
@@ -107,6 +108,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::apiResource('teams.collections', TeamCollectionsController::class);
 
         // --- TEAM RESOURCES ROUTES ---
+        Route::put('teams/{team}/resources/{resource}/comments', [TeamResourcesCommentsController::class, 'update']);
         Route::apiResource('teams.resources', TeamResourcesController::class);
         Route::apiResource('teams.resources.files', TeamResourcesFilesController::class)
             ->only(['index', 'store', 'destroy']);

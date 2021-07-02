@@ -98,11 +98,15 @@ class Resource extends Model
 
     public function setOrCreateMetadataRecord($record)
     {
-        if (empty($this->external_metadata_record_id)) {
-            $external_metadata_record_id = DB::connection('mongodb')
+        $exists = DB::connection('mongodb')
+            ->table('metadata_records')
+            ->where('_id', $this->external_metadata_record_id)
+            ->first();
+
+        if (empty($exists)) {
+            $this->external_metadata_record_id = DB::connection('mongodb')
                 ->table('metadata_records')
                 ->insertGetId($record);
-            $this->external_metadata_record_id = $external_metadata_record_id;
             $this->save();
         } else {
             DB::connection('mongodb')->table('metadata_records')
@@ -113,12 +117,15 @@ class Resource extends Model
 
     public function getMetadataRecord()
     {
-        if (empty($this->external_metadata_record_id)) {
+        $exists = DB::connection('mongodb')
+            ->table('metadata_records')
+            ->where('_id', $this->external_metadata_record_id)
+            ->first();
+
+        if (empty($exists)) {
             return null;
         }
 
-        return DB::connection('mongodb')->table('metadata_records')
-            ->where('_id', $this->external_metadata_record_id)
-            ->first();
+        return $exists;
     }
 }

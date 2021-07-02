@@ -22,6 +22,7 @@ class SingleResourceResource extends JsonResource
             'metadata_record' => $this->getMetadataRecord(),
             'title' => $this->title,
             'description' => $this->description,
+            'comments' => $this->comments,
             'type' => $this->type,
             'status' => $this->status,
             'pii_check' => $this->pii_check,

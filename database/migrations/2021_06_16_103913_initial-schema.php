@@ -163,6 +163,7 @@ class InitialSchema extends Migration
             $table->float('interoperable_score')->default(0);
             $table->float('reusable_score')->default(0);
             $table->float('fair_scoring')->default(0);
+            $table->text('comments')->nullable();
             // TODO: Maybe include information regarding who published the resource?
             $table->timestamp('published_at')->nullable()->default(null);
             $table->timestamp('issued_at')->nullable()->default(null);

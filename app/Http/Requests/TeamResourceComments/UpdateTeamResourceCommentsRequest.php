@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Requests\TeamResources;
+namespace App\Http\Requests\TeamResourceComments;
 
-use App\Enums\ResourceStatus;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class UpdateTeamResourceRequest extends FormRequest
+class UpdateTeamResourceCommentsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,9 +16,9 @@ class UpdateTeamResourceRequest extends FormRequest
     {
         // Authorization parameters.
         $isLoggedIn = Auth::check();
-        $belongsToAuthoringTeam = Auth::user()->isPartOfAuthoringTeam($this->resource->id);
+        $belongsToReviewTeam = Auth::user()->isPartOfAuthoringTeam($this->resource->id);
         $isTeamOwner = $this->team->owner_id === Auth::user()->id;
-        return $isLoggedIn && ($belongsToAuthoringTeam || $isTeamOwner);
+        return $isLoggedIn && ($belongsToReviewTeam || $isTeamOwner);
     }
 
     /**
@@ -31,10 +29,7 @@ class UpdateTeamResourceRequest extends FormRequest
     public function rules()
     {
         return [
-            'metadata_record' => 'nullable',
-            'collections' => 'nullable|array',
-            'collections.*' => 'numeric',
-            'status' => ['nullable', Rule::in(ResourceStatus::getValues())]
+            'comments' => 'nullable|string'
         ];
     }
 }
