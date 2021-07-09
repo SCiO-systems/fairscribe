@@ -9,7 +9,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthCheckRequest;
 use App\Http\Resources\v1\UserResource;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Exception;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
