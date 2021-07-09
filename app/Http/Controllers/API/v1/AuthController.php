@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\v1;
 
+use App\Enums\IdentityProvider;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\LogoutRequest;
 use App\Http\Controllers\Controller;
@@ -39,7 +40,9 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)
+            ->where('identity_provider', IdentityProvider::SCRIBE)
+            ->first();
 
         return response()->json([
             'data' => [
