@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\UserPassword;
 
+use App\Enums\IdentityProvider;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -16,7 +17,8 @@ class UpdateUserPasswordRequest extends FormRequest
     {
         $isLoggedIn = Auth::check();
         $isSameUser = Auth::user()->id == $this->user->id;
-        return $isLoggedIn && $isSameUser;
+        $isScribeUser = $this->user->identity_provider === IdentityProvider::SCRIBE;
+        return $isLoggedIn && $isSameUser && $isScribeUser;
     }
 
     /**
