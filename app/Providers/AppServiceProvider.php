@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use App;
+use App\Services\FairScoring\FairScoring;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        App::bind('FairScoring', function () {
+            return new FairScoring;
+        });
     }
 
     /**
