@@ -7,6 +7,10 @@ use App\Enums\ResourceType;
 use App\Services\FairScoring\Enums\FairSection;
 use App\Services\FairScoring\Exceptions\InvalidDataException;
 use App\Services\FairScoring\Exceptions\InvalidFairSection;
+use App\Services\FairScoring\Rules\Findable\ResourceHasDescription;
+use App\Services\FairScoring\Rules\Findable\ResourceHasDOI;
+use App\Services\FairScoring\Rules\Findable\ResourceHasHDLorURL;
+use App\Services\FairScoring\Rules\Findable\ResourceHasIssuedDate;
 use App\Services\FairScoring\Rules\Findable\ResourceHasTitle;
 
 class FairScoring
@@ -17,7 +21,11 @@ class FairScoring
     private $rules = [
         ResourceType::DATASET => [
             FairSection::FINDABLE => [
+                ResourceHasDOI::class,
+                ResourceHasHDLorURL::class,
                 ResourceHasTitle::class,
+                ResourceHasDescription::class,
+                ResourceHasIssuedDate::class,
             ],
             FairSection::ACCESSIBLE => [],
             FairSection::INTEROPERABLE => [],
