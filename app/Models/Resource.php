@@ -128,4 +128,14 @@ class Resource extends Model
 
         return $exists;
     }
+
+    public function getAuthors()
+    {
+        return $this->hasMany(User::class, 'user_id');
+    }
+
+    public function getReviewers()
+    {
+        return $this->hasMany(User::class, 'user_id');
+    }
 }

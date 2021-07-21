@@ -18,18 +18,12 @@ class UserTeamResource extends JsonResource
      */
     public function toArray($request)
     {
-        $collectionIds = Collection::where('team_id', $this->id)
-            ->pluck('id');
-
-        $resourceIds = DB::table('collection_resource')
-            ->whereIn('collection_id', $collectionIds)
-            ->pluck('resource_id');
-
-        $resources = Resource::whereIn('status', [
-            ResourceStatus::UNDER_PREPARATION,
-            ResourceStatus::UNDER_REVIEW,
-            ResourceStatus::APPROVED
-        ])->whereIn('id', $resourceIds)->get();
+        $resources = Resource::where('team_id', $this->id)
+            ->whereIn('status', [
+                ResourceStatus::UNDER_PREPARATION,
+                ResourceStatus::UNDER_REVIEW,
+                ResourceStatus::APPROVED
+            ])->get();
 
         $activeTasks = collect($resources)->reduce(function ($sum, $task) {
             if ($task->status === ResourceStatus::UNDER_PREPARATION) {

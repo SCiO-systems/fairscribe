@@ -29,18 +29,23 @@ class TeamResourcesController extends Controller
 
         // TODO: Refactor this.
         if (!empty($request->status)) {
+
             $resourceIds = [];
+
             if ($request->status === ResourceStatus::UNDER_PREPARATION) {
                 $resourceIds = DB::table('resource_authors')
                     ->where('user_id', $userId)
                     ->pluck('resource_id');
             }
+
             if ($request->status === ResourceStatus::UNDER_REVIEW) {
                 $resourceIds = DB::table('resource_reviewers')
                     ->where('user_id', $userId)
                     ->pluck('resource_id');
             }
+
             $resources = $resources->where('status', $request->status);
+
             if (!empty($resourceIds)) {
                 $resources = $resources->whereIn('id', $resourceIds);
             }

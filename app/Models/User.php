@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ResourceStatus;
 use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -58,5 +59,35 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function getAuthoredResourcesCount($statuses = [])
+    {
+        if (empty($statuses)) {
+            $statuses = ResourceStatus::getValues();
+        }
+
+        $resources = DB::table('resource_authors')
+            ->where('user_id', $this->id)
+            ->pluck('resource_id');
+
+        return Resource::whereIn('status', $statuses)
+            ->whereIn('id', $resources)
+            ->count();
+    }
+
+    public function getReviewedResourcesCount($statuses = [])
+    {
+        if (empty($statuses)) {
+            $statuses = ResourceStatus::getValues();
+        }
+
+        $resources = DB::table('resource_reviewers')
+            ->where('user_id', $this->id)
+            ->pluck('resource_id');
+
+        return Resource::whereIn('status', $statuses)
+            ->whereIn('id', $resources)
+            ->count();
     }
 }
