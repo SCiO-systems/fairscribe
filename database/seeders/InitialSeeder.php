@@ -51,7 +51,6 @@ class InitialSeeder extends Seeder
     public function run()
     {
         Schema::disableForeignKeyConstraints();
-        DB::table('users')->truncate();
         DB::table('teams')->truncate();
         DB::table('team_user')->truncate();
         DB::table('collections')->truncate();
@@ -63,18 +62,11 @@ class InitialSeeder extends Seeder
         DB::connection('mongodb')->table('metadata_records')->truncate();
         DB::disableQueryLog();
 
-        $email = 'datascribe@scio.systems';
-        $password = 'scio';
+        $user = User::findOrFail(1);
+        $email = $user->email;
 
-        // Create the main user.
-        $user = User::create([
-            'firstname' => 'Scio',
-            'lastname' => 'Systems',
-            'email' => $email,
-            'password' => bcrypt($password),
-        ]);
-
-        $users = User::factory()->count(5)->create();
+        // Demo users
+        $users = User::factory(['password' => bcrypt('noeticblue')])->count(5)->create();
 
         $record = Storage::disk('local')->get('record.json');
 
