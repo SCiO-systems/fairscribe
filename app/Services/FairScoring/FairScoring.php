@@ -16,6 +16,11 @@ use App\Services\FairScoring\Rules\Accessible\ResourceHasLicenseOrTermsOfUse;
 use App\Services\FairScoring\Rules\Accessible\ResourceHasOpenLicense;
 use App\Services\FairScoring\Rules\Findable\ResourceHasTitle;
 use App\Services\FairScoring\Rules\Accessible\ResourceHasUrlsOfPhysicalFiles;
+use App\Services\FairScoring\Rules\Interoperable\ResourceHasAnnotatedControlledValues;
+use App\Services\FairScoring\Rules\Interoperable\ResourceHasAnnotatedData;
+use App\Services\FairScoring\Rules\Interoperable\ResourceHasOpenFormats;
+use App\Services\FairScoring\Rules\Interoperable\ResourceHasProprietaryFormats;
+use App\Services\FairScoring\Rules\Interoperable\ResourceHasResourceMetadata;
 
 class FairScoring
 {
@@ -37,7 +42,13 @@ class FairScoring
                 ResourceHasClosedLicense::class,
                 ResourceHasUrlsOfPhysicalFiles::class
             ],
-            FairSection::INTEROPERABLE => [],
+            FairSection::INTEROPERABLE => [
+                ResourceHasOpenFormats::class,
+                ResourceHasProprietaryFormats::class,
+                ResourceHasAnnotatedData::class,
+                ResourceHasAnnotatedControlledValues::class,
+                ResourceHasResourceMetadata::class,
+            ],
             FairSection::REUSABLE => [],
         ],
     ];
