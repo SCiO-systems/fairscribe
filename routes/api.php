@@ -109,7 +109,12 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::apiResource('teams.collections', TeamCollectionsController::class);
 
         // --- TEAM RESOURCES ROUTES ---
-        Route::put('teams/{team}/resources/{resource}/comments', [TeamResourcesCommentsController::class, 'update']);
+        Route::put('teams/{team}/resources/{resource}/comments', [
+            TeamResourcesCommentsController::class, 'update'
+        ]);
+        Route::post('teams/{team}/resources/{resource}/fairscore', [
+            TeamResourcesController::class, 'calculateFairScore'
+        ]);
         Route::apiResource('teams.resources', TeamResourcesController::class);
         Route::apiResource('teams.resources.files', TeamResourcesFilesController::class)
             ->only(['index', 'store', 'destroy']);

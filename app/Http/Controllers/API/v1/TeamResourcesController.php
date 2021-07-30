@@ -12,6 +12,7 @@ use App\Models\Team;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\v1\SingleResourceResource;
 use App\Http\Resources\v1\TeamResourceResource;
+use App\Services\FairScoring\Facades\FairScoring;
 use Auth;
 use DB;
 
@@ -163,5 +164,21 @@ class TeamResourcesController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function calculateFairScore(
+        GetSingleTeamResourceRequest $request,
+        Team $team,
+        Resource $resource
+    ) {
+        $fairScoreService = FairScoring::for($resource);
+
+        return response()->json($fairScoreService->getResult(), 200);
     }
 }
