@@ -7,11 +7,15 @@ use App\Enums\ResourceType;
 use App\Services\FairScoring\Enums\FairSection;
 use App\Services\FairScoring\Exceptions\InvalidDataException;
 use App\Services\FairScoring\Exceptions\InvalidFairSection;
+use App\Services\FairScoring\Rules\Accessible\ResourceHasClosedLicense;
 use App\Services\FairScoring\Rules\Findable\ResourceHasDescription;
 use App\Services\FairScoring\Rules\Findable\ResourceHasDOI;
 use App\Services\FairScoring\Rules\Findable\ResourceHasHDLorURL;
 use App\Services\FairScoring\Rules\Findable\ResourceHasIssuedDate;
+use App\Services\FairScoring\Rules\Accessible\ResourceHasLicenseOrTermsOfUse;
+use App\Services\FairScoring\Rules\Accessible\ResourceHasOpenLicense;
 use App\Services\FairScoring\Rules\Findable\ResourceHasTitle;
+use App\Services\FairScoring\Rules\Accessible\ResourceHasUrlsOfPhysicalFiles;
 
 class FairScoring
 {
@@ -27,7 +31,12 @@ class FairScoring
                 ResourceHasDescription::class,
                 ResourceHasIssuedDate::class,
             ],
-            FairSection::ACCESSIBLE => [],
+            FairSection::ACCESSIBLE => [
+                ResourceHasLicenseOrTermsOfUse::class,
+                ResourceHasOpenLicense::class,
+                ResourceHasClosedLicense::class,
+                ResourceHasUrlsOfPhysicalFiles::class
+            ],
             FairSection::INTEROPERABLE => [],
             FairSection::REUSABLE => [],
         ],
