@@ -21,6 +21,10 @@ use App\Services\FairScoring\Rules\Interoperable\ResourceHasAnnotatedData;
 use App\Services\FairScoring\Rules\Interoperable\ResourceHasOpenFormats;
 use App\Services\FairScoring\Rules\Interoperable\ResourceHasProprietaryFormats;
 use App\Services\FairScoring\Rules\Interoperable\ResourceHasResourceMetadata;
+use App\Services\FairScoring\Rules\Reusable\ResourceHasCCBYNCLicense;
+use App\Services\FairScoring\Rules\Reusable\ResourceHasReusability;
+use App\Services\FairScoring\Rules\Reusable\ResourcePassesPIICheck;
+use App\Services\FairScoring\Rules\Reusable\ReusableResourceHasOpenLicense;
 
 class FairScoring
 {
@@ -49,7 +53,12 @@ class FairScoring
                 ResourceHasAnnotatedControlledValues::class,
                 ResourceHasResourceMetadata::class,
             ],
-            FairSection::REUSABLE => [],
+            FairSection::REUSABLE => [
+                ResourcePassesPIICheck::class,
+                ReusableResourceHasOpenLicense::class,
+                ResourceHasCCBYNCLicense::class,
+                ResourceHasReusability::class,
+            ],
         ],
     ];
 
@@ -99,6 +108,14 @@ class FairScoring
         return $this;
     }
 
+    public function forRecord($metadataRecord)
+    {
+        $type = data_get($metadataRecord, 'dataCORE.resource_type.value');
+        $this->setRecord($metadataRecord);
+        $this->setType($type);
+        return $this;
+    }
+
     public function getRuleDescriptions($section = null)
     {
         $ruleRefs = $this->getRuleReferences($section);
@@ -110,6 +127,63 @@ class FairScoring
             ]);
         });
     }
+
+    public function calculateFindableScore()
+    {
+        if ($this->type === null || $this->record === null) {
+            throw new InvalidDataException();
+        }
+
+        $findable_score = $this->getRuleReferences(FairSection::FINDABLE)
+            ->reduce(function ($total, $rule) {
+                return $total += $rule::calculateScore($this->record);
+            }, 0);
+
+        return $findable_score;
+    }
+
+    public function calculateAccessibleScore()
+    {
+        if ($this->type === null || $this->record === null) {
+            throw new InvalidDataException();
+        }
+
+        $accessible_score = $this->getRuleReferences(FairSection::ACCESSIBLE)
+            ->reduce(function ($total, $rule) {
+                return $total += $rule::calculateScore($this->record);
+            }, 0);
+
+        return $accessible_score;
+    }
+
+    public function calculateInteroperableScore()
+    {
+        if ($this->type === null || $this->record === null) {
+            throw new InvalidDataException();
+        }
+
+        $interoperable_score = $this->getRuleReferences(FairSection::INTEROPERABLE)
+            ->reduce(function ($total, $rule) {
+                return $total += $rule::calculateScore($this->record);
+            }, 0);
+
+        return $interoperable_score;
+    }
+
+    public function calculateReusableScore()
+    {
+        if ($this->type === null || $this->record === null) {
+            throw new InvalidDataException();
+        }
+
+        $reusable_score = $this->getRuleReferences(FairSection::REUSABLE)
+            ->reduce(function ($total, $rule) {
+                return $total += $rule::calculateScore($this->record);
+            }, 0);
+
+        return $reusable_score;
+    }
+
 
     public function calculateScore($section = null)
     {
@@ -124,26 +198,10 @@ class FairScoring
                 }, 0);
         }
 
-        $findable_score = $this->getRuleReferences(FairSection::FINDABLE)
-            ->reduce(function ($total, $rule) {
-                return $total += $rule::calculateScore($this->record);
-            }, 0);
-
-        $accessible_score = $this->getRuleReferences(FairSection::ACCESSIBLE)
-            ->reduce(function ($total, $rule) {
-                return $total += $rule::calculateScore($this->record);
-            }, 0);
-
-        $interoperable_score = $this->getRuleReferences(FairSection::INTEROPERABLE)
-            ->reduce(function ($total, $rule) {
-                return $total += $rule::calculateScore($this->record);
-            }, 0);
-
-        $reusable_score = $this->getRuleReferences(FairSection::REUSABLE)
-            ->reduce(function ($total, $rule) {
-                return $total += $rule::calculateScore($this->record);
-            }, 0);
-
+        $findable_score = $this->calculateFindableScore();
+        $accessible_score = $this->calculateAccessibleScore();
+        $interoperable_score = $this->calculateInteroperableScore();
+        $reusable_score = $this->calculateReusableScore();
 
         return [
             'findable_score' => $findable_score,
