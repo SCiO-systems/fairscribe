@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TeamCollections\CreateTeamCollectionRequest;
+use App\Http\Requests\TeamCollections\DeleteTeamCollectionRequest;
 use App\Http\Requests\TeamCollections\ListSingleTeamCollectionRequest;
 use App\Http\Requests\TeamCollections\ListTeamCollectionsRequest;
 use App\Http\Requests\TeamCollections\UpdateTeamCollectionRequest;
@@ -79,9 +80,18 @@ class TeamCollectionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        return response()->json("Not Implemented", 501);
+    public function destroy(
+        DeleteTeamCollectionRequest $request,
+        Team $team,
+        Collection $collection
+    ) {
+        if ($collection->delete()) {
+            return response()->json([], 204);
+        }
+
+        return response()->json(['errors' => [
+            'error' => 'The collection could not be deleted!'
+        ]], 400);
     }
 
     /**
