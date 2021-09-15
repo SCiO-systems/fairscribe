@@ -66,7 +66,9 @@ class InitialSeeder extends Seeder
         $email = $user->email;
 
         // Demo users
-        $users = User::factory(['password' => bcrypt('noeticblue')])->count(5)->create();
+        $users = User::factory(['password' => bcrypt('noeticblue')])
+            ->count(5)
+            ->create();
 
         $record = Storage::disk('local')->get('record.json');
 

@@ -78,7 +78,6 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::delete('/users/{user}/avatar', [UserAvatarController::class, 'destroy']);
 
         // Update user password.
-        // TODO: Implement this.
         Route::put('/users/{user}/password', [UserPasswordController::class, 'update']);
 
         // User owned teams.
@@ -102,7 +101,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         // All shared team routes.
         Route::get('/teams/all', [TeamsController::class, 'all']);
         Route::post('/teams/{team}/invite', [TeamInvitesController::class, 'store']);
-        Route::apiResource('teams', TeamsController::class)->only(['index', 'show']);
+        Route::apiResource('teams', TeamsController::class)->only(['index', 'show', 'destroy']);
 
         // --- TEAM COLLECTION ROUTES ---
         Route::get('teams/{team}/collections/all', [TeamCollectionsController::class, 'all']);
