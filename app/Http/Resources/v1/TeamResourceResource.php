@@ -24,6 +24,7 @@ class TeamResourceResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'type' => $this->type,
+            'subtype' => $this->subtype,
             'status' => $this->status,
             'comments' => $this->comments,
             'pii_check' => $this->pii_check,
