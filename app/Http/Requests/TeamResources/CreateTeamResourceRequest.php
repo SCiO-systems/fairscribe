@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\TeamResources;
 
-use App\Rules\ResourceTypeValidationRule;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -32,7 +31,9 @@ class CreateTeamResourceRequest extends FormRequest
         return [
             'title' => 'required|string',
             'description' => 'required|string',
-            'type' => ['required', 'string', new ResourceTypeValidationRule],
+            // TODO: Add validation rules based on external service.
+            'type' => 'required|string',
+            'subtype' => 'required|string',
             'authoring_team' => 'array|required',
             'review_team' => 'array|required',
             'collections' => 'nullable|array',

@@ -3,7 +3,6 @@
 namespace App\Services\FairScoring;
 
 use App\Models\Resource;
-use App\Enums\ResourceType;
 use App\Services\FairScoring\Enums\FairSection;
 use App\Services\FairScoring\Exceptions\InvalidDataException;
 use App\Services\FairScoring\Exceptions\InvalidFairSection;
@@ -32,7 +31,9 @@ class FairScoring
     private $record = null;
 
     private $rules = [
-        ResourceType::DATASET => [
+        'Document' => [],
+        'Digital Asset' => [],
+        'Dataset' => [
             FairSection::FINDABLE => [
                 ResourceHasDOI::class,
                 ResourceHasHDLorURL::class,

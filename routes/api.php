@@ -11,7 +11,6 @@ use App\Http\Controllers\API\v1\UserTeamsController;
 use App\Http\Controllers\API\v1\UserInvitesController;
 use App\Http\Controllers\API\v1\UserRepositoryController;
 use App\Http\Controllers\API\v1\RepositoryTypesController;
-use App\Http\Controllers\API\v1\ResourceTypesController;
 use App\Http\Controllers\API\v1\TeamCollectionResourcesController;
 use App\Http\Controllers\API\v1\TeamCollectionsController;
 use App\Http\Controllers\API\v1\TeamResourcesCommentsController;
@@ -94,7 +93,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::apiResource('repository_types', RepositoryTypesController::class)->only('index');
 
         // --- RESOURCE TYPE ROUTES ---
-        Route::apiResource('resource_types', ResourceTypesController::class)->only('index');
+        // TODO: Fetch them from an external service and provide them to the frontend.
 
         // --- SHARED TEAMS ROUTES ---
 

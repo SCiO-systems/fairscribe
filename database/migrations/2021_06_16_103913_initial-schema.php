@@ -4,7 +4,6 @@ use App\Enums\IdentityProvider;
 use App\Enums\PIIStatus;
 use App\Enums\RepositoryType;
 use App\Enums\ResourceStatus;
-use App\Enums\ResourceType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -155,7 +154,8 @@ class InitialSchema extends Migration
             $table->string('external_metadata_record_id')->nullable();
             $table->string('title');
             $table->string('description');
-            $table->enum('type', ResourceType::getValues())->default(ResourceType::DATASET);
+            $table->string('type')->nullable();
+            $table->string('subtype')->nullable();
             $table->enum('status', ResourceStatus::getValues())->default(ResourceStatus::DRAFT);
             $table->enum('pii_check', PIIStatus::getValues())->default(PIIStatus::PENDING);
             $table->float('findable_score')->default(0);

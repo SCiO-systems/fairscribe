@@ -94,6 +94,7 @@ class TeamResourcesController extends Controller
             'team_id' => $team->id,
             'description' => $request->description,
             'type' => $request->type,
+            'subtype' => $request->subtype,
             'status' => ResourceStatus::UNDER_PREPARATION,
             'author_id' => $authorId,
             'version' => 1

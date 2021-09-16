@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Enums\PIIStatus;
-use App\Enums\ResourceType;
 use App\Models\Resource;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -28,7 +27,8 @@ class ResourceFactory extends Factory
             'title' => $this->faker->text(24),
             'version' => $this->faker->uuid(),
             'description' => $this->faker->text(256),
-            'type' => $this->faker->randomElement(ResourceType::getValues()),
+            'type' => $this->faker->randomElement(['Document', 'Digital Asset', 'Dataset']),
+            'subtype' => 'Subtype',
             'status' => $this->faker->randomElement([
                 'draft', 'under_preparation', 'under_review', 'approved', 'published'
             ]),
