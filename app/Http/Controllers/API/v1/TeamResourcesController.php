@@ -10,6 +10,7 @@ use App\Http\Requests\TeamResources\ListTeamResourcesRequest;
 use App\Models\Resource;
 use App\Models\Team;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TeamResources\DeleteTeamResourceRequest;
 use App\Http\Resources\v1\SingleResourceResource;
 use App\Http\Resources\v1\TeamResourceResource;
 use App\Services\FairScoring\Facades\FairScoring;
@@ -162,9 +163,25 @@ class TeamResourcesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(DeleteTeamResourceRequest $request, Team $team, Resource $resource)
     {
-        //
+        $deletableStatuses = [
+            ResourceStatus::DRAFT, ResourceStatus::UNDER_PREPARATION, ResourceStatus::UNDER_REVIEW
+        ];
+
+        if (!in_array($resource->status, $deletableStatuses)) {
+            return response()->json(['errors' => [
+                'error' => 'The resource is not in a deletable status. Valid deletable statuses are: ' . implode(",", $deletableStatuses)
+            ]], 422);
+        }
+
+        if ($resource->delete()) {
+            return response()->json([], 204);
+        }
+
+        return response()->json(['errors' => [
+            'error' => 'The resource could not be deleted!'
+        ]], 400);
     }
 
     /**
