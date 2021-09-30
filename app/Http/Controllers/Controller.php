@@ -16,6 +16,6 @@ class Controller extends BaseController
 
     public function default()
     {
-        return response(view('default'), 404);
+        return response(view('default'), 200);
     }
 }
