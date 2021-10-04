@@ -12,6 +12,7 @@ use App\Http\Resources\v1\TeamResourceThumbnailResource;
 use App\Models\Resource;
 use App\Models\ResourceThumbnail;
 use App\Models\Team;
+use Illuminate\Support\Str;
 use Storage;
 
 class TeamResourcesThumbnailsController extends Controller
@@ -45,23 +46,23 @@ class TeamResourcesThumbnailsController extends Controller
         // Remove any previous thumbnails.
         $thumbnails = $resource->thumbnails()->get();
         foreach ($thumbnails as $thumb) {
-            Storage::disk('public')->delete($thumb->path);
+            Storage::delete($thumb->path);
             $thumb->delete();
         }
 
         // Store the new thumbnail.
+        $resourceId = $resource->id;
         $file = $request->file('file');
-        $hash = $file->hashName();
-        $directory = 'resource_thumbnails';
-        $path = "$directory/$hash";
-        $saved = $file->store('resource_thumbnails', 'public');
+        $name = Str::uuid();
+        $directory = "resource_thumbnails/$resourceId";
+        $saved = Storage::putFileAs($directory, $file, $name);
 
         $resourceThumbnail = null;
         if ($saved) {
             $resourceThumbnail = ResourceThumbnail::create([
                 'resource_id' => $resource->id,
                 'filename' => $file->getClientOriginalName(),
-                'path' => $path,
+                'path' => "$directory/$name",
                 'pii_check' => PIIStatus::PENDING,
                 'extension' => $file->extension(),
                 'mimetype' => $file->getMimeType()
@@ -98,7 +99,7 @@ class TeamResourcesThumbnailsController extends Controller
         Resource $resource,
         ResourceThumbnail $thumbnail
     ) {
-        $fileDeleted = Storage::disk('public')->delete($thumbnail->path);
+        $fileDeleted = Storage::delete($thumbnail->path);
 
         if ($fileDeleted) {
             $dbEntryDeleted = $thumbnail->delete();

@@ -3,6 +3,7 @@
 namespace App\Http\Resources\v1;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Storage;
 
 class TeamResourceThumbnailResource extends JsonResource
 {
@@ -21,6 +22,7 @@ class TeamResourceThumbnailResource extends JsonResource
             'extension' => $this->extension,
             'mime_type' => $this->mimetype,
             'pii_check' => $this->pii_check,
+            'url' => Storage::temporaryUrl($this->path, now()->addHours(24)),
         ];
     }
 }

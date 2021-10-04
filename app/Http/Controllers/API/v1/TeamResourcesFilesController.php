@@ -12,6 +12,7 @@ use App\Models\Resource;
 use App\Models\Team;
 use App\Http\Controllers\Controller;
 use App\Models\ResourceFile;
+use Illuminate\Support\Str;
 use Storage;
 
 class TeamResourcesFilesController extends Controller
@@ -36,23 +37,25 @@ class TeamResourcesFilesController extends Controller
      */
     public function store(CreateTeamResourceFileRequest $request, Team $team, Resource $resource)
     {
+        $resourceId = $resource->id;
         $file = $request->file('file');
-        $hash = $file->hashName();
-        $directory = 'resource_files';
-        $path = "$directory/$hash";
-        $saved = $file->storeAs($directory, $hash);
+        $name = Str::uuid();
+        $directory = "resource_files/$resourceId";
+        $saved = Storage::putFileAs($directory, $file, $name);
 
         $resourceFile = null;
         if ($saved) {
             $resourceFile = ResourceFile::create([
                 'resource_id' => $resource->id,
                 'filename' => $file->getClientOriginalName(),
-                'path' => $path,
+                'path' => "$directory/$name",
                 'pii_check' => PIIStatus::PENDING,
                 'extension' => $file->extension(),
                 'mimetype' => $file->getMimeType()
             ]);
         }
+
+        // TODO: Dispatch job for PII check.
 
         return new TeamResourceFileResource($resourceFile);
     }
@@ -84,7 +87,7 @@ class TeamResourcesFilesController extends Controller
         Resource $resource,
         ResourceFile $file
     ) {
-        $fileDeleted = Storage::disk('local')->delete($file->path);
+        $fileDeleted = Storage::delete($file->path);
 
         if ($fileDeleted) {
             $dbEntryDeleted = $file->delete();

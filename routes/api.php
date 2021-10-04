@@ -117,7 +117,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::apiResource('teams.resources.files', TeamResourcesFilesController::class)
             ->only(['index', 'store', 'destroy']);
         Route::apiResource('teams.resources.thumbnails', TeamResourcesThumbnailsController::class)
-            ->only(['index', 'store', 'destroy']);
+            ->only(['index', 'show', 'store', 'destroy']);
 
         // --- TEAM COLLECTION RESOURCE ROUTES ---
         Route::apiResource('teams.collections.resources', TeamCollectionResourcesController::class);
