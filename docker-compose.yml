@@ -44,6 +44,19 @@ services:
       - "sailmongodb:/data/db"
     networks:
       - sail
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "${FORWARD_REDIS_PORT:-6379}:6379"
+    volumes:
+      - "sailredis:/data"
+    networks:
+      - sail
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      retries: 3
+      timeout: 5s
+
 networks:
   sail:
     driver: bridge
@@ -51,4 +64,6 @@ volumes:
   sailmysql:
     driver: local
   sailmongodb:
+    driver: local
+  sailredis:
     driver: local

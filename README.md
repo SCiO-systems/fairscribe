@@ -26,9 +26,10 @@ The project requires **[PHP 7.4/8.0](https://www.php.net/manual/en/install.php)*
 
     ./vendor/bin/sail down
 
-## GENERATE A KEY
+## GENERATE A KEY AND A JWT SECRET
 
     ./vendor/bin/sail artisan key:generate
+    ./vendor/bin/sail jwt:secret
 
 ## RUN THE MIGRATIONS
 
@@ -51,6 +52,23 @@ To link the storage for files:
     ./vendor/bin/sail artisan storage:link
 
 **NOTE**: The storage for files should be linked in order for the backend to be able to serve files publicly.
+
+### CHANGE THE STORAGE DRIVER FOR S3
+
+To change the storage driver, add the following settings:
+
+    FILESYSTEM_DRIVER=s3
+
+    AWS_ACCESS_KEY_ID="your-access-key-id"
+    AWS_SECRET_ACCESS_KEY="your-secret-key"
+    AWS_DEFAULT_REGION="your-region"
+    AWS_BUCKET="your-bucket-name"
+
+### CHANGE THE QUEUE DRIVER TO REDIS
+
+To change the queue driver to redis, add the following settings:
+
+    QUEUE_CONNECTION=redis
 
 ## RUN TESTS
 
