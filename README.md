@@ -69,6 +69,7 @@ To change the storage driver, add the following settings:
 To change the queue driver to redis, add the following settings:
 
     QUEUE_CONNECTION=redis
+    REDIS_HOST=redis
 
 ## RUN TESTS
 
