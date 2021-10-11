@@ -109,6 +109,8 @@ class Resource extends Model
                 ->insertGetId($record);
             $this->save();
         } else {
+            // Trim the record '_id' field if it exists.
+            unset($record['_id']);
             DB::connection('mongodb')->table('metadata_records')
                 ->where('_id', $this->external_metadata_record_id)
                 ->update($record);
