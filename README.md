@@ -71,6 +71,23 @@ To change the queue driver to redis, add the following settings:
     QUEUE_CONNECTION=redis
     REDIS_HOST=redis
 
+### SET THE CACHE CONFIGURATION
+
+To set the cache configuration you need to change the following settings:
+
+    CACHE_TTL_SECONDS=3600
+
+The default cache TTL of all the values is 1hr. The max cache recommended TTL is 12hr.
+
+### EXTERNAL SERVICE CONFIGURATION
+
+To set the configuration for the third-party services (like SCiO or other):
+
+    SCIO_SERVICES_BASE_API_URL=https://scribe.api.dev2.scio.services/api
+    SCIO_SERVICES_CLIENT_ID=
+    SCIO_SERVICES_SECRET=
+    SCIO_CACHE_TOKEN_KEY=scio_token
+
 ## RUN TESTS
 
 To execute the test suites run:
