@@ -21,6 +21,7 @@ use App\Http\Controllers\API\v1\TeamResourcesThumbnailsController;
 use App\Http\Controllers\API\v1\Integrations\AgrovokController;
 use App\Http\Controllers\API\v1\Integrations\GridController;
 use App\Http\Controllers\API\v1\Integrations\DoiController;
+use App\Http\Controllers\API\v1\Integrations\LanguagesController;
 use Illuminate\Support\Facades\Route;
 
 // API v1
@@ -127,5 +128,6 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::get('integrations/agrovok', [AgrovokController::class, 'callAgrovok']);
         Route::get('integrations/grid', [GridController::class, 'callGrid']);
         Route::post('integrations/doi', [DoiController::class, 'checkDoi']);
+        Route::get('integrations/languages', [LanguagesController::class, 'getLanguages']);
     });
 });

@@ -16,7 +16,7 @@ class DOIValidator
     public function checkValidDoiProvider($doi)
     {
         // Check for a valid DOI provider.
-        $response = Http::timeout(env('REQUEST_TIMEOUT', 5))
+        $response = Http::timeout(env('REQUEST_TIMEOUT_SECONDS'))
             ->get("https://api.crossref.org/works/$doi/agency");
 
         if ($response->status() === HttpStatus::NOT_FOUND) {
@@ -41,7 +41,7 @@ class DOIValidator
             $url = "https://api.datacite.org/dois/application/vnd.datacite.datacite+json/$doi";
         }
 
-        $response = Http::timeout(env('REQUEST_TIMEOUT', 5))->get($url);
+        $response = Http::timeout(env('REQUEST_TIMEOUT_SECONDS'))->get($url);
         if ($response->failed()) {
             throw new Exception("Failed to get response from provider.");
         }
