@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Grid;
+namespace App\Http\Requests\SCiO\Grid;
 
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;

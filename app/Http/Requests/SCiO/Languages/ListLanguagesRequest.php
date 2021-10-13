@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Agrovok;
+namespace App\Http\Requests\SCiO\Languages;
 
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ListAgrovokKeywordsRequest extends FormRequest
+class ListLanguagesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,6 @@ class ListAgrovokKeywordsRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'search' => 'required|string'
-        ];
+        return [];
     }
 }
