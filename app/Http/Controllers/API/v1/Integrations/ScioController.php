@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SCiO\Agrovok\ListAgrovokKeywordsRequest;
 use App\Http\Requests\SCiO\Grid\ListGridItemsRequest;
 use App\Http\Requests\SCiO\Languages\ListLanguagesRequest;
+use App\Http\Requests\SCiO\Mimetypes\GetMimetypeRequest;
 use App\Utilities\SCIO\TokenGenerator;
 use Cache;
 use Exception;
@@ -26,7 +27,7 @@ class ScioController extends Controller
 
         $search = $request->search;
 
-        $response = Http::timeout(5)
+        $response = Http::timeout(env('REQUEST_TIMEOUT_SECONDS'))
             ->acceptJson()
             ->asJson()
             ->withToken($token)
@@ -39,7 +40,7 @@ class ScioController extends Controller
         // Unwrap the outer array.
         $json = $response->json()[0];
 
-        return $json;
+        return response()->json($json);
     }
 
     public function gridAutocomplete(ListGridItemsRequest $request)
@@ -55,7 +56,7 @@ class ScioController extends Controller
 
         $search = $request->search;
 
-        $response = Http::timeout(5)
+        $response = Http::timeout(env('REQUEST_TIMEOUT_SECONDS'))
             ->acceptJson()
             ->asJson()
             ->withToken($token)
@@ -67,10 +68,10 @@ class ScioController extends Controller
         // Unwrap the outer array.
         $json = $response->json()["data"];
 
-        return $json;
+        return response()->json($json);
     }
 
-    public function getLanguages(ListLanguagesRequest $request)
+    public function listLanguages(ListLanguagesRequest $request)
     {
         $generator = new TokenGenerator();
         $cacheKey = 'scio_languages';
@@ -87,7 +88,7 @@ class ScioController extends Controller
             return Cache::get($cacheKey);
         }
 
-        $response = Http::timeout(5)
+        $response = Http::timeout(env('REQUEST_TIMEOUT_SECONDS'))
             ->acceptJson()
             ->asJson()
             ->withToken($token)
@@ -97,6 +98,29 @@ class ScioController extends Controller
 
         Cache::put($cacheKey, $json, $ttl);
 
-        return $json;
+        return response()->json($json);
+    }
+
+    public function getMimetype(GetMimetypeRequest $request)
+    {
+        $generator = new TokenGenerator();
+        $url = env('SCIO_SERVICES_BASE_API_URL') . '/vocabularies/resolvemimetypes';
+
+        try {
+            $token = $generator->getToken();
+        } catch (Exception $ex) {
+            throw $ex;
+        }
+
+        $response = Http::timeout(env('REQUEST_TIMEOUT_SECONDS'))
+            ->acceptJson()
+            ->asJson()
+            ->withToken($token)
+            ->post($url, $request->all());
+
+        $json = $response->json('response');
+        $statusCode = $response->json('code');
+
+        return response()->json($json, $statusCode);
     }
 }
