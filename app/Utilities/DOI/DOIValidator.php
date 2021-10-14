@@ -34,6 +34,10 @@ class DOIValidator
 
     public function matchesTitle($doi, $title, $provider)
     {
+        if (empty($title)) {
+            return false;
+        }
+
         $url = '';
         if ($provider === self::PROVIDER_CROSSREF) {
             $url = "https://api.crossref.org/works/$doi";
@@ -63,10 +67,6 @@ class DOIValidator
     {
         if (empty($doi)) {
             throw new Exception('An empty DOI was provided.');
-        }
-
-        if (empty($title)) {
-            throw new Exception('No resource title was provided.');
         }
 
         $provider = $this->checkValidDoiProvider($doi);
