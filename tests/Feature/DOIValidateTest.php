@@ -78,4 +78,22 @@ class DOIValidateTest extends TestCase
             'matchesTitle' => false
         ], $data);
     }
+
+    /**
+     * @test
+     */
+    public function a_doi_without_a_title_can_be_validated()
+    {
+        $doi = "10.7910/dvn/26496";
+        $title = "";
+
+        $validator = new DOIValidator();
+        $data = $validator->validate($doi, $title);
+
+        $this->assertEquals([
+            'provider' => DOIValidator::PROVIDER_DATACITE,
+            'verified' => true,
+            'matchesTitle' => false
+        ], $data);
+    }
 }
