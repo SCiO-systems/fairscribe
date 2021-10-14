@@ -37,9 +37,16 @@ class TokenGenerator
         }
 
         // Get the response.
-        $json = $response->json('response');
-        $accessToken = $json["access_token"];
-        $expiresIn = $json["expires_in"];
+        $accessToken = $response->json('response.access_token');
+        $expiresIn = $response->json('response.expires_in');
+
+        if (empty($accessToken)) {
+            throw new Exception('Failed to get access token.');
+        }
+
+        if (empty($expiresIn)) {
+            throw new Exception('Failed to get token expiration date.');
+        }
 
         if (!empty($accessToken)) {
             $ttl = env('CACHE_TTL_SECONDS');
