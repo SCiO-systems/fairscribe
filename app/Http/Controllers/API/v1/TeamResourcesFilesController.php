@@ -50,8 +50,6 @@ class TeamResourcesFilesController extends Controller
                 'filename' => $file->getClientOriginalName(),
                 'path' => "$directory/$name",
                 'pii_check' => PIIStatus::PENDING,
-                'extension' => $file->extension(),
-                'mimetype' => $file->getMimeType()
             ]);
         }
 

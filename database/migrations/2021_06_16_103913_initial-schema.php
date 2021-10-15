@@ -221,8 +221,6 @@ class InitialSchema extends Migration
                 ->onDelete('cascade');
             $table->string('filename');
             $table->string('path');
-            $table->string('extension');
-            $table->string('mimetype');
             $table->enum('pii_check', PIIStatus::getValues())->default(PIIStatus::PENDING);
             $table->string('pii_check_identifier')->nullable();
             $table->timestamps();
@@ -235,8 +233,6 @@ class InitialSchema extends Migration
                 ->onDelete('cascade');
             $table->string('filename');
             $table->string('path');
-            $table->string('extension');
-            $table->string('mimetype');
             $table->enum('pii_check', PIIStatus::getValues())->default(PIIStatus::PENDING);
             $table->string('pii_check_identifier')->nullable();
             $table->timestamps();

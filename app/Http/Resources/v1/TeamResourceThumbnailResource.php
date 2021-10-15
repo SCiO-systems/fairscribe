@@ -19,8 +19,6 @@ class TeamResourceThumbnailResource extends JsonResource
             'id' => $this->id,
             'path' => $this->path,
             'filename' => $this->filename,
-            'extension' => $this->extension,
-            'mime_type' => $this->mimetype,
             'pii_check' => $this->pii_check,
             'url' => Storage::temporaryUrl($this->path, now()->addHours(24)),
         ];
