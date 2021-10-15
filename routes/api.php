@@ -131,5 +131,6 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::post('integrations/doi', [DoiController::class, 'checkDoi']);
         Route::get('integrations/languages', [ScioController::class, 'listLanguages']);
         Route::post('integrations/mimetypes', [ScioController::class, 'getMimetype']);
+        Route::get('integrations/vocabularies', [ScioController::class, 'listVocabularies']);
     });
 });
