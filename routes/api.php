@@ -126,8 +126,6 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::apiResource('teams.collections.resources', TeamCollectionResourcesController::class);
 
         // --- THIRD PARTY SERVICE INTEGRATIONS ---
-        Route::get('integrations/agrovok', [ScioController::class, 'agrovokAutocomplete']);
-        Route::get('integrations/grid', [ScioController::class, 'gridAutocomplete']);
         Route::post('integrations/doi', [DoiController::class, 'checkDoi']);
         Route::get('integrations/languages', [ScioController::class, 'listLanguages']);
         Route::post('integrations/mimetypes', [ScioController::class, 'getMimetype']);

@@ -28,57 +28,6 @@ class ScioController extends Controller
         $this->baseURI = env('SCIO_SERVICES_BASE_API_URL');
     }
 
-    public function agrovokAutocomplete(ListAgrovokKeywordsRequest $request)
-    {
-        try {
-            $generator = new TokenGenerator();
-            $this->token = $generator->getToken();
-        } catch (Exception $ex) {
-            throw $ex;
-        }
-
-        $search = $request->search;
-
-        $response = Http::timeout(env('REQUEST_TIMEOUT_SECONDS'))
-            ->acceptJson()
-            ->asJson()
-            ->withToken($this->token)
-            ->asForm()
-            ->get("$this->baseURI/autocompleteagrovoc", [
-                'autocomplete' => $search,
-                'language' => 'en'
-            ]);
-
-        // Unwrap the outer array.
-        $json = $response->json()[0];
-
-        return response()->json($json);
-    }
-
-    public function gridAutocomplete(ListGridItemsRequest $request)
-    {
-        try {
-            $generator = new TokenGenerator();
-            $this->token = $generator->getToken();
-        } catch (Exception $ex) {
-            throw $ex;
-        }
-
-        $search = $request->search;
-
-        $response = Http::timeout(env('REQUEST_TIMEOUT_SECONDS'))
-            ->acceptJson()
-            ->asJson()
-            ->withToken($this->token)
-            ->asForm()
-            ->get("$this->baseURI/autocompletegrid", ['data' => $search]);
-
-        // Unwrap the outer array.
-        $json = $response->json()["data"];
-
-        return response()->json($json);
-    }
-
     public function listLanguages(ListLanguagesRequest $request)
     {
         $cacheKey = 'scio_languages';
