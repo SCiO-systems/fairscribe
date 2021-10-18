@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\SCiO\Agrovok;
+namespace App\Http\Requests\SCiO\Vocabularies;
 
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ListAgrovokKeywordsRequest extends FormRequest
+class AutocompleteTermRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,8 @@ class ListAgrovokKeywordsRequest extends FormRequest
     public function rules()
     {
         return [
-            'search' => 'required|string'
+            'index' => 'string|required',
+            'term' => 'string|required'
         ];
     }
 }

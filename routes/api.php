@@ -130,5 +130,8 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::get('integrations/languages', [ScioController::class, 'listLanguages']);
         Route::post('integrations/mimetypes', [ScioController::class, 'getMimetype']);
         Route::get('integrations/vocabularies', [ScioController::class, 'listVocabularies']);
+        Route::get('integrations/vocabularies/autocomplete', [
+            ScioController::class, 'autocompleteTerm'
+        ]);
     });
 });
