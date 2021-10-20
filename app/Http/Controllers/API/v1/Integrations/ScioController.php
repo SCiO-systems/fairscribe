@@ -7,6 +7,7 @@ use App\Http\Requests\SCiO\Languages\ListLanguagesRequest;
 use App\Http\Requests\SCiO\Mimetypes\GetMimetypeRequest;
 use App\Http\Requests\SCiO\Vocabularies\ListVocabulariesRequest;
 use App\Http\Requests\SCiO\Vocabularies\AutocompleteTermRequest;
+use App\Http\Requests\SCiO\Vocabularies\ExtractTermsRequest;
 use App\Utilities\SCIO\TokenGenerator;
 use Cache;
 use Http;
@@ -100,6 +101,21 @@ class ScioController extends Controller
             ]);
 
         $json = $response->json('response.suggestions');
+
+        return response()->json($json, $response->status());
+    }
+
+    public function extractTerms(ExtractTermsRequest $request)
+    {
+        $response = Http::timeout(env('REQUEST_TIMEOUT_SECONDS'))
+            ->acceptJson()
+            ->asJson()
+            ->withToken($this->token)
+            ->post("$this->baseURI/vocabularies/extractterms", [
+                'artifact' => $request->text,
+            ]);
+
+        $json = $response->json('extracted_terms');
 
         return response()->json($json, $response->status());
     }

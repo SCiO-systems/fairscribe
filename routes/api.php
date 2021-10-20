@@ -127,11 +127,10 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
 
         // --- THIRD PARTY SERVICE INTEGRATIONS ---
         Route::post('integrations/doi', [DoiController::class, 'checkDoi']);
-        Route::get('integrations/languages', [ScioController::class, 'listLanguages']);
         Route::post('integrations/mimetypes', [ScioController::class, 'getMimetype']);
+        Route::get('integrations/languages', [ScioController::class, 'listLanguages']);
         Route::get('integrations/vocabularies', [ScioController::class, 'listVocabularies']);
-        Route::get('integrations/vocabularies/autocomplete', [
-            ScioController::class, 'autocompleteTerm'
-        ]);
+        Route::get('integrations/vocabularies/autocomplete', [ScioController::class, 'autocompleteTerm']);
+        Route::get('integrations/vocabularies/terms/extract', [ScioController::class, 'extractTerms']);
     });
 });
