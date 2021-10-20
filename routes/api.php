@@ -126,11 +126,17 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::apiResource('teams.collections.resources', TeamCollectionResourcesController::class);
 
         // --- THIRD PARTY SERVICE INTEGRATIONS ---
-        Route::post('integrations/doi', [DoiController::class, 'checkDoi']);
-        Route::post('integrations/mimetypes', [ScioController::class, 'getMimetype']);
-        Route::get('integrations/languages', [ScioController::class, 'listLanguages']);
-        Route::get('integrations/vocabularies', [ScioController::class, 'listVocabularies']);
-        Route::get('integrations/vocabularies/autocomplete', [ScioController::class, 'autocompleteTerm']);
-        Route::get('integrations/vocabularies/terms/extract', [ScioController::class, 'extractTerms']);
+        Route::prefix('integrations')->group(function () {
+            Route::post('doi', [DoiController::class, 'checkDoi']);
+            Route::post('mimetypes', [ScioController::class, 'getMimetype']);
+            Route::get('languages', [ScioController::class, 'listLanguages']);
+
+            // Vocabularies specific stuff.
+            Route::prefix('vocabularies')->group(function () {
+                Route::get('/', [ScioController::class, 'listVocabularies']);
+                Route::get('autocomplete', [ScioController::class, 'autocompleteTerm']);
+                Route::post('terms/extract', [ScioController::class, 'extractTerms']);
+            });
+        });
     });
 });
