@@ -18,10 +18,7 @@ use App\Http\Controllers\API\v1\UserStatsController;
 use App\Http\Controllers\API\v1\TeamResourcesController;
 use App\Http\Controllers\API\v1\TeamResourcesFilesController;
 use App\Http\Controllers\API\v1\TeamResourcesThumbnailsController;
-use App\Http\Controllers\API\v1\Integrations\AgrovokController;
-use App\Http\Controllers\API\v1\Integrations\GridController;
 use App\Http\Controllers\API\v1\Integrations\DoiController;
-use App\Http\Controllers\API\v1\Integrations\LanguagesController;
 use App\Http\Controllers\API\v1\Integrations\ScioController;
 use Illuminate\Support\Facades\Route;
 
@@ -136,6 +133,11 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
                 Route::get('/', [ScioController::class, 'listVocabularies']);
                 Route::get('autocomplete', [ScioController::class, 'autocompleteTerm']);
                 Route::post('terms/extract', [ScioController::class, 'extractTerms']);
+            });
+
+            // Projects.
+            Route::prefix('projects')->group(function () {
+                Route::get('/', [ScioController::class, 'listProjects']);
             });
         });
     });

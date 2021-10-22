@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\v1\Integrations;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SCiO\Projects\ListProjectsRequest;
 use App\Http\Requests\SCiO\Languages\ListLanguagesRequest;
 use App\Http\Requests\SCiO\Mimetypes\GetMimetypeRequest;
 use App\Http\Requests\SCiO\Vocabularies\ListVocabulariesRequest;
@@ -116,6 +117,28 @@ class ScioController extends Controller
             ]);
 
         $json = $response->json('extracted_terms');
+
+        return response()->json($json, $response->status());
+    }
+
+    public function listProjects(ListProjectsRequest $request)
+    {
+        $cacheKey = 'scio_projects';
+        if (Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
+
+        $response = Http::timeout(env('REQUEST_TIMEOUT_SECONDS'))
+            ->acceptJson()
+            ->asJson()
+            ->withToken($this->token)
+            ->get("$this->baseURI/projects/resolveprojects");
+
+        $json = $response->json('original.response.data');
+
+        if ($response->ok()) {
+            Cache::put($cacheKey, $json, $this->cacheTtl);
+        }
 
         return response()->json($json, $response->status());
     }
