@@ -61,9 +61,10 @@ class TeamResourcesThumbnailsController extends Controller
         if ($saved) {
             $resourceThumbnail = ResourceThumbnail::create([
                 'resource_id' => $resource->id,
+                'user_id' => $request->user()->id,
                 'filename' => $file->getClientOriginalName(),
                 'path' => "$directory/$name",
-                'pii_check' => PIIStatus::PENDING,
+                'pii_check_status' => PIIStatus::PENDING,
             ]);
         }
 

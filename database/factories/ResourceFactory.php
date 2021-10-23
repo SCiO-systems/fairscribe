@@ -32,7 +32,7 @@ class ResourceFactory extends Factory
             'status' => $this->faker->randomElement([
                 'draft', 'under_preparation', 'under_review', 'approved', 'published'
             ]),
-            'pii_check' => $this->faker->randomElement(PIIStatus::getValues()),
+            'pii_check_status' => $this->faker->randomElement(PIIStatus::getValues()),
             'findable_score' => $this->faker->randomFloat(2, 0, 10),
             'accessible_score' => $this->faker->randomFloat(2, 0, 10),
             'interoperable_score' => $this->faker->randomFloat(2, 0, 10),

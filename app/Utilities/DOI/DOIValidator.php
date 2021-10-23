@@ -8,15 +8,21 @@ use Http;
 
 class DOIValidator
 {
-
     public const PROVIDER_CROSSREF = 'crossref';
     public const PROVIDER_DATACITE = 'datacite';
     public const VALID_PROVIDERS = [self::PROVIDER_CROSSREF, self::PROVIDER_DATACITE];
 
+    protected $requestTimeout;
+
+    public function __construct()
+    {
+        $this->requestTimeout = env('REQUEST_TIMEOUT_SECONDS', 10);
+    }
+
     public function checkValidDoiProvider($doi)
     {
         // Check for a valid DOI provider.
-        $response = Http::timeout(env('REQUEST_TIMEOUT_SECONDS'))
+        $response = Http::timeout($this->requestTimeout)
             ->get("https://api.crossref.org/works/$doi/agency");
 
         if ($response->status() === HttpStatus::NOT_FOUND) {
@@ -45,7 +51,7 @@ class DOIValidator
             $url = "https://api.datacite.org/dois/application/vnd.datacite.datacite+json/$doi";
         }
 
-        $response = Http::timeout(env('REQUEST_TIMEOUT_SECONDS'))->get($url);
+        $response = Http::timeout($this->requestTimeout)->get($url);
         if ($response->failed()) {
             throw new Exception("Failed to get response from provider.");
         }

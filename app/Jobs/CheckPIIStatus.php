@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Enums\PIIStatus;
 use App\Models\ResourceFile;
-use App\Models\ResourceThumbnail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,9 +11,11 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class ProcessPIIFileCheck implements ShouldQueue, ShouldBeUnique
+class CheckPIIStatus implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    protected $limit = 30; // how many files to check at a time.
 
     /**
      * Create a new job instance.
@@ -23,14 +24,14 @@ class ProcessPIIFileCheck implements ShouldQueue, ShouldBeUnique
      */
     public function __construct()
     {
-        $this->files = ResourceFile::where('pii_check', PIIStatus::PENDING)
-            ->orderBy('id', 'asc')
-            ->limit(20)
-            ->get();
+        //
+        // 1. Fetch the files that need to be processed by 10 at a time.
+        // 2. Send the files (using presigned urls that expire in 1 day) for processing and get the id store in DB.
+        // 3.
 
-        $this->thumbnails = ResourceThumbnail::where('pii_check', PIIStatus::PENDING)
+        $this->files = ResourceFile::where('pii_check_status', PIIStatus::PENDING)
             ->orderBy('id', 'asc')
-            ->limit(20)
+            ->limit(10)
             ->get();
     }
 

@@ -7,6 +7,7 @@ use BenSampo\Enum\Enum;
 final class PIIStatus extends Enum
 {
     const PENDING = 'pending';
-    const PASSED = 'pass';
-    const FAILED = 'fail';
+    const PASSED = 'passed';
+    const FAILED = 'failed';
+    const TIMEOUT = 'timeout';
 }

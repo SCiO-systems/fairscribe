@@ -19,7 +19,7 @@ class TeamResourceFileResource extends JsonResource
             'id' => $this->id,
             'path' => $this->path,
             'filename' => $this->filename,
-            'pii_check' => $this->pii_check,
+            'pii_check_status' => $this->pii_check_status,
             'url' => Storage::url($this->path),
         ];
     }

@@ -19,6 +19,7 @@ class ScioController extends Controller
     protected $token;
     protected $cacheTtl;
     protected $baseURI;
+    protected $requestTimeout;
 
     public function __construct()
     {
@@ -26,6 +27,7 @@ class ScioController extends Controller
         $this->token = $generator->getToken();
         $this->cacheTtl = env('CACHE_TTL_SECONDS');
         $this->baseURI = env('SCIO_SERVICES_BASE_API_URL');
+        $this->requestTimeout = env('REQUEST_TIMEOUT_SECONDS', 10);
     }
 
     public function listLanguages(ListLanguagesRequest $request)
@@ -35,7 +37,7 @@ class ScioController extends Controller
             return Cache::get($cacheKey);
         }
 
-        $response = Http::timeout(env('REQUEST_TIMEOUT_SECONDS'))
+        $response = Http::timeout($this->requestTimeout)
             ->acceptJson()
             ->asJson()
             ->withToken($this->token)
@@ -52,7 +54,7 @@ class ScioController extends Controller
 
     public function getMimetype(GetMimetypeRequest $request)
     {
-        $response = Http::timeout(env('REQUEST_TIMEOUT_SECONDS'))
+        $response = Http::timeout($this->requestTimeout)
             ->acceptJson()
             ->asJson()
             ->withToken($this->token)
@@ -71,7 +73,7 @@ class ScioController extends Controller
             return Cache::get($cacheKey);
         }
 
-        $response = Http::timeout(env('REQUEST_TIMEOUT_SECONDS'))
+        $response = Http::timeout($this->requestTimeout)
             ->acceptJson()
             ->asJson()
             ->withToken($this->token)
@@ -91,7 +93,7 @@ class ScioController extends Controller
 
     public function autocompleteTerm(AutocompleteTermRequest $request)
     {
-        $response = Http::timeout(env('REQUEST_TIMEOUT_SECONDS'))
+        $response = Http::timeout($this->requestTimeout)
             ->acceptJson()
             ->asJson()
             ->withToken($this->token)
@@ -108,7 +110,7 @@ class ScioController extends Controller
 
     public function extractTerms(ExtractTermsRequest $request)
     {
-        $response = Http::timeout(env('REQUEST_TIMEOUT_SECONDS'))
+        $response = Http::timeout($this->requestTimeout)
             ->acceptJson()
             ->asJson()
             ->withToken($this->token)
@@ -128,7 +130,7 @@ class ScioController extends Controller
             return Cache::get($cacheKey);
         }
 
-        $response = Http::timeout(env('REQUEST_TIMEOUT_SECONDS'))
+        $response = Http::timeout($this->requestTimeout)
             ->acceptJson()
             ->asJson()
             ->withToken($this->token)

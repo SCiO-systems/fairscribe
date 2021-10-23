@@ -11,6 +11,7 @@ use App\Http\Resources\v1\TeamResourceFileResource;
 use App\Models\Resource;
 use App\Models\Team;
 use App\Http\Controllers\Controller;
+use App\Jobs\CreatePIICheck;
 use App\Models\ResourceFile;
 use Illuminate\Support\Str;
 use Storage;
@@ -47,13 +48,15 @@ class TeamResourcesFilesController extends Controller
         if ($saved) {
             $resourceFile = ResourceFile::create([
                 'resource_id' => $resource->id,
+                'user_id' => $request->user()->id,
                 'filename' => $file->getClientOriginalName(),
                 'path' => "$directory/$name",
-                'pii_check' => PIIStatus::PENDING,
+                'pii_check_status' => PIIStatus::PENDING,
             ]);
-        }
 
-        // TODO: Dispatch job for PII check.
+            // Dispatch job for PII check.
+            CreatePIICheck::dispatch($resourceFile);
+        }
 
         return new TeamResourceFileResource($resourceFile);
     }

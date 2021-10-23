@@ -5,6 +5,7 @@ namespace App\Utilities\SCIO;
 use Cache;
 use Exception;
 use Http;
+use Log;
 
 class TokenGenerator
 {
@@ -12,6 +13,8 @@ class TokenGenerator
     protected $clientID;
     protected $clientSecret;
     protected $cacheKey;
+    protected $requestTimeout;
+    protected $cacheTtl;
 
     public function __construct()
     {
@@ -19,6 +22,8 @@ class TokenGenerator
         $this->clientSecret = env('SCIO_SERVICES_SECRET');
         $this->baseURI = env('SCIO_SERVICES_BASE_API_URL');
         $this->cacheKey = env('SCIO_CACHE_TOKEN_KEY');
+        $this->requestTimeout = env('REQUEST_TIMEOUT_SECONDS', 10);
+        $this->cacheTtl = env('CACHE_TTL_SECONDS', 3600);
     }
 
     public function getToken()
@@ -27,8 +32,9 @@ class TokenGenerator
             return Cache::get($this->cacheKey);
         }
 
-        $response = Http::timeout(env('REQUEST_TIMEOUT_SECONDS'))->get(
-            "$this->baseURI/generatetoken",
+        $tokenUrl = $this->baseURI . "/generatetoken";
+        $response = Http::timeout($this->requestTimeout)->get(
+            $tokenUrl,
             "client_id=$this->clientID&client_secret=$this->clientSecret"
         );
 
@@ -49,9 +55,9 @@ class TokenGenerator
         }
 
         if (!empty($accessToken)) {
-            $ttl = env('CACHE_TTL_SECONDS');
-            if (!empty($expiresIn) && $expiresIn > env('CACHE_TTL_SECONDS')) {
-                $ttl = $expiresIn - env('CACHE_TTL_SECONDS');
+            $ttl = $this->cacheTtl;
+            if (!empty($expiresIn) && $expiresIn > $this->cacheTtl) {
+                $ttl = $expiresIn - $this->cacheTtl;
             }
             Cache::put($this->cacheKey, $accessToken, $ttl);
         }

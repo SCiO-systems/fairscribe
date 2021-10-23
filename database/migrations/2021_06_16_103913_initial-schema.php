@@ -157,7 +157,7 @@ class InitialSchema extends Migration
             $table->string('type')->nullable();
             $table->string('subtype')->nullable();
             $table->enum('status', ResourceStatus::getValues())->default(ResourceStatus::DRAFT);
-            $table->enum('pii_check', PIIStatus::getValues())->default(PIIStatus::PENDING);
+            $table->enum('pii_check_status', PIIStatus::getValues())->default(PIIStatus::PENDING);
             $table->float('findable_score')->default(0);
             $table->float('accessible_score')->default(0);
             $table->float('interoperable_score')->default(0);
@@ -219,10 +219,15 @@ class InitialSchema extends Migration
             $table->foreignId('resource_id')
                 ->constrained('resources')
                 ->onDelete('cascade');
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained('users')
+                ->onDelete('set null');
             $table->string('filename');
             $table->string('path');
-            $table->enum('pii_check', PIIStatus::getValues())->default(PIIStatus::PENDING);
-            $table->string('pii_check_identifier')->nullable();
+            $table->string('pii_check_status')->default(PIIStatus::PENDING);
+            $table->string('pii_check_status_identifier')->nullable()->default(null);
+            $table->timestamp('pii_terms_accepted_at')->nullable()->default(null);
             $table->timestamps();
         });
 
@@ -231,10 +236,15 @@ class InitialSchema extends Migration
             $table->foreignId('resource_id')
                 ->constrained('resources')
                 ->onDelete('cascade');
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained('users')
+                ->onDelete('set null');
             $table->string('filename');
             $table->string('path');
-            $table->enum('pii_check', PIIStatus::getValues())->default(PIIStatus::PENDING);
-            $table->string('pii_check_identifier')->nullable();
+            $table->string('pii_check_status')->default(PIIStatus::PENDING);
+            $table->string('pii_check_status_identifier')->nullable()->default(null);
+            $table->timestamp('pii_terms_accepted_at')->nullable()->default(null);
             $table->timestamps();
         });
     }
