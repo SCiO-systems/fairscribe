@@ -79,6 +79,15 @@ To set the cache configuration you need to change the following settings:
 
 The default cache TTL of all the values is 1hr. The max cache recommended TTL is 12hr.
 
+### CONFIGURE PRESIGNED URLS
+
+To set the expiration for all generated pre-signed urls change the following setting:
+
+    PRESIGNED_URL_TTL_IN_HOURS=24
+
+**IMPORTANT**: This is used for PII check job as well as displaying the thumbnails and maybe in other places as well
+so make sure there is enough time for processing to happen or this may cause unexpected issues.
+
 ### EXTERNAL SERVICE CONFIGURATION
 
 To set the configuration for the third-party services (like SCiO or other):
