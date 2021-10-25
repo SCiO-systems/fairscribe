@@ -153,7 +153,7 @@ class InitialSchema extends Migration
             $table->string('version');
             $table->string('external_metadata_record_id')->nullable();
             $table->string('title');
-            $table->string('description');
+            $table->text('description');
             $table->string('type')->nullable();
             $table->string('subtype')->nullable();
             $table->enum('status', ResourceStatus::getValues())->default(ResourceStatus::DRAFT);
