@@ -116,9 +116,7 @@ class ScioController extends Controller
                 'artifact' => $request->text,
             ]);
 
-        $json = $response->json('extracted_terms');
-
-        return response()->json($json, $response->status());
+        return response()->json($response->json('response.data'), $response->status());
     }
 
     public function listProjects(ListProjectsRequest $request)
@@ -134,7 +132,7 @@ class ScioController extends Controller
             ->withToken($this->token)
             ->get("$this->baseURI/projects/resolveprojects");
 
-        $json = $response->json('original.response.data');
+        $json = $response->json('response.data');
 
         if ($response->ok()) {
             Cache::put($cacheKey, $json, $this->cacheTtl);
