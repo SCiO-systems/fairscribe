@@ -8,6 +8,7 @@ use App\Models\Resource;
 use App\Models\Team;
 use App\Models\User;
 use DB;
+use Exception;
 use Faker\Generator;
 use Illuminate\Database\Seeder;
 use Illuminate\Container\Container;
@@ -70,7 +71,13 @@ class InitialSeeder extends Seeder
             ->count(5)
             ->create();
 
-        $record = Storage::disk('local')->get('record.json');
+        $recordNotFound = false;
+        $record = null;
+        try {
+            $record = Storage::disk('local')->get('record.json');
+        } catch (Exception $ex) {
+            $recordNotFound = true;
+        }
 
         $team = Team::factory(['owner_id' => $user->id])
             ->count(1)
@@ -82,9 +89,11 @@ class InitialSeeder extends Seeder
             'team_id' => $team->first()->id,
         ])->count(5)
             ->create()
-            ->each(function ($resource) use ($record) {
-                $json = json_decode($record, true);
-                $resource->setOrCreateMetadataRecord($json);
+            ->each(function ($resource) use ($record, $recordNotFound) {
+                if ($recordNotFound === false) {
+                    $json = json_decode($record, true);
+                    $resource->setOrCreateMetadataRecord($json);
+                }
             });
 
         // Create teams.
