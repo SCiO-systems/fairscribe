@@ -14,6 +14,15 @@ The project requires **[PHP 7.4/8.0](https://www.php.net/manual/en/install.php)*
 
     cd scio-datascribe-backend && composer install
 
+## BUILD THE DOCKER IMAGE
+
+    export WWWGROUP=${WWWGROUP:-$(id -g)}
+    cd docker && docker build -t noeticblue/laravelsail:php80-composer-mongodb . \
+        --build-arg WWWGROUP=$WWWGROUP \
+        --platform linux/amd64
+
+**NOTE**: Works on Macbooks with ARM processors (M1/M1+) series as well.
+
 ## CONFIGURE
 
     cp .env.example .env
