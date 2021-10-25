@@ -12,6 +12,7 @@ use App\Http\Requests\SCiO\Vocabularies\ExtractTermsRequest;
 use App\Utilities\SCIO\TokenGenerator;
 use Cache;
 use Http;
+use Log;
 
 class ScioController extends Controller
 {
@@ -60,10 +61,7 @@ class ScioController extends Controller
             ->withToken($this->token)
             ->post("$this->baseURI/vocabularies/resolvemimetypes", $request->all());
 
-        $json = $response->json('response');
-        $statusCode = $response->json('code');
-
-        return response()->json($json, $statusCode);
+        return response()->json($response->json('response'), $response->status());
     }
 
     public function listVocabularies(ListVocabulariesRequest $request)
