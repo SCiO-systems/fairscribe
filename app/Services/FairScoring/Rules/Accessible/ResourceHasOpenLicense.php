@@ -7,8 +7,8 @@ use App\Services\FairScoring\Rules\BaseRule;
 
 class ResourceHasOpenLicense extends BaseRule implements FairScoreRule
 {
-    public static $metadataCondition = '"uses Open Source or CC0 or CC BY license"';
-    public static $scoring = '2';
+    public static $metadataCondition = 'RESOURCE has Open Source or CC0 or CC-BY license';
+    public static $scoring = '2 points additional to A';
     public static $recommendation = 'Use License wizard to select an appropriate license';
 
     public static function calculateScore($metadataRecord)

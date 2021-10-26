@@ -8,8 +8,8 @@ use App\Services\FairScoring\Rules\BaseRule;
 
 class ResourcePassesPIICheck extends BaseRule implements FairScoreRule
 {
-    public static $metadataCondition = '"The resource complies with basic Personal Information Protection principles"';
-    public static $scoring = '2';
+    public static $metadataCondition = 'RESOURCE complies with basic Personal Information Protection principles';
+    public static $scoring = '2 points';
     public static $recommendation = 'Run the PII check service and accordingly handle the reported PII issues';
 
     public static function calculateScore($metadataRecord)

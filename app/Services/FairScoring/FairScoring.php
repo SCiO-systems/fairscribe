@@ -28,6 +28,8 @@ use App\Services\FairScoring\Rules\Findable\DatasetHasIssuedDate;
 use App\Services\FairScoring\Rules\Findable\DatasetHasTitle;
 use App\Services\FairScoring\Rules\Findable\KeywordsAreControlled;
 use App\Services\FairScoring\Rules\Findable\NoControlledKeywords;
+use App\Services\FairScoring\Rules\Findable\ResourceHasAtLeastOneURL;
+use App\Services\FairScoring\Rules\Findable\ResourceHasAuthors;
 use App\Services\FairScoring\Rules\Findable\SpatialCoverageDefined;
 use App\Services\FairScoring\Rules\Interoperable\DatasetHasAnnotatedData;
 use App\Services\FairScoring\Rules\Interoperable\DatasetHasOpenFormats;
@@ -52,8 +54,70 @@ class FairScoring
     private $record = null;
 
     private $rules = [
-        'document' => [],
-        'digital_asset' => [],
+        'document' => [
+            FairSection::FINDABLE => [
+                ResourceHasAtLeastOneURL::class,
+                AtLeastOneUrlIsHandler::class,
+                AtLeastOneHandlerIsDOI::class,
+                ResourceHasTitle::class,
+                ResourceHasDescription::class,
+                ResourceHasAuthors::class,
+                AtLeastOneAuthorVerified::class,
+                ResourceHasIssuedDate::class,
+                KeywordsAreControlled::class,
+                NoControlledKeywords::class,
+                SpatialCoverageDefined::class,
+            ],
+            FairSection::ACCESSIBLE => [
+                ResourceHasLicenseOrTermsOfUse::class,
+                ResourceHasOpenLicense::class,
+                ResourceHasClosedLicense::class,
+                ResourceHasUrlsOfPhysicalFiles::class
+            ],
+            FairSection::INTEROPERABLE => [
+                ResourceHasOpenLicense::class,
+                ResourceHasProprietaryFormats::class,
+                ResourceHasResourceMetadata::class,
+            ],
+            FairSection::REUSABLE => [
+                ResourcePassesPIICheck::class,
+                ReusableResourceHasOpenLicense::class,
+                ResourceHasCCBYNCLicense::class,
+                ResourceHasReusability::class,
+            ],
+        ],
+        'digital_asset' => [
+            FairSection::FINDABLE => [
+                ResourceHasAtLeastOneURL::class,
+                AtLeastOneUrlIsHandler::class,
+                AtLeastOneHandlerIsDOI::class,
+                ResourceHasTitle::class,
+                ResourceHasDescription::class,
+                ResourceHasAuthors::class,
+                AtLeastOneAuthorVerified::class,
+                ResourceHasIssuedDate::class,
+                KeywordsAreControlled::class,
+                NoControlledKeywords::class,
+                SpatialCoverageDefined::class,
+            ],
+            FairSection::ACCESSIBLE => [
+                ResourceHasLicenseOrTermsOfUse::class,
+                ResourceHasOpenLicense::class,
+                ResourceHasClosedLicense::class,
+                ResourceHasUrlsOfPhysicalFiles::class
+            ],
+            FairSection::INTEROPERABLE => [
+                ResourceHasOpenLicense::class,
+                ResourceHasProprietaryFormats::class,
+                ResourceHasResourceMetadata::class,
+            ],
+            FairSection::REUSABLE => [
+                ResourcePassesPIICheck::class,
+                ReusableResourceHasOpenLicense::class,
+                ResourceHasCCBYNCLicense::class,
+                ResourceHasReusability::class,
+            ],
+        ],
         'dataset' => [
             FairSection::FINDABLE => [
                 DatasetHasAtLeastOneURL::class,

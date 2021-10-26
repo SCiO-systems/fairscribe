@@ -5,11 +5,11 @@ namespace App\Services\FairScoring\Rules\Findable;
 use App\Services\FairScoring\Interfaces\FairScoreRule;
 use App\Services\FairScoring\Rules\BaseRule;
 
-class ResourceHasTitle extends BaseRule implements FairScoreRule
+class ResourceHasAuthors extends BaseRule implements FairScoreRule
 {
-    public static $metadataCondition = 'RESOURCE has TITLE defined in metadata';
-    public static $scoring = '0.125';
-    public static $recommendation = 'Provide a Resource Title';
+    public static $metadataCondition = 'RESOURCE has AUTHORS defined in metadata';
+    public static $scoring = '0.125 points ( =C )';
+    public static $recommendation = 'Define the Resource Authors';
 
     public static function calculateScore($metadataRecord)
     {
@@ -18,8 +18,8 @@ class ResourceHasTitle extends BaseRule implements FairScoreRule
 
     public static function meetsCondition($metadataRecord)
     {
-        if (!empty($title_array = data_get($metadataRecord, 'title'))) {
-            if (!empty(head($title_array)['value'])) {
+        if (!empty($authors_array = data_get($metadataRecord, 'authors'))) {
+            if (!empty(head($authors_array)['full_name'])) {
                 return true;
             }
         }

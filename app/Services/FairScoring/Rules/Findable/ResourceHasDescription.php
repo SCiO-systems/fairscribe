@@ -7,7 +7,7 @@ use App\Services\FairScoring\Rules\BaseRule;
 
 class ResourceHasDescription extends BaseRule implements FairScoreRule
 {
-    public static $metadataCondition = '"resource has DESCRIPTION"';
+    public static $metadataCondition = 'RESOURCE has DESCRIPTION defined in metadata';
     public static $scoring = '0.5';
     public static $recommendation = 'Provide a Resource Description';
 

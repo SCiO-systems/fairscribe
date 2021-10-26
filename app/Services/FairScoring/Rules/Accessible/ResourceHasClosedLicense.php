@@ -7,8 +7,8 @@ use App\Services\FairScoring\Rules\BaseRule;
 
 class ResourceHasClosedLicense extends BaseRule implements FairScoreRule
 {
-    public static $metadataCondition = '"use any other standard license"';
-    public static $scoring = '1';
+    public static $metadataCondition = 'RESOURCE has any other standard license';
+    public static $scoring = '1 point additional to A';
     public static $recommendation = 'Use License wizard to select an appropriate license';
 
     public static function calculateScore($metadataRecord)

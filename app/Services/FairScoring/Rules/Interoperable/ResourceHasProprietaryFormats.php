@@ -7,13 +7,13 @@ use App\Services\FairScoring\Rules\BaseRule;
 
 class ResourceHasProprietaryFormats extends BaseRule implements FairScoreRule
 {
-    public static $metadataCondition = '"if not then use formats that are proprietary, but can be recognized and used by freely available tools"';
-    public static $scoring = '0.5';
+    public static $metadataCondition = 'if not, RESOURCE files use formats that are proprietary, but can be recognized and used by freely available tools';
+    public static $scoring = '2 points';
     public static $recommendation = 'Avoid using proprietary formats when possible';
 
     public static function calculateScore($metadataRecord)
     {
-        return self::meetsCondition($metadataRecord) ? 0.5 : 0;
+        return self::meetsCondition($metadataRecord) ? 2 : 0;
     }
 
     public static function meetsCondition($metadataRecord)

@@ -7,13 +7,13 @@ use App\Services\FairScoring\Rules\BaseRule;
 
 class ResourceHasOpenFormats extends BaseRule implements FairScoreRule
 {
-    public static $metadataCondition = '"Make use ONLY of domain-relevant community open formats/standards"';
-    public static $scoring = '2';
+    public static $metadataCondition = 'RESOURCE files use ONLY domain-relevant community open formats';
+    public static $scoring = '3.5 points';
     public static $recommendation = 'Avoid using proprietary formats when possible';
 
     public static function calculateScore($metadataRecord)
     {
-        return self::meetsCondition($metadataRecord) ? 2 : 0;
+        return self::meetsCondition($metadataRecord) ? 3.5 : 0;
     }
 
     public static function meetsCondition($metadataRecord)

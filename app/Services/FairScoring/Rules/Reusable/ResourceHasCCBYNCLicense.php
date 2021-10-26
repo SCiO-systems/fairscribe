@@ -7,8 +7,8 @@ use App\Services\FairScoring\Rules\BaseRule;
 
 class ResourceHasCCBYNCLicense extends BaseRule implements FairScoreRule
 {
-    public static $metadataCondition = '"use CC BY NC"';
-    public static $scoring = '0.5';
+    public static $metadataCondition = 'If not, RESOURCE has CC-BY-NC license';
+    public static $scoring = '0.5 points';
     public static $recommendation = 'Use License wizard to select an appropriate license';
 
     public static function calculateScore($metadataRecord)

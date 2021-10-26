@@ -7,8 +7,8 @@ use App\Services\FairScoring\Rules\BaseRule;
 
 class ResourceHasIssuedDate extends BaseRule implements FairScoreRule
 {
-    public static $metadataCondition = '"resource has ISSUED DATE"';
-    public static $scoring = '0.25';
+    public static $metadataCondition = 'RESOURCE has ISSUED DATE defined in metadata';
+    public static $scoring = '0.25 points';
     public static $recommendation = 'Provide the Issued Date of the resource';
 
     public static function calculateScore($metadataRecord)
