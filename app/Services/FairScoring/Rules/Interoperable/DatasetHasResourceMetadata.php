@@ -18,7 +18,7 @@ class DatasetHasResourceMetadata extends BaseRule implements FairScoreRule
 
     public static function meetsCondition($metadataRecord)
     {
-        $relatedResources = data_get($metadataRecord, 'dataCORE.related_resources');
+        $relatedResources = data_get($metadataRecord, 'related_resources');
 
         foreach ($relatedResources as $related) {
             if (empty($related['id'])) {

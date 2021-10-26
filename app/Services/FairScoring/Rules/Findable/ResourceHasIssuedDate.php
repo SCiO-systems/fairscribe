@@ -18,7 +18,7 @@ class ResourceHasIssuedDate extends BaseRule implements FairScoreRule
 
     public static function meetsCondition($metadataRecord)
     {
-        if (!empty(data_get($metadataRecord, 'dataCORE.release_date'))) {
+        if (!empty(data_get($metadataRecord, 'release_date'))) {
             return true;
         }
         return false;

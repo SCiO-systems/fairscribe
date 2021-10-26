@@ -18,7 +18,7 @@ class ResourceHasHDLorURL extends BaseRule implements FairScoreRule
 
     public static function meetsCondition($metadataRecord)
     {
-        if (!empty($identifiers = data_get($metadataRecord, 'dataCORE.identifier'))) {
+        if (!empty($identifiers = data_get($metadataRecord, 'identifier'))) {
             foreach ($identifiers as $identifier) {
                 if ($identifier['type'] === 'DOI' && !empty($identifier['value'])) {
                     return false;

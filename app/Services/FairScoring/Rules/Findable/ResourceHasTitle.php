@@ -18,7 +18,7 @@ class ResourceHasTitle extends BaseRule implements FairScoreRule
 
     public static function meetsCondition($metadataRecord)
     {
-        if (!empty($title_array = data_get($metadataRecord, 'dataCORE.title'))) {
+        if (!empty($title_array = data_get($metadataRecord, 'title'))) {
             if (!empty(head($title_array)['value'])) {
                 return true;
             }

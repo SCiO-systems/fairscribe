@@ -18,7 +18,7 @@ class ResourceHasCCBYNCLicense extends BaseRule implements FairScoreRule
 
     public static function meetsCondition($metadataRecord)
     {
-        $license = data_get($metadataRecord, 'dataCORE.rights.license');
+        $license = data_get($metadataRecord, 'rights.license');
         $usesCCBYNCLicense = $license === 'CC BY-NC 4.0';
 
         return $usesCCBYNCLicense;

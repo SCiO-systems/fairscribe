@@ -18,8 +18,8 @@ class ResourceHasLicenseOrTermsOfUse extends BaseRule implements FairScoreRule
 
     public static function meetsCondition($metadataRecord)
     {
-        $hasLicense = !empty(data_get($metadataRecord, 'dataCORE.rights.license'));
-        $hasTermsOfUse = !empty(data_get($metadataRecord, 'dataCORE.rights.terms_of_use.0.value'));
+        $hasLicense = !empty(data_get($metadataRecord, 'rights.license'));
+        $hasTermsOfUse = !empty(data_get($metadataRecord, 'rights.terms_of_use.0.value'));
         return $hasLicense || $hasTermsOfUse;
     }
 }

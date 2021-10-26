@@ -18,7 +18,7 @@ class ResourceHasUrlsOfPhysicalFiles extends BaseRule implements FairScoreRule
 
     public static function meetsCondition($metadataRecord)
     {
-        $files = data_get($metadataRecord, 'dataCORE.resource_files');
+        $files = data_get($metadataRecord, 'resource_files');
 
         if (empty($files)) {
             return false;

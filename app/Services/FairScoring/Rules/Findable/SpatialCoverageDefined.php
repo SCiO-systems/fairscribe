@@ -18,7 +18,7 @@ class SpatialCoverageDefined extends BaseRule implements FairScoreRule
 
     public static function meetsCondition($metadataRecord)
     {
-        if (!empty(data_get($metadataRecord, 'dataCORE.geography.regions')) || !empty(data_get($metadataRecord, 'dataCORE.geography.countries'))) {
+        if (!empty(data_get($metadataRecord, 'geography.regions')) || !empty(data_get($metadataRecord, 'geography.countries'))) {
             return true;
         }
         return false;
