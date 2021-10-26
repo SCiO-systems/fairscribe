@@ -6,6 +6,9 @@ use App\Models\Resource;
 use App\Services\FairScoring\Enums\FairSection;
 use App\Services\FairScoring\Exceptions\InvalidDataException;
 use App\Services\FairScoring\Exceptions\InvalidFairSection;
+use App\Services\FairScoring\Rules\Accessible\DatasetHasClosedLicense;
+use App\Services\FairScoring\Rules\Accessible\DatasetHasLicenseOrTermsOfUse;
+use App\Services\FairScoring\Rules\Accessible\DatasetHasOpenLicense;
 use App\Services\FairScoring\Rules\Accessible\ResourceHasClosedLicense;
 use App\Services\FairScoring\Rules\Findable\ResourceHasDescription;
 use App\Services\FairScoring\Rules\Findable\ResourceHasDOI;
@@ -15,14 +18,32 @@ use App\Services\FairScoring\Rules\Accessible\ResourceHasLicenseOrTermsOfUse;
 use App\Services\FairScoring\Rules\Accessible\ResourceHasOpenLicense;
 use App\Services\FairScoring\Rules\Findable\ResourceHasTitle;
 use App\Services\FairScoring\Rules\Accessible\ResourceHasUrlsOfPhysicalFiles;
+use App\Services\FairScoring\Rules\Findable\AtLeastOneAuthorVerified;
+use App\Services\FairScoring\Rules\Findable\AtLeastOneHandlerIsDOI;
+use App\Services\FairScoring\Rules\Findable\AtLeastOneUrlIsHandler;
+use App\Services\FairScoring\Rules\Findable\DatasetHasAtLeastOneURL;
+use App\Services\FairScoring\Rules\Findable\DatasetHasAuthors;
+use App\Services\FairScoring\Rules\Findable\DatasetHasDescription;
+use App\Services\FairScoring\Rules\Findable\DatasetHasIssuedDate;
+use App\Services\FairScoring\Rules\Findable\DatasetHasTitle;
+use App\Services\FairScoring\Rules\Findable\KeywordsAreControlled;
+use App\Services\FairScoring\Rules\Findable\NoControlledKeywords;
+use App\Services\FairScoring\Rules\Findable\SpatialCoverageDefined;
+use App\Services\FairScoring\Rules\Interoperable\DatasetHasAnnotatedData;
+use App\Services\FairScoring\Rules\Interoperable\DatasetHasOpenFormats;
+use App\Services\FairScoring\Rules\Interoperable\DatasetHasProprietaryFormats;
+use App\Services\FairScoring\Rules\Interoperable\DatasetHasResourceMetadata;
 use App\Services\FairScoring\Rules\Interoperable\ResourceHasAnnotatedControlledValues;
 use App\Services\FairScoring\Rules\Interoperable\ResourceHasAnnotatedData;
 use App\Services\FairScoring\Rules\Interoperable\ResourceHasOpenFormats;
 use App\Services\FairScoring\Rules\Interoperable\ResourceHasProprietaryFormats;
 use App\Services\FairScoring\Rules\Interoperable\ResourceHasResourceMetadata;
+use App\Services\FairScoring\Rules\Reusable\DatasetHasCCBYNCLicense;
+use App\Services\FairScoring\Rules\Reusable\DatasetPassesPIICheck;
 use App\Services\FairScoring\Rules\Reusable\ResourceHasCCBYNCLicense;
 use App\Services\FairScoring\Rules\Reusable\ResourceHasReusability;
 use App\Services\FairScoring\Rules\Reusable\ResourcePassesPIICheck;
+use App\Services\FairScoring\Rules\Reusable\ReusableDatasetHasOpenLicense;
 use App\Services\FairScoring\Rules\Reusable\ReusableResourceHasOpenLicense;
 
 class FairScoring
@@ -31,33 +52,38 @@ class FairScoring
     private $record = null;
 
     private $rules = [
-        'Document' => [],
-        'Digital Asset' => [],
-        'Dataset' => [
+        'document' => [],
+        'digital_asset' => [],
+        'dataset' => [
             FairSection::FINDABLE => [
-                ResourceHasDOI::class,
-                ResourceHasHDLorURL::class,
-                ResourceHasTitle::class,
-                ResourceHasDescription::class,
-                ResourceHasIssuedDate::class,
+                DatasetHasAtLeastOneURL::class,
+                AtLeastOneUrlIsHandler::class,
+                AtLeastOneHandlerIsDOI::class,
+                DatasetHasTitle::class,
+                DatasetHasDescription::class,
+                DatasetHasAuthors::class,
+                AtLeastOneAuthorVerified::class,
+                DatasetHasIssuedDate::class,
+                KeywordsAreControlled::class,
+                NoControlledKeywords::class,
+                SpatialCoverageDefined::class,
             ],
             FairSection::ACCESSIBLE => [
-                ResourceHasLicenseOrTermsOfUse::class,
-                ResourceHasOpenLicense::class,
-                ResourceHasClosedLicense::class,
+                DatasetHasLicenseOrTermsOfUse::class,
+                DatasetHasOpenLicense::class,
+                DatasetHasClosedLicense::class,
                 ResourceHasUrlsOfPhysicalFiles::class
             ],
             FairSection::INTEROPERABLE => [
-                ResourceHasOpenFormats::class,
-                ResourceHasProprietaryFormats::class,
-                ResourceHasAnnotatedData::class,
-                ResourceHasAnnotatedControlledValues::class,
-                ResourceHasResourceMetadata::class,
+                DatasetHasOpenFormats::class,
+                DatasetHasProprietaryFormats::class,
+                DatasetHasAnnotatedData::class,
+                DatasetHasResourceMetadata::class,
             ],
             FairSection::REUSABLE => [
-                ResourcePassesPIICheck::class,
-                ReusableResourceHasOpenLicense::class,
-                ResourceHasCCBYNCLicense::class,
+                DatasetPassesPIICheck::class,
+                ReusableDatasetHasOpenLicense::class,
+                DatasetHasCCBYNCLicense::class,
                 ResourceHasReusability::class,
             ],
         ],
@@ -104,14 +130,18 @@ class FairScoring
 
     public function for(Resource $resource)
     {
-        $this->setType($resource->type);
         $this->setRecord($resource->getMetadataRecord());
+        if ($this->record === null) {
+            throw new InvalidDataException();
+        }
+        $type = data_get($this->record, 'resource_type.type');
+        $this->setType($type);
         return $this;
     }
 
     public function forRecord($metadataRecord)
     {
-        $type = data_get($metadataRecord, 'dataCORE.resource_type.value');
+        $type = data_get($metadataRecord, 'resource_type.type');
         $this->setRecord($metadataRecord);
         $this->setType($type);
         return $this;

@@ -26,7 +26,7 @@ class ResourcePassesPIICheck extends BaseRule implements FairScoreRule
         }
 
         foreach ($files as $file) {
-            $passesCheck = $file['pii_check_status'] === PIIStatus::PASSED;
+            $passesCheck = $file['pii_check'] === PIIStatus::PASSED;
             if (!$passesCheck) {
                 return false;
             }

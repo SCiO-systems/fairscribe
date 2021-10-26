@@ -8,7 +8,7 @@ use App\Services\FairScoring\Rules\BaseRule;
 
 class ResourceHasReusability extends BaseRule implements FairScoreRule
 {
-    public static $metadataCondition = '"The Reusability of a resource  is directly linked to its Findability, Accessibility and Interoperability qualities"';
+    public static $metadataCondition = 'Reusability is directly linked to its Findability, Accessibility and Interoperability qualities';
     public static $scoring = 'max 2 points calculated as (F + A + I) / 7.5';
     public static $recommendation = 'Improve Findability, Accessibility and / or Interoperability';
 

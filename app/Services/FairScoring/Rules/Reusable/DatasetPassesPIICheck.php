@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Services\FairScoring\Rules\Accessible;
+namespace App\Services\FairScoring\Rules\Reusable;
 
+use App\Enums\PIIStatus;
 use App\Services\FairScoring\Interfaces\FairScoreRule;
 use App\Services\FairScoring\Rules\BaseRule;
 
-class ResourceHasUrlsOfPhysicalFiles extends BaseRule implements FairScoreRule
+class DatasetPassesPIICheck extends BaseRule implements FairScoreRule
 {
-    public static $metadataCondition = 'URLs of physical files are provided in metadata';
+    public static $metadataCondition = 'DATASET complies with basic Personal Information Protection principles';
     public static $scoring = '2 points';
-    public static $recommendation = 'Provide physical files or relevant URLs';
+    public static $recommendation = 'Run the PII check service and accordingly handle the reported PII issues';
 
     public static function calculateScore($metadataRecord)
     {
@@ -25,11 +26,12 @@ class ResourceHasUrlsOfPhysicalFiles extends BaseRule implements FairScoreRule
         }
 
         foreach ($files as $file) {
-            if (empty($file['path'])) {
+            $passesCheck = $file['pii_check'] === PIIStatus::PASSED;
+            if (!$passesCheck) {
                 return false;
             }
         }
 
-        return true;
+        return false;
     }
 }
