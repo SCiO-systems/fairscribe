@@ -18,6 +18,10 @@ class DatasetHasOpenFormats extends BaseRule implements FairScoreRule
 
     public static function meetsCondition($metadataRecord)
     {
+        if (empty(data_get($metadataRecord, 'resource_files'))) {
+            return false;
+        }
+
         if (!empty($resource_files = data_get($metadataRecord, 'resource_files'))) {
             foreach ($resource_files as $file) {
                 if (!array_key_exists('mime_type', $file) || empty($file['mime_type'])) {
