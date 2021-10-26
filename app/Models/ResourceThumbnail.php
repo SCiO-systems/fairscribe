@@ -21,4 +21,10 @@ class ResourceThumbnail extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function setPIICheckIdentifier($id)
+    {
+        $this->pii_check_status_identifier = $id;
+        $this->save();
+    }
 }

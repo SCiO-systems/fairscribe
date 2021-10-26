@@ -22,7 +22,7 @@ class TeamResourceThumbnailResource extends JsonResource
             'pii_check_status' => $this->pii_check_status,
             'url' => Storage::temporaryUrl(
                 $this->path,
-                now()->addHours(env('PRESIGNED_URL_TTL_IN_HOURS', 24))
+                now()->addSeconds(env('PRESIGNED_URL_TTL_IN_SECONDS', 86400))
             ),
         ];
     }

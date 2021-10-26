@@ -2,8 +2,8 @@
 
 namespace App\Http\Resources\v1;
 
-use Illuminate\Http\Resources\Json\JsonResource;
 use Storage;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class TeamResourceFileResource extends JsonResource
 {
@@ -20,6 +20,7 @@ class TeamResourceFileResource extends JsonResource
             'path' => $this->path,
             'filename' => $this->filename,
             'pii_check_status' => $this->pii_check_status,
+            'pii_terms_accepted_at' => $this->pii_terms_accepted_at,
             'url' => Storage::url($this->path),
         ];
     }

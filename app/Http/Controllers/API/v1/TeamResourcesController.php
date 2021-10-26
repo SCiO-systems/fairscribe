@@ -15,7 +15,9 @@ use App\Http\Resources\v1\SingleResourceResource;
 use App\Http\Resources\v1\TeamResourceResource;
 use App\Services\FairScoring\Facades\FairScoring;
 use Auth;
+use Cache;
 use DB;
+use Exception;
 
 class TeamResourcesController extends Controller
 {
@@ -145,11 +147,25 @@ class TeamResourcesController extends Controller
         $resource->setCollections($collections);
 
         if (!empty($request->status)) {
-            $resource->status = $request->status;
+            try {
+                $resource->changeStatus($request->status);
+            } catch (Exception $ex) {
+                return response()->json(['errors' => [
+                    'error' => $ex->getMessage()
+                ]], 400);
+            }
         }
 
         if (!empty($request->metadata_record)) {
             $resource->setOrCreateMetadataRecord($request->metadata_record);
+        }
+
+        // Check if files exist and their PII check status has been updated.
+        if ($resource->files()->count() > 0) {
+            foreach ($resource->files()->get() as $file) {
+                $status = $file->pii_check_status;
+                $file->setPIIStatus($status);
+            }
         }
 
         $fairScoreService = FairScoring::for($resource)->getResult();
@@ -181,6 +197,8 @@ class TeamResourcesController extends Controller
             ]], 422);
         }
 
+        $resource->deleteMetadataRecord();
+
         if ($resource->delete()) {
             return response()->json([], 204);
         }
@@ -204,5 +222,28 @@ class TeamResourcesController extends Controller
         $fairScoreService = FairScoring::for($resource);
 
         return response()->json($fairScoreService->getResult(), 200);
+    }
+
+    /**
+     * Get the PII status for each for each of the files.
+     */
+    public function getPIIStatus(
+        GetSingleTeamResourceRequest $request,
+        Team $team,
+        Resource $resource
+    ) {
+        $cacheKey = "pii_status_$resource->id";
+
+        if (Cache::has($cacheKey)) {
+            return response()->json(Cache::get($cacheKey), 200);
+        }
+
+        $files = $resource->files()->get()->map(function ($file) {
+            return ["$file->id" => "$file->pii_check_status"];
+        });
+
+        Cache::put($cacheKey, $files, env('CACHE_TTL_SECONDS'));
+
+        return response()->json($files, 200);
     }
 }

@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Enums\PIIStatus;
 use App\Enums\ResourceStatus;
 use Auth;
 use Carbon\Carbon;
 use DB;
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -126,6 +128,14 @@ class Resource extends Model
         return $exists;
     }
 
+    public function deleteMetadataRecord()
+    {
+        return DB::connection('mongodb')
+            ->table('metadata_records')
+            ->where('_id', $this->external_metadata_record_id)
+            ->delete();
+    }
+
     public function getAuthors()
     {
         return $this->hasMany(User::class, 'user_id');
@@ -134,5 +144,24 @@ class Resource extends Model
     public function getReviewers()
     {
         return $this->hasMany(User::class, 'user_id');
+    }
+
+    public function changeStatus($status)
+    {
+        $previous = $this->status;
+
+        // We are changing the resource status to something other than under preparation.
+        if ($previous === ResourceStatus::UNDER_PREPARATION && $status !== $previous) {
+            $piiFailingFilesCount = $this->files()->where('pii_check_status', PIIStatus::FAILED)
+                ->where('pii_terms_accepted_at')
+                ->count();
+
+            if ($piiFailingFilesCount > 0) {
+                throw new Exception('Cannot send the resource for Review, The resource should pass PII check or having consent of meeting PII requirements.');
+            }
+        }
+
+        $this->status = $status;
+        return $this->save();
     }
 }

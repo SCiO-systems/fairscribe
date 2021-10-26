@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers\API\v1;
 
-use App\Enums\PIIStatus;
-use App\Http\Requests\TeamResourceFiles\CreateTeamResourceFileRequest;
-use App\Http\Requests\TeamResourceFiles\ListTeamResourceFilesRequest;
-use App\Http\Requests\TeamResourceFiles\DeleteTeamResourceFileRequest;
-use App\Http\Requests\TeamResourceFiles\ShowTeamResourceFileRequest;
-use App\Http\Resources\v1\TeamResourceFileResource;
-use App\Models\Resource;
+use Storage;
 use App\Models\Team;
-use App\Http\Controllers\Controller;
+use App\Enums\PIIStatus;
+use App\Models\Resource;
+use Illuminate\Support\Str;
 use App\Jobs\CreatePIICheck;
 use App\Models\ResourceFile;
-use Illuminate\Support\Str;
-use Storage;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\v1\TeamResourceFileResource;
+use App\Http\Requests\TeamResourceFiles\AcceptPIITermsRequest;
+use App\Http\Requests\TeamResourceFiles\ShowTeamResourceFileRequest;
+use App\Http\Requests\TeamResourceFiles\ListTeamResourceFilesRequest;
+use App\Http\Requests\TeamResourceFiles\CreateTeamResourceFileRequest;
+use App\Http\Requests\TeamResourceFiles\DeleteTeamResourceFileRequest;
+use App\Utilities\SCIO\PIIChecker;
+use Cache;
 
 class TeamResourcesFilesController extends Controller
 {
@@ -100,5 +103,47 @@ class TeamResourcesFilesController extends Controller
         return response()->json(['errors' => [
             'error' => 'Something went wrong'
         ]], 400);
+    }
+
+    /**
+     * Accept PII terms.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function acceptPIITerms(
+        AcceptPIITermsRequest $request,
+        Team $team,
+        Resource $resource,
+        ResourceFile $file
+    ) {
+        $file->acceptTerms();
+
+        return new TeamResourceFileResource($file);
+    }
+
+    /**
+     * Get PII report for a file.
+     */
+    public function getPIIReport(
+        AcceptPIITermsRequest $request,
+        Team $team,
+        Resource $resource,
+        ResourceFile $file
+    ) {
+        $cacheKey = $file->pii_check_status_identifier . '_report';
+
+        if (Cache::has($cacheKey)) {
+            return response()->json(Cache::get($cacheKey), 200);
+        }
+
+        if ($file->exists()) {
+            $checker = new PIIChecker();
+            $report = $checker->getReport($file->pii_check_status_identifier);
+            Cache::put($cacheKey, $report, env('CACHE_TTL_SECONDS'));
+            return response()->json($checker->getReport($file->pii_check_status_identifier), 200);
+        }
+
+        return response()->json([], 204);
     }
 }

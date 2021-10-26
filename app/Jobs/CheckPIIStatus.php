@@ -2,8 +2,12 @@
 
 namespace App\Jobs;
 
+use Http;
+use Log;
 use App\Enums\PIIStatus;
 use App\Models\ResourceFile;
+use App\Utilities\SCIO\PIIChecker;
+use App\Utilities\SCIO\TokenGenerator;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -15,7 +19,25 @@ class CheckPIIStatus implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $limit = 30; // how many files to check at a time.
+    /**
+     * The files that should be checked.
+     */
+    protected $files;
+
+    /**
+     * The base URI of the service.
+     */
+    protected $baseURI;
+
+    /**
+     * The timeout of the http requests.
+     */
+    protected $requestTimeout;
+
+    /**
+     * The token to use for making requests to the service.
+     */
+    protected $token;
 
     /**
      * Create a new job instance.
@@ -24,14 +46,13 @@ class CheckPIIStatus implements ShouldQueue, ShouldBeUnique
      */
     public function __construct()
     {
-        //
-        // 1. Fetch the files that need to be processed by 10 at a time.
-        // 2. Send the files (using presigned urls that expire in 1 day) for processing and get the id store in DB.
-        // 3.
-
+        $generator = new TokenGenerator();
+        $this->token = $generator->getToken();
+        $this->baseURI = env('SCIO_SERVICES_BASE_API_URL');
+        $this->requestTimeout = env('REQUEST_TIMEOUT_SECONDS');
         $this->files = ResourceFile::where('pii_check_status', PIIStatus::PENDING)
+            ->whereNotNull('pii_check_status_identifier')
             ->orderBy('id', 'asc')
-            ->limit(10)
             ->get();
     }
 
@@ -42,6 +63,33 @@ class CheckPIIStatus implements ShouldQueue, ShouldBeUnique
      */
     public function handle()
     {
-        //
+        if (empty($this->files)) {
+            Log::info('No files to be checked for PII information.');
+            return;
+        }
+
+        foreach ($this->files as $resourceFile) {
+
+            $id = $resourceFile->pii_check_status_identifier;
+
+            if (empty($id)) {
+                Log::error('Failed to check status for file as the identifier is missing.', [
+                    'resource_file' => $resourceFile->id,
+                    'job' => get_class($this),
+                ]);
+                continue;
+            }
+
+            $checker = new PIIChecker();
+            $status = $checker->getStatus($id);
+
+            $resourceFile->setPIIStatus($status);
+
+            Log::info('Got PII status for resource.', [
+                'status' => $status,
+                'id' => $id,
+                'resourceFile' => $resourceFile->id,
+            ]);
+        }
     }
 }

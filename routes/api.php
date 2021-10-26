@@ -113,7 +113,16 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::post('teams/{team}/resources/{resource}/fairscore', [
             TeamResourcesController::class, 'calculateFairScore'
         ]);
+        Route::post('teams/{team}/resources/{resource}/pii_status', [
+            TeamResourcesController::class, 'getPIIStatus'
+        ]);
         Route::apiResource('teams.resources', TeamResourcesController::class);
+        Route::post('teams/{team}/resources/{resource}/files/{file}/accept_pii_terms', [
+            TeamResourcesFilesController::class, 'acceptPIITerms'
+        ]);
+        Route::get('teams/{team}/resources/{resource}/files/{file}/pii_report', [
+            TeamResourcesFilesController::class, 'getPIIReport'
+        ]);
         Route::apiResource('teams.resources.files', TeamResourcesFilesController::class)
             ->only(['index', 'store', 'destroy']);
         Route::apiResource('teams.resources.thumbnails', TeamResourcesThumbnailsController::class)

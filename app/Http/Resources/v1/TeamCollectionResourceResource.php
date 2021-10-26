@@ -23,7 +23,6 @@ class TeamCollectionResourceResource extends JsonResource
             'description' => $this->description,
             'type' => $this->type,
             'status' => $this->status,
-            'pii_check_status' => $this->pii_check_status,
             'findable_score' => $this->findable_score,
             'accessible_score' => $this->accessible_score,
             'interoperable_score' => $this->interoperable_score,

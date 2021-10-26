@@ -16,6 +16,7 @@ The project requires **[PHP 7.4/8.0](https://www.php.net/manual/en/install.php)*
 
 ## BUILD THE DOCKER IMAGE
 
+    export WWWUSER=${WWWUSER:-$UID}
     export WWWGROUP=${WWWGROUP:-$(id -g)}
     cd docker && docker build -t noeticblue/laravelsail:php80-composer-mongodb . \
         --build-arg WWWGROUP=$WWWGROUP \
@@ -92,10 +93,9 @@ The default cache TTL of all the values is 1hr. The max cache recommended TTL is
 
 To set the expiration for all generated pre-signed urls change the following setting:
 
-    PRESIGNED_URL_TTL_IN_HOURS=24
+    PRESIGNED_URL_TTL_IN_SECONDS=86400
 
-**IMPORTANT**: This is used for PII check job as well as displaying the thumbnails and maybe in other places as well
-so make sure there is enough time for processing to happen or this may cause unexpected issues.
+**IMPORTANT**: This is used for PII check job as well as displaying the thumbnails and maybe in other places as well so make sure there is enough time for processing to happen or this may cause unexpected issues.
 
 ### EXTERNAL SERVICE CONFIGURATION
 

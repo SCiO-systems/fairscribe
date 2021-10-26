@@ -158,7 +158,6 @@ class InitialSchema extends Migration
             $table->string('type')->nullable();
             $table->string('subtype')->nullable();
             $table->enum('status', ResourceStatus::getValues())->default(ResourceStatus::DRAFT);
-            $table->enum('pii_check_status', PIIStatus::getValues())->default(PIIStatus::PENDING);
             $table->float('findable_score')->default(0);
             $table->float('accessible_score')->default(0);
             $table->float('interoperable_score')->default(0);
