@@ -18,7 +18,7 @@ class ResourceHasOpenLicense extends BaseRule implements FairScoreRule
 
     public static function meetsCondition($metadataRecord)
     {
-        if (!data_get($metadataRecord, 'rights') || !data_get($metadataRecord, 'rights')) {
+        if (!data_get($metadataRecord, 'rights') || !data_get($metadataRecord, 'rights.license')) {
             return false;
         }
 
