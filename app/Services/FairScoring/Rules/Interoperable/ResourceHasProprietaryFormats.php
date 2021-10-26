@@ -18,6 +18,13 @@ class ResourceHasProprietaryFormats extends BaseRule implements FairScoreRule
 
     public static function meetsCondition($metadataRecord)
     {
+        if (!empty($resource_files = data_get($metadataRecord, 'resource_files'))) {
+            foreach ($resource_files as $file) {
+                if (array_key_exists('mime_type', $file) && empty($file['mime_type'])) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 }

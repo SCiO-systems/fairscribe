@@ -8,7 +8,7 @@ use App\Services\FairScoring\Rules\BaseRule;
 class ResourceHasAnnotatedControlledValues extends BaseRule implements FairScoreRule
 {
     public static $metadataCondition = '"The annotations are built using controlled values (defined in a vocabulary, thesaurus or ontology)"';
-    public static $scoring = '1';
+    public static $scoring = '1 point';
     public static $recommendation = 'Use controlled values for annotating the data included in the dataset';
 
     public static function calculateScore($metadataRecord)

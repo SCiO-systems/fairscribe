@@ -8,7 +8,7 @@ use App\Services\FairScoring\Rules\BaseRule;
 class ResourceHasTitle extends BaseRule implements FairScoreRule
 {
     public static $metadataCondition = 'RESOURCE has TITLE defined in metadata';
-    public static $scoring = '0.125';
+    public static $scoring = '0.125 points';
     public static $recommendation = 'Provide a Resource Title';
 
     public static function calculateScore($metadataRecord)

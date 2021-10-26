@@ -8,7 +8,7 @@ use App\Services\FairScoring\Rules\BaseRule;
 class ResourceHasHDLorURL extends BaseRule implements FairScoreRule
 {
     public static $metadataCondition = 'if ( "no DOI exist" ) then "resource has an HDL or URL"';
-    public static $scoring = '0.125';
+    public static $scoring = '0.125 points';
     public static $recommendation = 'if no DOI exist, add or update metadata record with HDL or URL after publishing it';
 
     public static function calculateScore($metadataRecord)

@@ -8,7 +8,7 @@ use App\Services\FairScoring\Rules\BaseRule;
 class ResourceHasDOI extends BaseRule implements FairScoreRule
 {
     public static $metadataCondition = '"resource has DOI"';
-    public static $scoring = '1';
+    public static $scoring = '1 point';
     public static $recommendation = 'Get a DOI for the resource';
 
     public static function calculateScore($metadataRecord)
