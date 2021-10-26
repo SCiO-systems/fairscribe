@@ -116,7 +116,7 @@ class ScioController extends Controller
                 'artifact' => $request->text,
             ]);
 
-        return response()->json($response->json('response.data'), $response->status());
+        return response()->json($response->json('data'), $response->status());
     }
 
     public function listProjects(ListProjectsRequest $request)
