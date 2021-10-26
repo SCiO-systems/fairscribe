@@ -152,6 +152,12 @@ class TeamResourcesController extends Controller
             $resource->setOrCreateMetadataRecord($request->metadata_record);
         }
 
+        $fairScoreService = FairScoring::for($resource)->getResult();
+        $resource->findable_score = $fairScoreService['findable']['score'];
+        $resource->accessible_score = $fairScoreService['accessible']['score'];
+        $resource->interoperable_score = $fairScoreService['interoperable']['score'];
+        $resource->reusable_score = $fairScoreService['reusable']['score'];
+
         $resource->save();
 
         return new SingleResourceResource($resource);
