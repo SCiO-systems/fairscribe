@@ -77,7 +77,7 @@ class ScioController extends Controller
             ->withToken($this->token)
             ->post("$this->baseURI/vocabularies/getvocabularies", [
                 'language' => 'eng',
-                'types_enabled' => ['keyword', 'extracted']
+                'types_enabled' => ['extracted']
             ]);
 
         $json = $response->json('response');
