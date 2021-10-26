@@ -11,7 +11,7 @@ final class RepositoryType extends Enum
 {
     // const CKAN = 'ckan';
     // const DKAN = 'dkan';
-    // const DSpace = 'dspace';
+    const DSpace = 'dspace';
     const Dataverse = 'dataverse';
     // const GeoNetwork = 'geonetwork';
     // const GeoNode = 'geonode';
