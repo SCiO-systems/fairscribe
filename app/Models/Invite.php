@@ -45,7 +45,7 @@ class Invite extends Model
         parent::boot();
 
         static::created(function ($invite) {
-            Mail::to($invite->email)->queue(new TeamInviteSent($invite));
+            // Mail::to($invite->email)->queue(new TeamInviteSent($invite));
         });
     }
 
