@@ -24,7 +24,7 @@ class TeamCollectionResourcesController extends Controller
         Team $team,
         Collection $collection
     ) {
-        $resources = $team->resources();
+        $resources = $collection->resources();
 
         if (!empty($request->status)) {
             $resources = $resources->where('status', $request->status);
