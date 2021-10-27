@@ -15,7 +15,7 @@ class UserInviteRejectRequest extends FormRequest
     public function authorize()
     {
         // Check if the user is same and the invite belongs to the user.
-        $inviteBelongsToUser = $this->user->email === $this->invite->email;
+        $inviteBelongsToUser = Auth::user()->id === $this->invite->user_id;
         $isSameUser = Auth::user()->id == $this->user->id;
         return $isSameUser && $inviteBelongsToUser;
     }
