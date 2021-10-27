@@ -10,6 +10,7 @@ class ResourceHasAuthors extends BaseRule implements FairScoreRule
     public static $metadataCondition = 'RESOURCE has AUTHORS defined in metadata';
     public static $scoring = '0.125 points ( =C )';
     public static $recommendation = 'Define the Resource Authors';
+    public static $anchor = 'resource-authors';
 
     public static function calculateScore($metadataRecord)
     {

@@ -189,6 +189,7 @@ class FairScoring
             'recommendation' => $rule::$recommendation,
             'score' => $score,
             'meetsCondition' => $meetsCondition,
+            'anchor' => empty($rule::$anchor) ? null : $rule::$anchor,
         ];
     }
 
