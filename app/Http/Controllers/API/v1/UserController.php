@@ -11,6 +11,7 @@ use App\Http\Requests\Users\ShowUserRequest;
 use App\Http\Resources\v1\UserResource;
 use App\Models\User;
 use Carbon\Carbon;
+use Log;
 
 class UserController extends Controller
 {
@@ -25,6 +26,13 @@ class UserController extends Controller
             ->orWhere('lastname', 'like', '%' . $request->name . '%')
             ->orWhere('email', 'like', '%' . $request->name . '%')
             ->get();
+
+        $users = collect($users)->filter(function ($user) use ($request) {
+            if ($user->id == $request->user()->id) {
+                return false;
+            }
+            return true;
+        });
 
         return UserResource::collection($users);
     }
