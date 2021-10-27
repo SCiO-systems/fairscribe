@@ -18,12 +18,7 @@ class Resource extends Model
 
     public function collections()
     {
-        return $this->belongsToMany(
-            Collection::class,
-            'collection_resource',
-            'resource_id',
-            'collection_id'
-        );
+        return $this->belongsToMany(Collection::class, 'collection_resource');
     }
 
     public function team()

@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\v1;
 
-use DB;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class SingleResourceResource extends JsonResource
@@ -36,7 +35,9 @@ class SingleResourceResource extends JsonResource
             'issued_at' => $this->issued_at,
             'author_id' => $this->author_id,
             'publisher_id' => $this->publisher_id,
-            'collections' => TeamResourceCollectionsResource::collection($this->collections()->get()),
+            'collections' => TeamResourceCollectionsResource::collection(
+                $this->collections()->get()
+            ),
             'collections_count' => $this->collections->count(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
