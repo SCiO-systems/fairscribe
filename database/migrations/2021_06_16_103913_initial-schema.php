@@ -82,13 +82,14 @@ class InitialSchema extends Migration
             $table->foreignId('team_id')
                 ->constrained('teams')
                 ->onDelete('cascade');
-            $table->string('email');
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->onDelete('cascade');
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->timestamps();
 
             // Indexes
-            $table->index('email');
-            $table->unique(['team_id', 'email']);
+            $table->unique(['team_id', 'user_id']);
         });
 
         Schema::create('collections', function (Blueprint $table) {

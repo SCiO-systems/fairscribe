@@ -71,6 +71,15 @@ class InitialSeeder extends Seeder
             ->count(5)
             ->create();
 
+        $orcidUser = User::factory([
+            'email' => null,
+            'firstname' => 'Orcid',
+            'lastname' => 'User',
+            'password' => null,
+            'identity_provider' => 'orcid',
+            'identity_provider_external_id' => '0000-0002-8769-4783'
+        ])->create();
+
         $recordNotFound = false;
         $record = null;
         try {
@@ -114,7 +123,7 @@ class InitialSeeder extends Seeder
 
         $sharedTeams = Team::factory(['owner_id' => $ownerId])
             ->count(5)->create()->each(
-                function ($team) use ($email, $resources, $ownerId) {
+                function ($team) use ($user, $resources, $ownerId) {
 
                     $resources = Resource::factory([
                         'author_id' => $ownerId,
@@ -122,7 +131,7 @@ class InitialSeeder extends Seeder
                     ])->count(5)->create();
 
                     // Create the invites as well.
-                    Invite::factory(['team_id' => $team->id, 'email' => $email])->create();
+                    Invite::factory(['team_id' => $team->id, 'user_id' => $user->id])->create();
 
                     // Create collections with resources for team.
                     Collection::factory(['team_id' => $team->id])

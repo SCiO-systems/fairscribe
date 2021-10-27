@@ -21,7 +21,7 @@ class UserInvitesController extends Controller
      */
     public function index(UserInviteListRequest $request, User $user)
     {
-        $pending = Invite::where('email', $request->user()->email)
+        $pending = Invite::where('user_id', $request->user()->id)
             ->where('status', InviteStatus::Pending)
             ->get();
 
