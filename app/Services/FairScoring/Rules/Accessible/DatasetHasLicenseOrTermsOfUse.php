@@ -10,6 +10,7 @@ class DatasetHasLicenseOrTermsOfUse extends BaseRule implements FairScoreRule
     public static $metadataCondition = 'DATASET has LICENCE or TERMS of USE defined in metadata';
     public static $scoring = '1 point ( =A )';
     public static $recommendation = 'Specify the Licence or Terms of Use of the resource';
+    public static $anchor = 'resource-rights';
 
     public static function calculateScore($metadataRecord)
     {

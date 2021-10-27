@@ -10,6 +10,7 @@ class AtLeastOneHandlerIsDOI extends BaseRule implements FairScoreRule
     public static $metadataCondition = 'At least one HANDLER is a DOI';
     public static $scoring = '0.5 points additional to B';
     public static $recommendation = 'Get a DOI for the resource';
+    public static $anchor = 'resource-dois';
 
     public static function calculateScore($metadataRecord)
     {

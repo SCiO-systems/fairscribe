@@ -10,6 +10,7 @@ class DatasetHasTitle extends BaseRule implements FairScoreRule
     public static $metadataCondition = 'DATASET has TITLE defined in metadata';
     public static $scoring = '0.125 points';
     public static $recommendation = 'Provide a Resource Title';
+    public static $anchor = 'resource-title';
 
     public static function calculateScore($metadataRecord)
     {

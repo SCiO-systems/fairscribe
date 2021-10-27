@@ -10,6 +10,7 @@ class DatasetHasDescription extends BaseRule implements FairScoreRule
     public static $metadataCondition = 'DATASET has DESCRIPTION defined in metadata';
     public static $scoring = '0.5 points';
     public static $recommendation = 'Provide a Resource Description';
+    public static $anchor = 'resource-description';
 
     public static function calculateScore($metadataRecord)
     {

@@ -10,6 +10,7 @@ class DatasetHasOpenLicense extends BaseRule implements FairScoreRule
     public static $metadataCondition = 'DATASET has Open Source or CC0 or CC-BY license';
     public static $scoring = '2 points additional to A';
     public static $recommendation = 'Use License wizard to select an appropriate license';
+    public static $anchor = 'resource-rights';
 
     public static function calculateScore($metadataRecord)
     {

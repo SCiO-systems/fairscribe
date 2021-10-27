@@ -10,6 +10,7 @@ class KeywordsAreControlled extends BaseRule implements FairScoreRule
     public static $metadataCondition = 'KEYWORDS in metadata are defined using controlled terms (from vocabularies, thesauri, ontologies)';
     public static $scoring = 'min( 0.25 * #TERMS, 1 ) points';
     public static $recommendation = 'Use at least 4 controlled values to describe the resource';
+    public static $anchor = 'resource-keywords';
 
     private static function getControlledKeywordsCount($metadataRecord)
     {

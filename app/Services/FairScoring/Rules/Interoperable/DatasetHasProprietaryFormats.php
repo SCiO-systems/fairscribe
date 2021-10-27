@@ -10,6 +10,7 @@ class DatasetHasProprietaryFormats extends BaseRule implements FairScoreRule
     public static $metadataCondition = 'if not, DATASET files use formats that are proprietary, but can be recognized and used by freely available tools';
     public static $scoring = '0.5 points';
     public static $recommendation = 'Avoid using proprietary formats when possible';
+    public static $anchor = 'resource-files';
 
     public static function calculateScore($metadataRecord)
     {

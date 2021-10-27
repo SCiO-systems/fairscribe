@@ -10,6 +10,7 @@ class NoControlledKeywords extends BaseRule implements FairScoreRule
     public static $metadataCondition = 'If no controlled term is used in KEYWORDS';
     public static $scoring = 'min( 0.0625 * #KEYWORDS, 0.25 ) points';
     public static $recommendation = 'if no controlled value  is used then provide at least 4 keywords to describe the resource';
+    public static $anchor = 'resource-keywords';
 
     private static function getControlledKeywordsCount($metadataRecord)
     {

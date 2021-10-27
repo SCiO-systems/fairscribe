@@ -10,6 +10,7 @@ class ResourceHasOpenFormats extends BaseRule implements FairScoreRule
     public static $metadataCondition = 'RESOURCE files use ONLY domain-relevant community open formats';
     public static $scoring = '3.5 points';
     public static $recommendation = 'Avoid using proprietary formats when possible';
+    public static $anchor = 'resource-files';
 
     public static function calculateScore($metadataRecord)
     {

@@ -10,6 +10,7 @@ class AtLeastOneAuthorVerified extends BaseRule implements FairScoreRule
     public static $metadataCondition = 'At least one AUTHOR is defined using ORCID or RORid';
     public static $scoring = '0.5 points additional to C';
     public static $recommendation = 'Use ORCIDs for individuals and/or ROR ids for organisations';
+    public static $anchor = 'resource-authors';
 
     public static function calculateScore($metadataRecord)
     {

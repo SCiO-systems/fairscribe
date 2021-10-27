@@ -10,6 +10,7 @@ class ResourceHasUrlsOfPhysicalFiles extends BaseRule implements FairScoreRule
     public static $metadataCondition = 'URLs of physical files are provided in metadata';
     public static $scoring = '2 points';
     public static $recommendation = 'Provide physical files or relevant URLs';
+    public static $anchor = 'resource-files';
 
     public static function calculateScore($metadataRecord)
     {

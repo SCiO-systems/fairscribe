@@ -11,6 +11,7 @@ class DatasetPassesPIICheck extends BaseRule implements FairScoreRule
     public static $metadataCondition = 'DATASET complies with basic Personal Information Protection principles';
     public static $scoring = '2 points';
     public static $recommendation = 'Run the PII check service and accordingly handle the reported PII issues';
+    public static $anchor = 'resource-files';
 
     public static function calculateScore($metadataRecord)
     {

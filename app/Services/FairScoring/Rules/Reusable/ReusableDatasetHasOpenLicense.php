@@ -10,6 +10,7 @@ class ReusableDatasetHasOpenLicense extends BaseRule implements FairScoreRule
     public static $metadataCondition = 'DATASET has Open Source or CC0 or CC-BY license';
     public static $scoring = '1 point';
     public static $recommendation = 'Use License wizard to select an appropriate license';
+    public static $anchor = 'resource-rights';
 
     public static function calculateScore($metadataRecord)
     {

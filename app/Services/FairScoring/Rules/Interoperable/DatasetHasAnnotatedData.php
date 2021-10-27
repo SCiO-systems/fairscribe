@@ -10,6 +10,7 @@ class DatasetHasAnnotatedData extends BaseRule implements FairScoreRule
     public static $metadataCondition = 'The data included in the DATASET are annotated and/or carry a legend clarifying their meaning';
     public static $scoring = '1.5 points';
     public static $recommendation = 'Produce an annotated version of the described dataset';
+    public static $anchor = 'resource-files';
 
     public static function calculateScore($metadataRecord)
     {

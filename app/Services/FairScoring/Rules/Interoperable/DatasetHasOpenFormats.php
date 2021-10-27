@@ -10,6 +10,7 @@ class DatasetHasOpenFormats extends BaseRule implements FairScoreRule
     public static $metadataCondition = 'DATASET files use ONLY domain-relevant community open formats';
     public static $scoring = '2 points';
     public static $recommendation = 'Avoid using proprietary formats when possible';
+    public static $anchor = 'resource-files';
 
     public static function calculateScore($metadataRecord)
     {
