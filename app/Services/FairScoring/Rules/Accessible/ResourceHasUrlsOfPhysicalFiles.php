@@ -25,12 +25,6 @@ class ResourceHasUrlsOfPhysicalFiles extends BaseRule implements FairScoreRule
             return false;
         }
 
-        foreach ($files as $file) {
-            if (empty($file['path'])) {
-                return false;
-            }
-        }
-
         return true;
     }
 }
