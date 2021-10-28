@@ -93,7 +93,7 @@ class UserInvitesController extends Controller
             return response()->json(['errors' => ['error' => 'The invite was not found.']], 404);
         }
 
-        $invite->update(['status' => InviteStatus::Rejected]);
+        $invite->delete();
 
         return new InviteResource($invite);
     }
