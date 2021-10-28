@@ -53,9 +53,11 @@ class UserInvitesController extends Controller
         }
 
         // Check if the user is already part of the team.
-        $isMemberAlready = $team->users()->exists($user->id);
+        $isMemberAlready = $team->users()->where('team_id', $team->id)
+            ->where('user_id', $user->id)
+            ->first();
 
-        if ($isMemberAlready) {
+        if (!empty($isMemberAlready)) {
             return response()->json(['errors' => [
                 'error' => 'The user is already a part of this team.'
             ]], 409);
