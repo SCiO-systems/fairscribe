@@ -48,7 +48,7 @@ class ResourceFile extends Model
 
         $metadataRecord = DB::connection('mongodb')
             ->table('metadata_records')
-            ->where('id', $this->external_metadata_record_id)
+            ->where('_id', $this->resource->external_metadata_record_id)
             ->first();
 
         $id = $this->id;
@@ -65,7 +65,7 @@ class ResourceFile extends Model
 
             DB::connection('mongodb')
                 ->table('metadata_records')
-                ->where('id', $this->external_metadata_record_id)
+                ->where('_id', $metadataRecord['_id'])
                 ->update(['resource_files' => $resourceFiles]);
         }
 
