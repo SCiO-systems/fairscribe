@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\v1;
 
+use Cache;
 use Storage;
 use App\Models\Team;
 use App\Enums\PIIStatus;
@@ -9,6 +10,7 @@ use App\Models\Resource;
 use Illuminate\Support\Str;
 use App\Jobs\CreatePIICheck;
 use App\Models\ResourceFile;
+use App\Utilities\SCIO\PIIChecker;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\v1\TeamResourceFileResource;
 use App\Http\Requests\TeamResourceFiles\AcceptPIITermsRequest;
@@ -16,8 +18,6 @@ use App\Http\Requests\TeamResourceFiles\ShowTeamResourceFileRequest;
 use App\Http\Requests\TeamResourceFiles\ListTeamResourceFilesRequest;
 use App\Http\Requests\TeamResourceFiles\CreateTeamResourceFileRequest;
 use App\Http\Requests\TeamResourceFiles\DeleteTeamResourceFileRequest;
-use App\Utilities\SCIO\PIIChecker;
-use Cache;
 
 class TeamResourcesFilesController extends Controller
 {

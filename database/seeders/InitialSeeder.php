@@ -2,18 +2,18 @@
 
 namespace Database\Seeders;
 
-use App\Models\Collection;
-use App\Models\Invite;
-use App\Models\Resource;
-use App\Models\Team;
-use App\Models\User;
 use DB;
-use Exception;
-use Faker\Generator;
-use Illuminate\Database\Seeder;
-use Illuminate\Container\Container;
 use Schema;
 use Storage;
+use Exception;
+use App\Models\Team;
+use App\Models\User;
+use Faker\Generator;
+use App\Models\Invite;
+use App\Models\Resource;
+use App\Models\Collection;
+use Illuminate\Database\Seeder;
+use Illuminate\Container\Container;
 
 class InitialSeeder extends Seeder
 {
@@ -67,7 +67,7 @@ class InitialSeeder extends Seeder
         $email = $user->email;
 
         // Demo users
-        $users = User::factory(['password' => bcrypt('noeticblue')])
+        $users = User::factory(['password' => bcrypt('password')])
             ->count(5)
             ->create();
 

@@ -6,10 +6,6 @@ The dataSCRIBE project.
 
 The project requires **[PHP 7.4/8.0](https://www.php.net/manual/en/install.php)** as well as **[Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos)** to be installed.
 
-## CLONE THE REPOSITORY
-
-    git clone git@github.com:NoeticBlue/scio-datascribe-backend.git
-
 ## INSTALL THE DEPENDENCIES
 
     cd scio-datascribe-backend && composer install
@@ -18,7 +14,7 @@ The project requires **[PHP 7.4/8.0](https://www.php.net/manual/en/install.php)*
 
     export WWWUSER=${WWWUSER:-$UID}
     export WWWGROUP=${WWWGROUP:-$(id -g)}
-    cd docker && docker build -t noeticblue/laravelsail:php80-composer-mongodb . \
+    cd docker && docker build -t laravelsail:php80-composer-mongodb . \
         --build-arg WWWGROUP=$WWWGROUP \
         --platform linux/amd64
 

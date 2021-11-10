@@ -2,18 +2,17 @@
 
 namespace App\Jobs;
 
-use Http;
 use Log;
 use App\Enums\PIIStatus;
 use App\Models\ResourceFile;
+use Illuminate\Bus\Queueable;
 use App\Utilities\SCIO\PIIChecker;
 use App\Utilities\SCIO\TokenGenerator;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 
 class CheckPIIStatus implements ShouldQueue, ShouldBeUnique
 {
