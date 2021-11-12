@@ -12,7 +12,7 @@ jobs:
       - name: SSH and deploy to staging environment
         uses: noeticblue/ssh-action@master
         with:
-          script: bash /home/scio/sbin/deploy-datascribe-backend.sh
+          script: bash /home/scio/sbin/deploy-fairscribe-backend.sh
           host: ${{ secrets.STAGING_HOST }}
           port: ${{ secrets.STAGING_PORT }}
           username: ${{ secrets.STAGING_USER }}

@@ -1,6 +1,6 @@
-# SCiO dataSCRIBE
+# SCiO fairSCRIBE
 
-The dataSCRIBE project.
+The fairscribe project.
 
 ## REQUIREMENTS
 
@@ -8,7 +8,7 @@ The project requires **[PHP 7.4/8.0](https://www.php.net/manual/en/install.php)*
 
 ## INSTALL THE DEPENDENCIES
 
-    cd scio-datascribe-backend && composer install
+    cd scio-fairscribe-backend && composer install
 
 ## BUILD THE DOCKER IMAGE
 

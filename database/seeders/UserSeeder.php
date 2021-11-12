@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
         DB::table('users')->truncate();
 
-        $email = 'datascribe@scio.systems';
+        $email = 'fairscribe@scio.systems';
         $password = 'scio';
 
         // Create the main user.
