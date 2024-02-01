@@ -1,6 +1,6 @@
 # SCiO fairSCRIBE
 
-The fairscribe project.
+The fairscribe project api.
 
 ## REQUIREMENTS
 
